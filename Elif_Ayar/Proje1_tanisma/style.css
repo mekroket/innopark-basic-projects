@@ -1,0 +1,84 @@
+*{
+    margin:0 ;
+    padding:0;
+    font-family:sans-serif;
+    box-sizing:border-box;
+    text-decoration: none;
+
+}
+
+body{
+    height: 100vh;
+    background: url(arkaplan.jpg);
+    background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-card{
+    width: 400px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.card-header{
+    background: #2c3a47;
+    padding: 60px 40px;
+}
+
+.picture img{
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.picture{
+    display: inline-block;
+    padding: 8px;
+    background: linear-gradient(130deg, #74b9ff, #e28341);
+    margin: auto;
+    border-radius: 50%;
+}
+.name{
+    color: #f2f2f2;
+    font-size: 28px;
+    font-weight: 600;
+    margin: 10px 0;
+}
+.desc{
+    color: #e66767;
+    font-size: 18px;
+    margin: 10px 0; 
+}
+.school{
+    color: #e66767;
+    font-size: 18px; 
+}
+
+.alan{
+    color: #ede5e5;
+    font-size: 16px; 
+    margin: 10px 0;
+    text-align: left;
+}
+
+.dizi{
+    color: #ede5e5;
+    font-size: 16px; 
+    margin: 10px 0;
+    text-align: left;
+}
+
+.fav{
+    color: #ede5e5;
+    font-size: 16px; 
+    margin: 10px 0;
+    text-align: left;
+}
+.yemek{
+    color: #ede5e5;
+    font-size: 16px; 
+    margin: 10px 0;
+    text-align: left;
+}
