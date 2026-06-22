@@ -1,0 +1,39 @@
+*{
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+    box-sizing:border-box;
+    text-decoration:none;
+}
+
+body{
+    height:100vh;
+    background:url(ımages.jpg);
+    background-size: 100% 100%;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+}
+
+.profile-card{
+    width:400px;
+    text-align:center;
+    border-radius:8px;
+}
+.card-header{
+    background: #c3be30;
+    padding:60px 40px;
+}
+.picture img {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.picture{
+    display:inline-block;
+    padding:8px;
+    background:linear-gradient(130deg,#e9ff44,#e28341);
+    margin:auto;
+    border-radius:50%;
+}
