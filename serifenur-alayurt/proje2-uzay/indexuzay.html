@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShare</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    
+    <link rel="stylesheet" href="styleuzay.css">
+</head>
+<body>
+
+<header>
+   <div class="logo">
+    <span class="logo-icon">⚡</span>
+    <span class="logo-text">Power<span class="neon-sh">Share</span></span>
+</div>
+</header>
+
+<section class="hero">
+    <h1>Uzayın Enerjisini Dengele</h1>
+    <p>
+        PowerShare, gezegenler arası enerji paylaşımını yöneten
+        yapay zekâ destekli enerji yönetim platformudur.
+    </p>
+    <button onclick="scrollToDashboard()">Demo Görüntüle</button>
+</section>
+
+<section class="stats">
+    <div class="card">
+        <h2>5</h2>
+        <p>Bağlı Gezegen</p>
+    </div>
+    <div class="card">
+        <h2>12</h2>
+        <p>Aktif Üs</p>
+    </div>
+    <div class="card">
+        <h2>98%</h2>
+        <p>Enerji Verimliliği</p>
+    </div>
+    <div class="card">
+        <h2>24/7</h2>
+        <p>AI Takibi</p>
+    </div>
+</section>
+
+<section class="dashboard">
+    <h2>Enerji Kontrol Merkezi</h2>
+    <div class="grid">
+        <div class="panel" id="panel-mars">
+            <h3>Mars Alpha</h3>
+            <span>%72</span>
+        </div>
+        <div class="panel" id="panel-moon">
+            <h3>Ay Beta</h3>
+            <span>%95</span>
+        </div>
+        <div class="panel" id="panel-titan">
+            <h3>Titan Prime</h3>
+            <span>%43</span>
+        </div>
+        <div class="panel" id="panel-europa">
+            <h3>Europa One</h3>
+            <span>%88</span>
+        </div>
+    </div>
+</section>
+
+<section class="ai">
+    <h2>🤖 Yapay Zekâ Tahmini</h2>
+    <div class="alert" id="alert-mars">
+        Mars Alpha Üssü 7 gün içinde enerji açığı yaşayabilir.
+    </div>
+    <div class="alert" id="alert-titan">
+        Titan Prime Üssü kritik enerji seviyesinde, acil takviye planlanmalı.
+    </div>
+    <div class="chart-container" style="position: relative; margin-top: 30px; background: #1a1a24; padding: 20px; border-radius: 6px; border: 1px solid #1f2833;">
+        <h3 style="margin-bottom: 15px; color: #45f3ff;">📊 Enerji Deposu (AI Model)</h3>
+        <canvas id="aiForecastChart"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</section>
+
+<section class="planet-map">
+    <h2>🌍 Gezegen Enerji Haritası</h2>
+    <div class="orbit-container">
+        <div class="sun"></div>
+        <div class="planet earth">
+            Dünya
+            <span>%78</span>
+        </div>
+        <div class="planet moon">
+            Ay
+            <span>%95</span>
+        </div>
+        <div class="planet mars">
+            Mars
+            <span>%72</span>
+        </div>
+        <div class="planet titan">
+            Titan
+            <span>%43</span>
+        </div>
+        <div class="planet europa">
+            Europa
+            <span>%88</span>
+        </div>
+    </div>
+</section>
+
+<div class="planet-info" id="planetInfo">
+    <h3>🌍 Gezegen Bilgileri</h3>
+    <p>Detayları görmek için bir gezegene tıklayın.</p>
+</div>
+
+<section class="manual-transfer">
+    <h2>⚡ Manuel Enerji Transfer Paneli</h2>
+    <div class="transfer-form-container">
+        <form id="energyTransferForm">
+            <div class="form-group">
+                <label for="sourcePlanet">Kaynak Üs:</label>
+                <select id="sourcePlanet" required>
+                    <option value="Ay Beta">Ay Beta (Fazla var)</option>
+                    <option value="Dünya Merkez">Dünya Merkez</option>
+                    <option value="Europa One">Europa One</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="targetPlanet">Hedef Üs:</label>
+                <select id="targetPlanet" required>
+                    <option value="Mars Alpha">Mars Alpha (Açık var)</option>
+                    <option value="Titan Prime">Titan Prime (Kritik)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="energyAmount">Aktarılacak Miktar (MW):</label>
+                <input type="number" id="energyAmount" min="100" max="10000" placeholder="Örn: 2500" required>
+            </div>
+
+            <button type="submit" class="btn-transfer">⚡ Transferi Başlat</button>
+        </form>
+    </div>
+</section>
+
+<section class="transfers">
+    <h2>⚡ Aktif Enerji Transferleri</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Kaynak Üs</th>
+                <th>Hedef Üs</th>
+                <th>Enerji</th>
+                <th>Durum</th>
+            </tr>
+        </thead>
+        <tbody id="transferTableBody">
+            <tr>
+                <td>Ay Beta</td>
+                <td>Mars Alpha</td>
+                <td>2000 MW</td>
+                <td>Aktif</td>
+            </tr>
+            <tr>
+                <td>Dünya Merkez</td>
+                <td>Titan Prime</td>
+                <td>1250 MW</td>
+                <td>Yolda</td>
+            </tr>
+            <tr>
+                <td>Europa One</td>
+                <td>Mars Oasis</td>
+                <td>800 MW</td>
+                <td>Planlandı</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="ai-chat-container" style="margin-top: 30px; background: #1a1a24; padding: 20px; border-radius: 6px; border: 1px solid #1f2833;">
+    <h3 style="margin-bottom: 15px; color: #45f3ff;">💬 PowerShare Yapay Zekâ Sorun Giderme Asistanı</h3>
+    <div id="chatWindow" style="height: 180px; overflow-y: auto; background: #0b0c10; padding: 15px; border-radius: 4px; border: 1px solid #1f2833; margin-bottom: 10px; font-family: 'Rajdhani', sans-serif;">
+        <div style="color: #66fcf1; margin-bottom: 8px;"><strong>🤖 PowerShare AI:</strong> Merhaba Şerife Nur, ben gezegenler arası şebeke asistanı. Sistem durumu veya kritik üsler hakkında bana soru sorabilirsin! (Örn: 'mars', 'titan', 'durum')</div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+        <input type="text" id="chatInput" placeholder="Yapay zekaya sorun... (Örn: Mars'ın durumu ne?)" style="flex: 1; background: #0b0c10; border: 1px solid #1f2833; color: #c5c6c7; padding: 10px; border-radius: 4px; font-family: 'Rajdhani'; font-size: 1.1rem;">
+        <button id="btnSendChat" style="background: transparent; color: #66fcf1; border: 1px solid #66fcf1; padding: 0 20px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; border-radius: 4px; transition: 0.3s;">Sor</button>
+    </div>
+</div>
+</section>
+<div id="customAlertModal" class="custom-modal">
+    <div class="modal-content">
+        <h3 id="modalTitle">⚡ PowerShare AI Protokolü</h3>
+        <p id="modalMessage">Transfer başarıyla tamamlandı.</p>
+        <button id="modalCloseBtn">Onayla</button>
+    </div>
+</div>
+
+<footer>
+    © 2165 PowerShare - Geleceğin Enerji Ağı
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
