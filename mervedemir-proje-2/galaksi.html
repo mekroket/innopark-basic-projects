@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALAXY BUS – Gezegenler Arası Yardım Ağı</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <style>
+        /* ===== RESET & GENEL ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Exo 2', system-ui, sans-serif; }
+        :root {
+            --bg-primary: #050a16;
+            --bg-card: rgba(14, 26, 46, 0.7);
+            --border-color: rgba(31, 49, 80, 0.6);
+            --text-primary: #e8edff;
+            --text-secondary: #8a9bc0;
+            --accent-cyan: #00e5ff;
+            --accent-orange: #ff8800;
+            --accent-red: #ff2244;
+            --accent-green: #00ff88;
+            --planet-color: #3399ff;
+            --shadow-glow: 0 0 40px rgba(0, 229, 255, 0.2);
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.8s ease;
+            background-image: radial-gradient(ellipse at 20% 50%, #0a1a2f 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, #0f1a2a 0%, transparent 50%);
+        }
+        body.theme-mars { --planet-color: #ff5533; --accent-cyan: #ff6633; --bg-card: rgba(30, 20, 32, 0.7); }
+        body.theme-titan { --planet-color: #ffaa33; --accent-cyan: #ffaa33; --bg-card: rgba(30, 26, 18, 0.7); }
+        body.theme-europa { --planet-color: #44ddff; --accent-cyan: #44ddff; --bg-card: rgba(14, 30, 42, 0.7); }
+        body.theme-earth { --planet-color: #33cc88; --accent-cyan: #33cc88; --bg-card: rgba(14, 30, 26, 0.7); }
+
+        ::-webkit-scrollbar { width: 6px; background: #0a1220; }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
+
+        /* ===== YILDIZLAR ===== */
+        #stars-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle var(--dur, 2s) infinite alternate; }
+        @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.4); } }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 40px;
+            background: rgba(5, 10, 22, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .navbar .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .navbar .logo img { height: 40px; width: auto; border-radius: 8px; background-color: #050a16; padding: 0; border: none; outline: none; box-shadow: none; }
+        .navbar .logo .brand-text { font-size: 22px; font-weight: 800; color: var(--accent-cyan); text-shadow: 0 0 30px var(--accent-cyan)44; }
+        .navbar .logo .brand-text span { color: var(--accent-orange); }
+        .nav-links { display: flex; gap: 4px; flex-wrap: wrap; }
+        .nav-links button {
+            background: transparent; border: none; color: var(--text-secondary); padding: 6px 16px;
+            border-radius: 30px; font-weight: 600; font-size: 13px; cursor: pointer;
+            transition: 0.3s; border: 1px solid transparent;
+            letter-spacing: 0.5px;
+        }
+        .nav-links button:hover, .nav-links button.active {
+            color: white; background: rgba(0, 229, 255, 0.12); border-color: var(--accent-cyan)55;
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+        }
+        .nav-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .btn {
+            padding: 7px 20px; border: none; border-radius: 30px; font-weight: 700; font-size: 12px;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        .btn-cyan { background: var(--accent-cyan); color: #050a16; box-shadow: 0 0 20px var(--accent-cyan)44; }
+        .btn-cyan:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--accent-cyan)88; }
+        .btn-outline { background: transparent; border: 1.5px solid var(--accent-cyan); color: var(--accent-cyan); }
+        .btn-outline:hover { background: var(--accent-cyan); color: #050a16; }
+        .btn-danger { background: var(--accent-red); color: white; animation: pulse-red 1.5s infinite; box-shadow: 0 0 20px var(--accent-red)44; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 #ff224466; } 70% { box-shadow: 0 0 30px 15px #ff224433; } 100% { box-shadow: 0 0 0 0 #ff224466; } }
+        .planet-selector { display: flex; gap: 4px; }
+        .planet-selector button {
+            width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent;
+            cursor: pointer; transition: 0.3s; font-size: 16px; background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(4px);
+        }
+        .planet-selector button:hover, .planet-selector button.active { border-color: white; transform: scale(1.2); box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+        #user-info { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+
+        /* ===== SAYFALAR ===== */
+        .page { display: none; padding-top: 80px; min-height: 100vh; position: relative; z-index: 1; max-width: 1440px; margin: 0 auto; }
+        .page.active { display: block; animation: fadeIn 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+        /* ===== ANA SAYFA ===== */
+        .hero { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 60px 20px 40px; min-height: 70vh; background: radial-gradient(ellipse at 30% 40%, var(--planet-color)15, transparent 70%); }
+        .hero h1 { font-size: clamp(42px, 8vw, 80px); font-weight: 900; line-height: 1.1; }
+        .hero h1 .highlight { color: var(--accent-cyan); text-shadow: 0 0 80px var(--accent-cyan)66; }
+        .hero p { font-size: clamp(18px, 2vw, 24px); color: var(--text-secondary); max-width: 700px; margin: 25px auto; }
+        .hero-stats { display: flex; gap: 40px; justify-content: center; margin: 40px 0; flex-wrap: wrap; }
+        .hero-stats div { background: var(--bg-card); backdrop-filter: blur(8px); padding: 16px 28px; border-radius: 20px; border: 1px solid var(--border-color); min-width: 100px; }
+        .hero-stats .num { font-size: 38px; font-weight: 800; color: var(--accent-cyan); text-shadow: 0 0 30px var(--accent-cyan)33; }
+        .hero-stats .lbl { font-size: 14px; color: var(--text-secondary); }
+        .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 25px; padding: 30px 40px; }
+        .feature-card {
+            background: var(--bg-card); backdrop-filter: blur(8px); padding: 28px 20px; border-radius: 24px;
+            border: 1px solid var(--border-color); text-align: center; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer; position: relative; overflow: hidden;
+        }
+        .feature-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at center, var(--accent-cyan)08, transparent 60%);
+            opacity: 0; transition: opacity 0.6s; pointer-events: none;
+        }
+        .feature-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--accent-cyan); box-shadow: var(--shadow-glow); }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-card .icon { font-size: 48px; margin-bottom: 12px; display: block; transition: transform 0.3s; }
+        .feature-card:hover .icon { transform: scale(1.1) rotate(-5deg); }
+        .feature-card h3 { color: white; margin-bottom: 6px; }
+        .feature-card p { color: var(--text-secondary); font-size: 14px; }
+        .feature-card .click-hint { font-size: 11px; color: var(--accent-cyan); opacity: 0; transition: opacity 0.3s; margin-top: 8px; }
+        .feature-card:hover .click-hint { opacity: 1; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-content {
+            background: var(--bg-card); backdrop-filter: blur(16px); border: 1px solid var(--border-color);
+            border-radius: 32px; max-width: 700px; width: 100%; max-height: 80vh; overflow-y: auto;
+            padding: 35px 40px; position: relative; animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-content::-webkit-scrollbar { width: 4px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
+        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--text-secondary); font-size: 28px; cursor: pointer; transition: 0.3s; line-height: 1; }
+        .modal-close:hover { color: white; transform: rotate(90deg); }
+        .modal-title { font-size: 26px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+        .modal-sub { color: var(--text-secondary); font-size: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; }
+        .modal-body { margin-top: 10px; }
+        .modal-item { background: rgba(10, 18, 34, 0.4); border-radius: 16px; padding: 14px 18px; margin-bottom: 10px; border-left: 3px solid var(--accent-cyan); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+        .modal-item .left { flex: 1; }
+        .modal-item .label { font-size: 12px; color: var(--text-secondary); }
+        .modal-item .value { font-size: 16px; font-weight: 600; }
+        .modal-item .badge { font-size: 11px; padding: 2px 12px; border-radius: 30px; font-weight: 700; text-transform: uppercase; }
+        .badge-critical { background: #ff224433; color: var(--accent-red); }
+        .badge-medium { background: #ff880033; color: var(--accent-orange); }
+        .badge-green { background: #00ff8822; color: var(--accent-green); }
+        .badge-cyan { background: #00e5ff22; color: var(--accent-cyan); }
+
+        /* ===== DASHBOARD ===== */
+        .dash-grid { display: grid; grid-template-columns: 280px 1fr 320px; gap: 25px; padding: 20px 40px; }
+        .dash-card { background: var(--bg-card); backdrop-filter: blur(12px); border-radius: 24px; padding: 22px; border: 1px solid var(--border-color); }
+        .dash-card .title { font-size: 13px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; font-weight: 600; }
+        .metric { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .metric .val { font-size: 28px; font-weight: 700; color: white; }
+        .metric .label { color: var(--text-secondary); font-size: 14px; }
+        .metric .change { font-size: 13px; color: var(--accent-green); }
+        .metric .change.down { color: var(--accent-red); }
+        .map-container { width: 100%; height: 420px; background: radial-gradient(circle at center, #0a1628, #030810); border-radius: 20px; position: relative; overflow: hidden; border: 1px solid rgba(0,229,255,0.1); }
+        .orbit-ring { position: absolute; border: 1px solid rgba(42, 74, 122, 0.3); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .orbit-ring.r1 { width: 180px; height: 180px; animation: spin 25s linear infinite; border-color: rgba(0,229,255,0.15); }
+        .orbit-ring.r2 { width: 300px; height: 300px; animation: spin 35s linear infinite reverse; border-color: rgba(0,229,255,0.1); }
+        .orbit-ring.r3 { width: 420px; height: 420px; animation: spin 45s linear infinite; border-color: rgba(0,229,255,0.06); }
+        @keyframes spin { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .planet-icon { position: absolute; border-radius: 50%; box-shadow: 0 0 80px currentColor44, inset 0 -10px 30px rgba(0,0,0,0.5); }
+        .planet-icon.p-earth { width: 64px; height: 64px; background: radial-gradient(circle at 30% 30%, #66ddff, #2288cc); color: #33aaff; bottom: 8%; right: 6%; }
+        .planet-icon.p-mars { width: 52px; height: 52px; background: radial-gradient(circle at 30% 30%, #ff8855, #cc4422); color: #ff5533; top: 12%; left: 4%; }
+        .planet-icon.p-titan { width: 38px; height: 38px; background: radial-gradient(circle at 30% 30%, #ffcc66, #cc8833); color: #ffaa33; top: 55%; left: 78%; }
+        .planet-icon.p-europa { width: 32px; height: 32px; background: radial-gradient(circle at 30% 30%, #88eeff, #44aacc); color: #44ddff; top: 72%; left: 18%; }
+
+        .bus-marker { position: absolute; font-size: 24px; filter: drop-shadow(0 0 15px var(--accent-cyan)); transition: all 0.1s linear; }
+        .bus-marker::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 20px; height: 4px; background: var(--accent-cyan); border-radius: 50%; filter: blur(4px); opacity: 0.5; }
+
+        .alert-pin { position: absolute; width: 14px; height: 14px; border-radius: 50%; animation: pulse 1.2s infinite; box-shadow: 0 0 30px currentColor; }
+        .alert-pin.critical { background: var(--accent-red); color: var(--accent-red); }
+        .alert-pin.medium { background: var(--accent-orange); color: var(--accent-orange); }
+        .alert-pin.solved { background: var(--accent-green); color: var(--accent-green); animation: none; box-shadow: 0 0 15px var(--accent-green); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+
+        .request-list { max-height: 400px; overflow-y: auto; padding-right: 4px; }
+        .request-list::-webkit-scrollbar { width: 3px; }
+        .request-list::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
+        .request-item { background: rgba(10, 18, 34, 0.6); backdrop-filter: blur(4px); padding: 14px 16px; border-radius: 16px; margin-bottom: 10px; border-left: 4px solid var(--accent-orange); transition: 0.2s; }
+        .request-item:hover { background: rgba(10, 18, 34, 0.9); }
+        .request-item .top { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); }
+        .request-item .title { font-weight: 600; margin: 4px 0; font-size: 15px; }
+        .request-item .badge { font-size: 10px; padding: 2px 12px; border-radius: 30px; background: #ff772233; color: var(--accent-orange); font-weight: 700; text-transform: uppercase; }
+        .request-item .badge.green { background: #00ff8822; color: var(--accent-green); }
+        .request-item .badge.red { background: #ff220033; color: var(--accent-red); }
+
+        /* ===== FORM ===== */
+        .form-container { max-width: 720px; margin: 40px auto; padding: 0 20px; }
+        .form-step { background: var(--bg-card); backdrop-filter: blur(12px); padding: 35px 40px; border-radius: 32px; border: 1px solid var(--border-color); }
+        .form-step h2 { color: var(--accent-cyan); margin-bottom: 8px; }
+        .form-step .sub { color: var(--text-secondary); margin-bottom: 25px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; color: #ccd9ff; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 14px 18px; background: rgba(10, 18, 34, 0.6); border: 1px solid var(--border-color);
+            border-radius: 16px; color: white; font-size: 16px; transition: 0.3s; backdrop-filter: blur(4px);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 30px var(--accent-cyan)22;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-actions { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+
+        /* ===== TAKİP ===== */
+        .tracking-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; padding: 20px 40px; }
+        .bus-detail-card { background: var(--bg-card); backdrop-filter: blur(12px); border-radius: 24px; padding: 25px; border: 1px solid var(--border-color); }
+        .bus-detail-card .bus-id { font-size: 28px; font-weight: 800; color: var(--accent-cyan); }
+        .bus-detail-card .route { color: var(--text-secondary); margin: 8px 0 16px; }
+        .timeline { margin-top: 20px; }
+        .timeline-item { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.04); align-items: center; }
+        .timeline-item .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--border-color); flex-shrink: 0; }
+        .timeline-item .dot.done { background: var(--accent-green); box-shadow: 0 0 20px var(--accent-green)44; }
+        .timeline-item .dot.active { background: var(--accent-cyan); box-shadow: 0 0 30px var(--accent-cyan); animation: pulse 1s infinite; }
+        .timeline-item .info { flex: 1; }
+        .timeline-item .info .loc { font-weight: 600; }
+        .timeline-item .info .time { font-size: 13px; color: var(--text-secondary); }
+
+        /* ===== TOPLULUK ===== */
+        .community-container { max-width: 900px; margin: 0 auto; padding: 20px 40px; }
+        .comment-section { background: var(--bg-card); backdrop-filter: blur(12px); border-radius: 24px; padding: 25px; border: 1px solid var(--border-color); margin-top: 20px; }
+        .comment-input-area { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 20px; flex-wrap: wrap; }
+        .comment-input-area textarea { flex: 1; min-width: 200px; padding: 14px; border-radius: 16px; background: rgba(10, 18, 34, 0.6); border: 1px solid var(--border-color); color: white; resize: vertical; backdrop-filter: blur(4px); }
+        .comment-input-area textarea:focus { outline: none; border-color: var(--accent-cyan); }
+        .comment-list { max-height: 500px; overflow-y: auto; }
+        .comment-item { background: rgba(10, 18, 34, 0.5); backdrop-filter: blur(4px); padding: 16px; border-radius: 16px; margin-bottom: 12px; border-left: 3px solid var(--accent-cyan); }
+        .comment-item .meta { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-secondary); }
+        .comment-item .meta .user { font-weight: 700; color: var(--accent-cyan); }
+        .comment-item .text { margin: 8px 0; }
+        .comment-item .actions { display: flex; gap: 16px; font-size: 13px; }
+        .comment-item .actions button { background: none; border: none; color: var(--text-secondary); cursor: pointer; transition: 0.2s; }
+        .comment-item .actions button:hover { color: var(--accent-red); }
+        .comment-item .actions button.like-btn { color: var(--accent-cyan); }
+        .comment-item .actions button.like-btn:hover { color: #ff77aa; }
+
+        /* ===== FOOTER ===== */
+        .footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 14px; margin-top: 40px; position: relative; z-index: 1; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1100px) { .dash-grid { grid-template-columns: 1fr; } .tracking-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 20px; flex-direction: column; align-items: stretch; }
+            .nav-links { justify-content: center; }
+            .nav-actions { justify-content: center; }
+            .form-row { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 36px; }
+            .dash-grid { padding: 10px; }
+            .features { padding: 20px; }
+            .tracking-grid { padding: 10px; }
+            .community-container { padding: 10px; }
+            .comment-input-area { flex-direction: column; }
+            .modal-content { padding: 25px 20px; }
+        }
+        .hidden { display: none; }
+        .mt-20 { margin-top: 20px; }
+        .text-center { text-align: center; }
+
+        .legend-item { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-size: 12px; }
+        .legend-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+
+        /* ===== ÖZEL BİLDİRİM (TOAST) ===== */
+        .notification-container {
+            position: fixed; top: 80px; right: 20px; z-index: 9999;
+            display: flex; flex-direction: column; gap: 12px; max-width: 420px; width: 100%; pointer-events: none;
+        }
+        .notification {
+            pointer-events: auto; background: var(--bg-card); backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color); border-radius: 16px; padding: 18px 24px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6); animation: slideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex; align-items: flex-start; gap: 14px; transition: all 0.3s;
+            border-left: 4px solid var(--accent-cyan);
+        }
+        .notification.success { border-left-color: var(--accent-green); }
+        .notification.error { border-left-color: var(--accent-red); }
+        .notification.warning { border-left-color: var(--accent-orange); }
+        .notification.info { border-left-color: var(--accent-cyan); }
+        .notification .icon { font-size: 24px; flex-shrink: 0; line-height: 1; }
+        .notification .content { flex: 1; }
+        .notification .content .title { font-weight: 700; font-size: 15px; color: white; margin-bottom: 2px; }
+        .notification .content .message { font-size: 14px; color: var(--text-secondary); }
+        .notification .close-btn { background: none; border: none; color: var(--text-secondary); font-size: 18px; cursor: pointer; padding: 0 4px; line-height: 1; transition: 0.2s; }
+        .notification .close-btn:hover { color: white; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(60px) scale(0.95); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .notification.hide { animation: slideOut 0.3s ease forwards; }
+        @keyframes slideOut { to { opacity: 0; transform: translateX(60px) scale(0.95); } }
+    </style>
+</head>
+<body>
+
+    <!-- Yıldızlar -->
+    <div id="stars-canvas"></div>
+
+    <!-- ===== BİLDİRİM KONTEYNERİ ===== -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- ===== MODAL ===== -->
+    <div class="modal-overlay" id="featureModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-title" id="modalTitle">🚀 Başlık</div>
+            <div class="modal-sub" id="modalSub">Alt bilgi</div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- NAVBAR -->
+    <!-- ========================================================= -->
+    <nav class="navbar">
+        <div class="logo" onclick="showPage('home')">
+            <img src="logo.png" alt="GALAXY BUS Logo">
+            <span class="brand-text">GALAXY <span>BUS</span></span>
+        </div>
+        <div class="nav-links">
+            <button class="active" data-page="home">Ana Sayfa</button>
+            <button data-page="dashboard">Komuta Merkezi</button>
+            <button data-page="request">Talep Oluştur</button>
+            <button data-page="tracking">Otobüs Takip</button>
+            <button data-page="community">Topluluk</button>
+        </div>
+        <div class="nav-actions">
+            <div class="planet-selector">
+                <button data-theme="default" class="active" title="Varsayılan">🌌</button>
+                <button data-theme="mars" title="Mars">🔴</button>
+                <button data-theme="titan" title="Titan">🟠</button>
+                <button data-theme="europa" title="Europa">🟣</button>
+                <button data-theme="earth" title="Dünya">🌍</button>
+            </div>
+            <button class="btn btn-danger" onclick="triggerEmergency()">🆘 ACİL</button>
+            <div id="user-info">
+                <span id="user-name" class="hidden">👤</span>
+                <button id="auth-btn" class="btn btn-cyan" onclick="authAction()">Giriş Yap</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========================================================= -->
+    <!-- SAYFA 1: ANA SAYFA -->
+    <!-- ========================================================= -->
+    <section id="page-home" class="page active">
+        <div class="hero">
+            <h1>İhtiyacın Nerede Olursa Olsun, <br><span class="highlight">Yanındayız.</span></h1>
+            <p>2165'te milyonlarca insan gezegenlere dağıldı. GALAXY BUS, gezegenler arasındaki en hızlı yardım ve ulaşım köprüsüdür.</p>
+            <div class="hero-stats">
+                <div><div class="num" id="stat-ships">0</div><div class="lbl">🚀 Aktif Otobüs</div></div>
+                <div><div class="num" id="stat-requests">0</div><div class="lbl">📦 Bu Ay Teslim</div></div>
+                <div><div class="num">14</div><div class="lbl">🪐 Bağlı Koloni</div></div>
+                <div><div class="num">99.8%</div><div class="lbl">⏱️ Zamanında Teslim</div></div>
+            </div>
+            <div class="hero-btns">
+                <button class="btn btn-cyan" onclick="showPage('request')">📦 Yardım Talebi Oluştur</button>
+                <button class="btn btn-outline" onclick="showPage('dashboard')">📊 Canlı Durumu İzle</button>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card" onclick="openModal('notification')">
+                <span class="icon">🛰️</span>
+                <h3>Anlık Bildirim</h3>
+                <p>Tüm gezegenlerden gelen talepleri gerçek zamanlı toplar ve analiz eder.</p>
+                <div class="click-hint">🔔 Tıkla, bildirimleri gör</div>
+            </div>
+            <div class="feature-card" onclick="openModal('fleet')">
+                <span class="icon">🚌</span>
+                <h3>Galaxy Otobüsü Filosu</h3>
+                <p>Otonom, yakıt optimizasyonlu gemilerle en hızlı rota planlaması.</p>
+                <div class="click-hint">🚀 Tıkla, filoyu incele</div>
+            </div>
+            <div class="feature-card" onclick="openModal('ai')">
+                <span class="icon">🧠</span>
+                <h3>AI Destekli Karar</h3>
+                <p>Gemini AI ile aciliyet seviyesine göre otomatik önceliklendirme.</p>
+                <div class="click-hint">🤖 Tıkla, AI raporunu gör</div>
+            </div>
+            <div class="feature-card" onclick="openModal('network')">
+                <span class="icon">🌍</span>
+                <h3>Gezegenler Arası Ağ</h3>
+                <p>Mars, Titan, Europa, Ay ve Dünya arasında kesintisiz iletişim.</p>
+                <div class="click-hint">📡 Tıkla, ağ durumunu gör</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SAYFA 2: DASHBOARD -->
+    <!-- ========================================================= -->
+    <section id="page-dashboard" class="page">
+        <div class="dash-grid">
+            <div class="dash-card">
+                <div class="title">📊 Sistem Durumu</div>
+                <div class="metric"><span class="label">🚌 Aktif Otobüs</span><span class="val" id="dash-buses">0</span></div>
+                <div class="metric"><span class="label">⏳ Bekleyen Talep</span><span class="val" id="dash-pending">0</span></div>
+                <div class="metric"><span class="label">✅ Bugün Teslim</span><span class="val" id="dash-delivered">0</span><span class="change" id="delivery-change">+%0</span></div>
+                <div class="metric"><span class="label">👨‍🚀 Uzaydaki Astronot</span><span class="val" id="astronaut-count" style="color:var(--accent-cyan);">0</span></div>
+                <div class="metric"><span class="label">🛡️ Sistem Sağlığı</span><span class="val" style="color:var(--accent-green);font-size:22px;">%99.7</span></div>
+                <div style="margin-top:20px; background:rgba(10,18,34,0.5); backdrop-filter:blur(4px); padding:14px; border-radius:16px;">
+                    <div style="font-size:13px; color:var(--text-secondary);">🔗 Bağlı Gezegenler</div>
+                    <div style="display:flex; justify-content:space-around; margin-top:8px; font-size:15px;">
+                        <span>🌍 Dünya</span><span>🔴 Mars</span><span>🟠 Titan</span><span>🟣 Europa</span><span>🌙 Ay</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width:100%;margin-top:18px;" onclick="simulateAttack()">🔥 Saldırı Simülasyonu</button>
+            </div>
+            <div class="dash-card" style="padding:15px;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span class="title" style="margin-bottom:0;">📡 Canlı Ağ Haritası</span>
+                    <span style="font-size:12px; color:var(--text-secondary);">🟢 Bağlantı Stabil</span>
+                </div>
+                <div class="map-container" id="mapContainer">
+                    <div class="orbit-ring r1"></div>
+                    <div class="orbit-ring r2"></div>
+                    <div class="orbit-ring r3"></div>
+                    <div class="planet-icon p-earth"></div>
+                    <div class="planet-icon p-mars"></div>
+                    <div class="planet-icon p-titan"></div>
+                    <div class="planet-icon p-europa"></div>
+                    <div id="dynamicObjects"></div>
+                    <div style="position:absolute; bottom:12px; left:12px; display:flex; gap:14px; flex-wrap:wrap; background:rgba(0,0,0,0.5); backdrop-filter:blur(8px); padding:6px 16px; border-radius:30px; font-size:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <span class="legend-item"><span class="legend-dot" style="background:var(--accent-red);"></span> Kritik</span>
+                        <span class="legend-item"><span class="legend-dot" style="background:var(--accent-orange);"></span> Orta</span>
+                        <span class="legend-item"><span class="legend-dot" style="background:var(--accent-green);"></span> Çözüldü</span>
+                        <span class="legend-item"><span style="color:var(--accent-cyan);font-size:18px;">🚌</span> Otobüs</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dash-card">
+                <div class="title">📨 Canlı Talep Akışı</div>
+                <div class="request-list" id="requestList"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SAYFA 3: TALEP OLUŞTUR -->
+    <!-- ========================================================= -->
+    <section id="page-request" class="page">
+        <div class="form-container">
+            <div class="form-step">
+                <h2>📦 Yeni Yardım Talebi</h2>
+                <p class="sub">İhtiyacını belirt, Galaxy Otobüsü en kısa sürede yola çıksın.</p>
+                <form id="requestForm" onsubmit="submitRequest(event)">
+                    <div class="form-row">
+                        <div class="form-group"><label>🌍 Gezegen</label><select required><option value="">Seç...</option><option value="Mars">Mars</option><option value="Titan">Titan</option><option value="Europa">Europa</option><option value="Ay">Ay</option><option value="Dünya">Dünya</option></select></div>
+                        <div class="form-group"><label>🏠 Üs / Koloni</label><input type="text" placeholder="Örn: Mars-Alpha" required></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>📂 Kategori</label><select required><option value="">Kategori...</option><option value="Tıbbi">🏥 Tıbbi</option><option value="Gıda">🍲 Gıda</option><option value="Enerji">🔋 Enerji</option><option value="Teknik">🛠️ Teknik</option><option value="Eğitim">📚 Eğitim</option><option value="Diğer">📦 Diğer</option></select></div>
+                        <div class="form-group"><label>🚨 Aciliyet</label><select required><option value="Düşük">🟢 Düşük</option><option value="Orta" selected>🟡 Orta</option><option value="Yüksek">🔴 Yüksek</option><option value="Kritik">🔥 Kritik</option></select></div>
+                    </div>
+                    <div class="form-group"><label>📌 Talep Başlığı</label><input type="text" placeholder="Kısa başlık" required></div>
+                    <div class="form-group"><label>📝 Detay</label><textarea rows="4" placeholder="Detaylar..." required></textarea></div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-cyan" style="padding:14px 40px; font-size:18px;">🚀 Gönder</button>
+                        <button type="reset" class="btn btn-outline">Temizle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SAYFA 4: OTOBÜS TAKİP -->
+    <!-- ========================================================= -->
+    <section id="page-tracking" class="page">
+        <div class="tracking-grid">
+            <div class="bus-detail-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                    <div>
+                        <div class="bus-id">🚀 GALAXY-3</div>
+                        <div class="route">🔴 Mars-Alpha → 🌍 Dünya-Merkez (Acil Rota)</div>
+                    </div>
+                    <span style="background:var(--accent-red); padding:6px 18px; border-radius:30px; font-weight:700; font-size:14px; box-shadow:0 0 20px var(--accent-red)44;">ACİL TESLİMAT</span>
+                </div>
+                <div style="margin:16px 0; display:flex; gap:30px; flex-wrap:wrap;">
+                    <div><span style="color:var(--text-secondary);">Kargo:</span> <strong>🆘 Oksijen Tüpleri (300 Adet)</strong></div>
+                    <div><span style="color:var(--text-secondary);">Tahmini Varış:</span> <strong id="eta-display" style="color:var(--accent-cyan);">93 Dakika 37 Saniye</strong></div>
+                    <div><span style="color:var(--text-secondary);">Hız:</span> <strong id="speed-display">0.68c</strong></div>
+                </div>
+                <div style="width:100%; height:10px; background:rgba(26,42,68,0.6); border-radius:10px; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,0.4);">
+                    <div id="tracking-progress" style="height:100%; width:21%; background:linear-gradient(90deg, var(--accent-cyan), #00aaff); border-radius:10px; transition:width 2s cubic-bezier(0.34, 1.56, 0.64, 1);"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px; color:var(--text-secondary); margin-top:6px;">
+                    <span>🚀 Kalkış: Mars-Alpha</span>
+                    <span id="progress-text">%21</span>
+                    <span>📍 Varış: Dünya-Merkez</span>
+                </div>
+                <div class="timeline" id="timelineContainer"></div>
+            </div>
+            <div class="bus-detail-card">
+                <div class="title">📋 Sefer Raporu</div>
+                <div style="background:rgba(10,18,34,0.5); backdrop-filter:blur(4px); padding:16px; border-radius:16px;">
+                    <p><strong>Kaptan:</strong> AI Pilot - GX-3</p>
+                    <p><strong>Yakıt Durumu:</strong> %72</p>
+                    <p><strong>Rota Sapması:</strong> %0.4</p>
+                    <p><strong>Önceki Durak:</strong> Mars-Gamma</p>
+                    <p><strong>Sonraki Durak:</strong> Dünya-Alpha</p>
+                    <p><strong>Mürettebat:</strong> 0 (Otonom)</p>
+                </div>
+                <button class="btn btn-outline" style="width:100%;margin-top:16px;" onclick="showNotification('info', '📡 Canlı bağlantı', 'Kamera akışı başlatılıyor.')">📡 Kamera İzle</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SAYFA 5: TOPLULUK -->
+    <!-- ========================================================= -->
+    <section id="page-community" class="page">
+        <div class="community-container">
+            <h2 style="color:var(--accent-cyan);">🌍 Gezegenler Arası Topluluk</h2>
+            <p style="color:var(--text-secondary);">Giriş yap, deneyimlerini paylaş, diğer kolonilerle bağlantı kur.</p>
+            <div class="comment-section">
+                <div id="comment-auth-warning" style="background:#ff772233; padding:12px; border-radius:16px; margin-bottom:16px; color:var(--accent-orange);">
+                    ⚠️ Yorum yapmak için <strong>Giriş Yap</strong>.
+                </div>
+                <div class="comment-input-area">
+                    <textarea id="comment-text" rows="2" placeholder="Düşüncelerini paylaş..." disabled></textarea>
+                    <button class="btn btn-cyan" id="comment-submit-btn" onclick="addComment()" disabled>💬 Gönder</button>
+                </div>
+                <div id="comment-list" class="comment-list"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <p>🚀 GALAXY BUS © 2165 - Gezegenler Arası Yardım ve Lojistik Ağı</p>
+        <p style="font-size:12px; margin-top:6px;">"Gezegenleri Bağlar, Sorunları Çözer, Yardımı Ulaştırır." • <span style="color:var(--accent-cyan);">#GalaxyBus</span></p>
+    </footer>
+
+    <!-- ========================================================= -->
+    <!-- JAVASCRIPT -->
+    <!-- ========================================================= -->
+    <script>
+        // ============================================================
+        // FIREBASE YAPILANDIRMA (KENDİ BİLGİLERİNLE DEĞİŞTİR!)
+        // ============================================================
+     const firebaseConfig = {
+  apiKey: "-",
+  authDomain: "-",
+  projectId: "-",
+  storageBucket: "-",
+  messagingSenderId: "-",
+  appId: "-"
+};
+
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ============================================================
+        // BİLDİRİM SİSTEMİ
+        // ============================================================
+        function showNotification(type, title, message) {
+            const container = document.getElementById('notificationContainer');
+            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+            const icon = icons[type] || 'ℹ️';
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.innerHTML = `
+                <div class="icon">${icon}</div>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <div class="message">${message}</div>
+                </div>
+                <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+            `;
+            container.appendChild(notif);
+            setTimeout(() => {
+                notif.classList.add('hide');
+                setTimeout(() => notif.remove(), 400);
+            }, 4000);
+        }
+
+        // ============================================================
+        // VERİ YÖNETİMİ (LocalStorage)
+        // ============================================================
+        function getData(key, defaultVal) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : defaultVal;
+        }
+        function setData(key, val) {
+            localStorage.setItem(key, JSON.stringify(val));
+        }
+
+        let currentUser = localStorage.getItem('galaxybus_user') || null;
+        let requests = getData('galaxybus_requests', []);
+
+        if (requests.length === 0) {
+            requests = [
+                { id: 1, planet: 'Mars', base: 'Alpha Üssü', category: 'Tıbbi', urgency: 'Kritik', title: 'Oksijen Tüpü Acil', detail: '300 kişilik oksijen tüpü gerekiyor.', time: '5 dk önce', status: 'Kritik', aiScore: 9 },
+                { id: 2, planet: 'Titan', base: 'Beta Kolonisi', category: 'Gıda', urgency: 'Orta', title: 'Erzak Takviyesi', detail: '2 haftalık gıda stoku kaldı.', time: '25 dk önce', status: 'Bekliyor', aiScore: 4 },
+                { id: 3, planet: 'Dünya', base: 'Merkez', category: 'Eğitim', urgency: 'Düşük', title: 'Dijital Eğitim Kitleri', detail: 'Okul için 50 adet tablet.', time: '2 saat önce', status: 'Tamamlandı', aiScore: 2 },
+                { id: 4, planet: 'Europa', base: 'Delta İstasyonu', category: 'Teknik', urgency: 'Yüksek', title: 'Soğutucu Pompa Yedek Parça', detail: 'Ana soğutma sistemi arızalı.', time: '45 dk önce', status: 'Bekliyor', aiScore: 7 },
+            ];
+            setData('galaxybus_requests', requests);
+        }
+
+        // ============================================================
+        // GEMINI AI ANALİZİ (GERÇEK AI)
+        // ============================================================
+        async function analyzeUrgency(text) {
+            const API_KEY = "boş"; // <-- Kendi Gemini API anahtarını yaz!
+            const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
+
+            const prompt = `
+                Aşağıdaki metni oku ve aciliyet seviyesini 0 ile 10 arasında bir sayı olarak değerlendir.
+                0: Acil değil, 10: Çok acil (can kaybı riski var).
+                Sadece sayıyı yaz, başka bir şey yazma.
+
+                Metin: "${text}"
+            `;
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                if (!response.ok) throw new Error(`API hatası: ${response.status}`);
+
+                const data = await response.json();
+                const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || '5';
+                const score = parseInt(resultText.trim(), 10);
+                return Math.min(10, Math.max(0, isNaN(score) ? 5 : score));
+
+            } catch (error) {
+                console.warn('Gemini API hatası, yedek analiz:', error);
+                return fallbackAnalyze(text);
+            }
+        }
+
+        function fallbackAnalyze(text) {
+            const keywords = {
+                'acil': 3, 'kritik': 3, 'ölüm': 3, 'tehlike': 3,
+                'oksijen': 2, 'tüp': 2, 'kan': 2, 'patlama': 2,
+                'arıza': 1, 'gıda': 1, 'su': 1, 'enerji': 1, 'yardım': 1
+            };
+            let score = 0;
+            const lower = text.toLowerCase();
+            for (const [word, val] of Object.entries(keywords)) {
+                if (lower.includes(word)) score += val;
+            }
+            return Math.min(10, score);
+        }
+
+        // ============================================================
+        // API: OPEN NOTIFY – Astronot Sayısı
+        // ============================================================
+        async function fetchAstronautCount() {
+            try {
+                const response = await fetch('http://api.open-notify.org/astros.json');
+                const data = await response.json();
+                document.getElementById('astronaut-count').textContent = data.number || 0;
+            } catch (error) {
+                document.getElementById('astronaut-count').textContent = '❌';
+            }
+        }
+
+        // ============================================================
+        // MODAL
+        // ============================================================
+        function openModal(type) {
+            const modal = document.getElementById('featureModal');
+            const title = document.getElementById('modalTitle');
+            const sub = document.getElementById('modalSub');
+            const body = document.getElementById('modalBody');
+            body.innerHTML = '';
+            modal.classList.add('show');
+
+            switch(type) {
+                case 'notification':
+                    title.innerHTML = '🛰️ Anlık Bildirim Merkezi';
+                    sub.textContent = 'Tüm gezegenlerden gelen talepler';
+                    let notifHtml = '';
+                    if (requests.length === 0) {
+                        notifHtml = '<p style="color:var(--text-secondary);">Henüz bildirim yok.</p>';
+                    } else {
+                        requests.slice(0, 8).forEach(r => {
+                            const badgeClass = r.urgency === 'Kritik' ? 'badge-critical' : r.urgency === 'Yüksek' ? 'badge-critical' : r.urgency === 'Orta' ? 'badge-medium' : 'badge-green';
+                            notifHtml += `
+                                <div class="modal-item">
+                                    <div class="left">
+                                        <div class="label">${r.planet} - ${r.base}</div>
+                                        <div class="value">${r.title}</div>
+                                        <div style="font-size:12px;color:var(--text-secondary);">${r.time}</div>
+                                    </div>
+                                    <span class="badge ${badgeClass}">${r.urgency}</span>
+                                </div>
+                            `;
+                        });
+                    }
+                    body.innerHTML = notifHtml;
+                    break;
+                case 'fleet':
+                    title.innerHTML = '🚌 Galaxy Otobüsü Filosu';
+                    sub.textContent = 'Aktif otobüsler ve rotalar';
+                    const busCount = Math.max(4, Math.floor(requests.length * 0.4) + 4);
+                    let fleetHtml = '';
+                    const planets = ['Mars', 'Titan', 'Europa', 'Dünya', 'Ay'];
+                    const cargos = ['🆘 Oksijen', '🍲 Gıda', '🔧 Yedek Parça', '📚 Eğitim', '🔋 Enerji'];
+                    for (let i = 1; i <= busCount; i++) {
+                        const p1 = planets[Math.floor(Math.random() * planets.length)];
+                        let p2 = planets[Math.floor(Math.random() * planets.length)];
+                        while (p2 === p1) p2 = planets[Math.floor(Math.random() * planets.length)];
+                        const prog = Math.floor(Math.random() * 60 + 20);
+                        fleetHtml += `
+                            <div class="modal-item">
+                                <div class="left">
+                                    <div class="label">🚀 GALAXY-${i}</div>
+                                    <div class="value">${p1} → ${p2}</div>
+                                    <div style="font-size:12px;color:var(--text-secondary);">${cargos[i % cargos.length]} • %${prog}</div>
+                                </div>
+                                <span class="badge badge-cyan">%${prog}</span>
+                            </div>
+                        `;
+                    }
+                    body.innerHTML = fleetHtml;
+                    break;
+                case 'ai':
+                    title.innerHTML = '🧠 Gemini AI Raporu';
+                    sub.textContent = 'Google Gemini ile aciliyet analizi';
+                    const total = requests.length;
+                    const critical = requests.filter(r => r.urgency === 'Kritik' || r.urgency === 'Yüksek').length;
+                    const solved = requests.filter(r => r.status === 'Tamamlandı' || r.status === 'Çözüldü').length;
+                    const pending = total - solved;
+                    const aiHtml = `
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                            <div style="background:rgba(10,18,34,0.4);padding:14px;border-radius:16px;text-align:center;">
+                                <div style="font-size:12px;color:var(--text-secondary);">Toplam</div>
+                                <div style="font-size:28px;font-weight:700;color:var(--accent-cyan);">${total}</div>
+                            </div>
+                            <div style="background:rgba(10,18,34,0.4);padding:14px;border-radius:16px;text-align:center;">
+                                <div style="font-size:12px;color:var(--text-secondary);">Acil</div>
+                                <div style="font-size:28px;font-weight:700;color:var(--accent-red);">${critical}</div>
+                            </div>
+                            <div style="background:rgba(10,18,34,0.4);padding:14px;border-radius:16px;text-align:center;">
+                                <div style="font-size:12px;color:var(--text-secondary);">Çözülen</div>
+                                <div style="font-size:28px;font-weight:700;color:var(--accent-green);">${solved}</div>
+                            </div>
+                            <div style="background:rgba(10,18,34,0.4);padding:14px;border-radius:16px;text-align:center;">
+                                <div style="font-size:12px;color:var(--text-secondary);">Bekleyen</div>
+                                <div style="font-size:28px;font-weight:700;color:var(--accent-orange);">${pending}</div>
+                            </div>
+                        </div>
+                        <div style="background:rgba(10,18,34,0.3);padding:16px;border-radius:16px;border-left:3px solid var(--accent-cyan);">
+                            <div style="font-weight:600;color:var(--accent-cyan);">📊 Gemini Öncelik</div>
+                            <div style="font-size:14px;color:var(--text-secondary);margin-top:6px;">
+                                ${critical > 0 ? '🔴 ' + critical + ' acil talep öncelikli.' : '🟢 Acil durum yok.'}
+                                <br>${solved > 0 ? '✅ ' + solved + ' talep çözüldü.' : ''}
+                                <br>${pending > 0 ? '⏳ ' + pending + ' talep sırada.' : ''}
+                            </div>
+                        </div>
+                    `;
+                    body.innerHTML = aiHtml;
+                    break;
+                case 'network':
+                    title.innerHTML = '🌍 Gezegenler Arası Ağ';
+                    sub.textContent = 'Bağlantı kalitesi';
+                    const networks = [
+                        { name: 'Dünya', status: '🟢 Bağlı', ping: '12ms' },
+                        { name: 'Mars', status: '🟢 Bağlı', ping: '8ms' },
+                        { name: 'Titan', status: '🟢 Bağlı', ping: '24ms' },
+                        { name: 'Europa', status: '🟡 Orta', ping: '45ms' },
+                        { name: 'Ay', status: '🟢 Bağlı', ping: '6ms' },
+                    ];
+                    let netHtml = '';
+                    networks.forEach(n => {
+                        const badgeClass = n.status.includes('🟢') ? 'badge-green' : 'badge-medium';
+                        netHtml += `
+                            <div class="modal-item">
+                                <div class="left">
+                                    <div class="label">${n.name}</div>
+                                    <div class="value">${n.status}</div>
+                                </div>
+                                <span class="badge ${badgeClass}">${n.ping}</span>
+                            </div>
+                        `;
+                    });
+                    netHtml += `
+                        <div style="background:rgba(10,18,34,0.3);padding:14px;border-radius:16px;margin-top:10px;text-align:center;font-size:14px;color:var(--text-secondary);">
+                            🌐 5 gezegen bağlı • Ortalama gecikme: 19ms
+                        </div>
+                    `;
+                    body.innerHTML = netHtml;
+                    break;
+                default:
+                    body.innerHTML = '<p style="color:var(--text-secondary);">Bilgi yükleniyor...</p>';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('featureModal').classList.remove('show');
+        }
+        document.getElementById('featureModal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // ============================================================
+        // FIREBASE AUTH
+        // ============================================================
+        function updateUIForAuth() {
+            const authBtn = document.getElementById('auth-btn');
+            const userName = document.getElementById('user-name');
+            const warning = document.getElementById('comment-auth-warning');
+            const textarea = document.getElementById('comment-text');
+            const submitBtn = document.getElementById('comment-submit-btn');
+
+            if (currentUser) {
+                authBtn.textContent = 'Çıkış Yap';
+                authBtn.className = 'btn btn-outline';
+                userName.className = '';
+                userName.textContent = '👤 ' + currentUser;
+                if (warning) warning.style.display = 'none';
+                if (textarea) { textarea.disabled = false; textarea.placeholder = 'Düşüncelerini paylaş...'; }
+                if (submitBtn) submitBtn.disabled = false;
+            } else {
+                authBtn.textContent = 'Giriş Yap';
+                authBtn.className = 'btn btn-cyan';
+                userName.className = 'hidden';
+                if (warning) warning.style.display = 'block';
+                if (textarea) { textarea.disabled = true; textarea.placeholder = 'Yorum için giriş yapın.'; }
+                if (submitBtn) submitBtn.disabled = true;
+            }
+            renderComments();
+            updateDashboardMetrics();
+            refreshBuses();
+            updateMap();
+        }
+
+        function authAction() {
+            if (currentUser) {
+                auth.signOut().then(() => {
+                    currentUser = null;
+                    localStorage.removeItem('galaxybus_user');
+                    updateUIForAuth();
+                    showNotification('success', '👋 Çıkış yapıldı', 'Güvenle çıkış yaptınız.');
+                }).catch(err => {
+                    showNotification('error', '❌ Hata', err.message);
+                });
+            } else {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider).then(result => {
+                    const user = result.user;
+                    currentUser = user.displayName || user.email || 'Kullanıcı';
+                    localStorage.setItem('galaxybus_user', currentUser);
+                    updateUIForAuth();
+                    showNotification('success', '🎉 Hoş geldin', `${currentUser} olarak giriş yaptınız.`);
+                }).catch(err => {
+                    showNotification('error', '❌ Giriş hatası', err.message);
+                });
+            }
+        }
+
+        // ============================================================
+        // YORUMLAR – FIRESTORE
+        // ============================================================
+        function addComment() {
+            if (!currentUser) {
+                showNotification('warning', '⚠️ Uyarı', 'Önce giriş yapın.');
+                return;
+            }
+            const text = document.getElementById('comment-text').value.trim();
+            if (!text) {
+                showNotification('warning', '⚠️ Uyarı', 'Yorum boş olamaz.');
+                return;
+            }
+            db.collection('comments').add({
+                user: currentUser,
+                text: text,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById('comment-text').value = '';
+                showNotification('success', '💬 Yorum gönderildi', 'Yorumunuz paylaşıldı.');
+                renderComments();
+            }).catch(err => {
+                showNotification('error', '❌ Hata', err.message);
+            });
+        }
+
+        function renderComments() {
+            const list = document.getElementById('comment-list');
+            if (!list) return;
+            db.collection('comments').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                let html = '';
+                if (snapshot.empty) {
+                    html = '<p style="color:var(--text-secondary);">Henüz yorum yok. İlk yorumu sen yap!</p>';
+                } else {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const time = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Şimdi';
+                        html += `
+                            <div class="comment-item" data-id="${doc.id}">
+                                <div class="meta">
+                                    <span class="user">👤 ${data.user || 'Anonim'}</span>
+                                    <span>${time}</span>
+                                </div>
+                                <div class="text">${data.text}</div>
+                                <div class="actions">
+                                    ${currentUser && data.user === currentUser ? `<button onclick="deleteComment('${doc.id}')">🗑️ Sil</button>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                list.innerHTML = html;
+            }, err => {
+                list.innerHTML = '<p style="color:var(--text-secondary);">Yorumlar yüklenemedi.</p>';
+            });
+        }
+
+        function deleteComment(docId) {
+            if (!currentUser) return;
+            if (confirm('Bu yorumu sil?')) {
+                db.collection('comments').doc(docId).delete().then(() => {
+                    showNotification('info', '🗑️ Silindi', 'Yorum silindi.');
+                }).catch(err => {
+                    showNotification('error', '❌ Hata', err.message);
+                });
+            }
+        }
+
+        // ============================================================
+        // TALEPLER (AI skor sadece bilgi amaçlı, kullanıcı seçimi korunur)
+        // ============================================================
+        async function submitRequest(e) {
+            e.preventDefault();
+            const form = e.target;
+            const planet = form.querySelector('select:first-of-type').value;
+            const base = form.querySelector('input[type="text"]').value;
+            const category = form.querySelectorAll('select')[1].value;
+            const urgency = form.querySelectorAll('select')[2].value; // KULLANICININ SEÇİMİ
+            const title = form.querySelectorAll('input[type="text"]')[1].value;
+            const detail = form.querySelector('textarea').value;
+            if (!planet || !base || !category || !title || !detail) {
+                showNotification('error', '❌ Hata', 'Tüm alanları doldurun.');
+                return;
+            }
+
+            // Gemini AI ile analiz (sadece skor için)
+            const aiScore = await analyzeUrgency(title + ' ' + detail);
+
+            // !!! DEĞİŞİKLİK: Kullanıcının seçimi (urgency) KORUNUYOR, AI ezmiyor !!!
+            const newRequest = {
+                id: Date.now(),
+                planet, base, category,
+                urgency: urgency, // Kullanıcının seçimi
+                title, detail,
+                time: new Date().toLocaleString(),
+                status: urgency === 'Kritik' ? 'Kritik' : 'Bekliyor', // Status da kullanıcıya göre
+                aiScore: aiScore // AI skoru sadece bilgi olarak
+            };
+            requests.unshift(newRequest);
+            setData('galaxybus_requests', requests);
+            form.reset();
+            showPage('dashboard');
+            updateDashboardMetrics();
+            refreshBuses();
+            updateMap();
+            setTimeout(() => refreshAlerts(), 500);
+            showNotification('success', '🚀 Talep gönderildi', `AI skor: ${aiScore}/10 (Sizin seçiminiz: ${urgency})`);
+        }
+
+        function renderRequests() {
+            const list = document.getElementById('requestList');
+            if (!list) return;
+            if (requests.length === 0) {
+                list.innerHTML = '<p style="color:var(--text-secondary);">Henüz talep yok.</p>';
+                return;
+            }
+            const statusMap = { 'Kritik': 'red', 'Yüksek': 'red', 'Orta': '', 'Düşük': 'green' };
+            list.innerHTML = requests.slice(0, 10).map(r => `
+                <div class="request-item" style="border-left-color: ${r.urgency === 'Kritik' ? 'var(--accent-red)' : r.urgency === 'Yüksek' ? 'var(--accent-red)' : r.urgency === 'Orta' ? 'var(--accent-orange)' : 'var(--accent-green)'};">
+                    <div class="top"><span>${r.planet} - ${r.base}</span><span class="badge ${statusMap[r.urgency] || ''}">${r.urgency}</span></div>
+                    <div class="title">${r.title}</div>
+                    <div style="font-size:12px;color:var(--text-secondary);">${r.time} • AI: ${r.aiScore || '?'}/10</div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================================
+        // METRİKLER
+        // ============================================================
+        function updateDashboardMetrics() {
+            const total = requests.length;
+            const pending = requests.filter(r => r.status !== 'Tamamlandı' && r.status !== 'Çözüldü').length;
+            const delivered = requests.filter(r => r.status === 'Tamamlandı' || r.status === 'Çözüldü').length;
+            const buses = Math.max(3, Math.floor(total * 0.5) + 2);
+            document.getElementById('dash-buses').textContent = Math.min(buses, 8);
+            document.getElementById('dash-pending').textContent = pending;
+            document.getElementById('dash-delivered').textContent = delivered;
+            document.getElementById('stat-ships').textContent = Math.min(buses, 8);
+            document.getElementById('stat-requests').textContent = (total * 2 + 100).toLocaleString();
+            const changeEl = document.getElementById('delivery-change');
+            if (changeEl) {
+                const pct = total > 0 ? Math.round((delivered / total) * 100) : 0;
+                changeEl.textContent = `+%${pct}`;
+            }
+            renderRequests();
+        }
+
+        // ============================================================
+        // DİNAMİK OTOBÜS
+        // ============================================================
+        let busPositions = [];
+
+        function refreshBuses() {
+            const container = document.getElementById('mapContainer');
+            if (!container) return;
+            const oldWrapper = document.getElementById('dynamicObjects');
+            if (oldWrapper) oldWrapper.remove();
+            const wrapper = document.createElement('div');
+            wrapper.id = 'dynamicObjects';
+            wrapper.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+
+            const busCount = Math.max(3, Math.floor(requests.length * 0.5) + 2);
+            const finalCount = Math.min(busCount, 8);
+
+            busPositions = [];
+            for (let i = 0; i < finalCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = 15 + Math.random() * 35;
+                const cx = 50, cy = 45;
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                busPositions.push({
+                    x, y, angle,
+                    speed: 0.015 + Math.random() * 0.045,
+                    radius, cx, cy
+                });
+            }
+
+            busPositions.forEach((pos, i) => {
+                const bus = document.createElement('div');
+                bus.className = 'bus-marker';
+                bus.textContent = '🚌';
+                bus.style.left = pos.x + '%';
+                bus.style.top = pos.y + '%';
+                bus.style.animationDelay = (i * 0.3) + 's';
+                wrapper.appendChild(bus);
+            });
+
+            const alertPositions = [
+                { x: 30, y: 28, type: 'critical' },
+                { x: 62, y: 48, type: 'medium' },
+                { x: 18, y: 42, type: 'solved' },
+                { x: 75, y: 70, type: 'critical' },
+                { x: 45, y: 65, type: 'medium' },
+                { x: 85, y: 25, type: 'solved' }
+            ];
+            alertPositions.forEach(pos => {
+                const pin = document.createElement('div');
+                pin.className = 'alert-pin ' + pos.type;
+                pin.style.left = pos.x + '%';
+                pin.style.top = pos.y + '%';
+                wrapper.appendChild(pin);
+            });
+
+            container.appendChild(wrapper);
+        }
+
+        function updateMap() {
+            const wrapper = document.getElementById('dynamicObjects');
+            if (!wrapper) return;
+            const buses = wrapper.querySelectorAll('.bus-marker');
+            busPositions.forEach((pos, i) => {
+                if (buses[i]) {
+                    pos.angle += pos.speed;
+                    const x = pos.cx + pos.radius * Math.cos(pos.angle);
+                    const y = pos.cy + pos.radius * Math.sin(pos.angle);
+                    buses[i].style.left = x + '%';
+                    buses[i].style.top = y + '%';
+                    pos.x = x;
+                    pos.y = y;
+                }
+            });
+        }
+
+        function refreshAlerts() {
+            const wrapper = document.getElementById('dynamicObjects');
+            if (!wrapper) return;
+            const oldPins = wrapper.querySelectorAll('.alert-pin');
+            oldPins.forEach(p => p.remove());
+            const count = Math.min(6, Math.max(3, Math.floor(requests.length * 0.5) + 2));
+            const types = ['critical', 'medium', 'solved'];
+            for (let i = 0; i < count; i++) {
+                const type = types[Math.floor(Math.random() * types.length)];
+                const pin = document.createElement('div');
+                pin.className = 'alert-pin ' + type;
+                pin.style.left = (8 + Math.random() * 84) + '%';
+                pin.style.top = (8 + Math.random() * 84) + '%';
+                wrapper.appendChild(pin);
+            }
+        }
+
+        // ============================================================
+        // OTOBÜS TAKİP
+        // ============================================================
+        const TOTAL_SECONDS = 7200;
+        let progressVal = 21;
+        let progressSpeed = 0.8;
+
+        const stageData = [
+            { label: 'Mars-Alpha Üssü (Kalkış)', threshold: 0 },
+            { label: 'Asteroit Kuşağı Geçişi', threshold: 25 },
+            { label: 'Lagrange Noktası L4', threshold: 55 },
+            { label: 'Dünya Yörüngesi Giriş', threshold: 80 },
+            { label: 'Dünya-Merkez (Varış)', threshold: 100 }
+        ];
+
+        function updateTracking() {
+            const bar = document.getElementById('tracking-progress');
+            const text = document.getElementById('progress-text');
+            const eta = document.getElementById('eta-display');
+            const speedEl = document.getElementById('speed-display');
+            const timeline = document.getElementById('timelineContainer');
+
+            if (!bar) return;
+
+            progressVal += progressSpeed + (Math.random() * 0.3 - 0.1);
+            if (progressVal > 99.5) progressVal = 5;
+            bar.style.width = Math.min(progressVal, 100) + '%';
+            if (text) text.textContent = '%' + Math.floor(progressVal);
+
+            const remainingPercent = Math.max(0, 100 - progressVal);
+            const remainingSeconds = (remainingPercent / 100) * TOTAL_SECONDS;
+            const mins = Math.floor(remainingSeconds / 60);
+            const secs = Math.floor(remainingSeconds % 60);
+            if (eta) eta.textContent = `${mins} Dakika ${secs} Saniye`;
+
+            if (speedEl) {
+                const speed = 0.6 + (progressVal / 100) * 0.4;
+                speedEl.textContent = speed.toFixed(2) + 'c';
+            }
+
+            if (timeline) {
+                let html = '';
+                stageData.forEach((stage, idx) => {
+                    const isDone = progressVal >= stage.threshold;
+                    const isActive = !isDone && (idx === 0 || progressVal >= stageData[idx-1]?.threshold);
+                    let dotClass = 'dot';
+                    if (isDone) dotClass += ' done';
+                    else if (isActive) dotClass += ' active';
+
+                    const stageSeconds = (stage.threshold / 100) * TOTAL_SECONDS;
+                    const mins2 = Math.floor(stageSeconds / 60);
+                    const secs2 = Math.floor(stageSeconds % 60);
+                    const timeStr = mins2 > 0 ? `+${mins2}dk ${secs2}s` : `+${secs2}s`;
+
+                    html += `
+                        <div class="timeline-item">
+                            <div class="${dotClass}"></div>
+                            <div class="info">
+                                <div class="loc">${stage.label}</div>
+                                <div class="time">${timeStr}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                timeline.innerHTML = html;
+            }
+        }
+
+        // ============================================================
+        // SAYFA GEZİNME
+        // ============================================================
+        const navButtons = document.querySelectorAll('.nav-links button');
+        const pages = {
+            home: document.getElementById('page-home'),
+            dashboard: document.getElementById('page-dashboard'),
+            request: document.getElementById('page-request'),
+            tracking: document.getElementById('page-tracking'),
+            community: document.getElementById('page-community')
+        };
+
+        function showPage(pageId) {
+            Object.values(pages).forEach(p => p.classList.remove('active'));
+            navButtons.forEach(b => b.classList.remove('active'));
+            if (pages[pageId]) {
+                pages[pageId].classList.add('active');
+                navButtons.forEach(b => { if (b.dataset.page === pageId) b.classList.add('active'); });
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pageId === 'dashboard') { updateDashboardMetrics(); updateMap(); fetchAstronautCount(); }
+            if (pageId === 'community') renderComments();
+            if (pageId === 'tracking') updateTracking();
+        }
+
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => showPage(btn.dataset.page));
+        });
+
+        // ============================================================
+        // TEMA
+        // ============================================================
+        const themeBtns = document.querySelectorAll('.planet-selector button');
+        themeBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                themeBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const theme = btn.dataset.theme;
+                document.body.className = 'theme-' + theme;
+                if (theme === 'default') document.body.className = '';
+            });
+        });
+
+        // ============================================================
+        // ACİL & SALDIRI
+        // ============================================================
+        function triggerEmergency() {
+            showNotification('error', '🆘 ACİL DURUM', 'Tüm Galaxy Otobüsleri güvenli limanlara yönlendiriliyor.');
+            document.body.style.backgroundColor = '#ff220022';
+            setTimeout(() => document.body.style.backgroundColor = '', 500);
+        }
+
+        function simulateAttack() {
+            showNotification('error', '🔴 SALDIRI TESPİT EDİLDİ', 'DDoS saldırısı algılandı. Savunma aktif.');
+            document.body.style.backgroundColor = '#ff220044';
+            setTimeout(() => {
+                document.body.style.backgroundColor = '';
+                showNotification('success', '✅ Sistem Güvende', 'Saldırı püskürtüldü.');
+            }, 1200);
+        }
+
+        // ============================================================
+        // YILDIZLAR
+        // ============================================================
+        const canvas = document.getElementById('stars-canvas');
+        for (let i = 0; i < 150; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            let size = Math.random() * 4 + 0.5;
+            star.style.cssText = `
+                width:${size}px; height:${size}px;
+                top:${Math.random()*100}%; left:${Math.random()*100}%;
+                --dur:${Math.random()*3+1}s;
+                animation-delay:${Math.random()*5}s;
+                opacity:${Math.random()*0.7+0.2};
+            `;
+            canvas.appendChild(star);
+        }
+
+        // ============================================================
+        // PERİYODİK
+        // ============================================================
+        setInterval(() => {
+            if (document.getElementById('page-dashboard').classList.contains('active')) {
+                updateMap();
+                fetchAstronautCount();
+            }
+            if (document.getElementById('page-tracking').classList.contains('active')) {
+                updateTracking();
+            }
+        }, 1000);
+
+        setInterval(() => {
+            if (document.getElementById('page-dashboard').classList.contains('active')) {
+                refreshAlerts();
+                updateDashboardMetrics();
+            }
+        }, 12000);
+
+        // ============================================================
+        // BAŞLAT
+        // ============================================================
+        refreshBuses();
+        updateUIForAuth();
+        updateDashboardMetrics();
+        updateTracking();
+        fetchAstronautCount();
+        showPage('home');
+        console.log('🚀 GALAXY BUS – Gemini AI entegre edildi, SVG logo eklendi.');
+    </script>
+</body>
+</html>
