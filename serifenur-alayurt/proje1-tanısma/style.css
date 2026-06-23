@@ -1,0 +1,47 @@
+body {
+    background-color: #f0f0f0; 
+    font-family: Arial, sans-serif;
+    margin: 50px auto; 
+    width: 400px;
+}
+.Kişi.Profili {
+    background-color: rgb(233, 222, 0);
+    border: 2px solid #cccccc; 
+    padding: 20px;
+    text-align: center; 
+}
+.picture img {
+    border-radius: 10px; 
+    margin-bottom: 15px;
+    
+}
+.isim {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 5px;
+}
+
+.department {
+    font-size: 16px;
+    color: rgb(130, 65, 132); 
+    margin-bottom: 15px;
+}
+
+.pi {
+    border-top: 1px dashed #999999; 
+    padding-top: 15px;
+    text-align: left; 
+}
+
+.pi h3 {
+    font-size: 14px;
+    color: #000000;
+    margin-top: 15px;
+}
+.picture img {
+    width: 150px;       
+    height: 150px;       
+    object-fit: cover; 
+    border-radius: 50%;  
+}
