@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NEURA COLONY · Canlı Komuta Merkezi</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* Tüm stiller aynen */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --bg-primary: #0b0e1a;
+            --bg-secondary: #11162b;
+            --bg-card: rgba(17, 22, 43, 0.8);
+            --text-primary: #e8f0ff;
+            --text-secondary: #94a3c8;
+            --accent-cyan: #00d4ff;
+            --accent-blue: #4a7cff;
+            --accent-green: #34d399;
+            --accent-yellow: #fbbf24;
+            --accent-red: #f87171;
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-cyan);
+            border-radius: 10px;
+        }
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-col {
+            flex-direction: column;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .gap-4 {
+            gap: 16px;
+        }
+        .gap-6 {
+            gap: 24px;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .relative {
+            position: relative;
+        }
+        .glow-text {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            border: none;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid rgba(0, 212, 255, 0.3);
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.08);
+        }
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.75rem;
+        }
+        .btn-danger {
+            background: rgba(248, 113, 113, 0.15);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            color: var(--accent-red);
+            padding: 6px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-danger:hover {
+            background: rgba(248, 113, 113, 0.25);
+        }
+        .btn-health {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--accent-cyan);
+            padding: 4px 14px;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 6px;
+            display: inline-block;
+        }
+        .btn-health:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        /* Nav */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 0;
+            background: rgba(11, 14, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.05);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+        .nav-logo img {
+            height: 34px;
+            width: auto;
+            border-radius: 8px;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+        }
+
+        /* Hero */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: 80px;
+            overflow: hidden;
+        }
+        #hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            font-size: 3.6rem;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-sub {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 16px 0 28px;
+        }
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(0, 212, 255, 0.06);
+        }
+        .hero-stats .stat .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .hero-stats .stat .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .hero-3d-wrapper {
+            position: relative;
+            height: 460px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #0f1a3a 0%, #070b16 100%);
+            border: 1px solid rgba(0, 212, 255, 0.06);
+        }
+        .hero-3d-wrapper canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        .hero-3d-overlay {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            right: 24px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+        }
+        .hero-3d-overlay .tag,
+        .hero-3d-overlay .live {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 6px 16px;
+            border-radius: 60px;
+            backdrop-filter: blur(8px);
+            font-size: 0.75rem;
+            border: 1px solid rgba(0, 212, 255, 0.06);
+        }
+        .hero-3d-overlay .live {
+            color: var(--accent-green);
+            border-color: rgba(52, 211, 153, 0.15);
+        }
+        .hero-3d-overlay .live .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+            margin-right: 6px;
+        }
+        @keyframes pulse-dot {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: scale(0.7);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-header .label {
+            display: inline-block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.06);
+            padding: 4px 18px;
+            border-radius: 60px;
+            border: 1px solid rgba(0, 212, 255, 0.06);
+            margin-bottom: 12px;
+        }
+        .section-header h2 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 8px auto 0;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 212, 255, 0.04);
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            transition: var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(0, 212, 255, 0.12);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.05);
+        }
+        .card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .card .card-header .title {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .card .card-header .icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 212, 255, 0.06);
+            color: var(--accent-cyan);
+        }
+
+        /* Dashboard */
+        #dashboard {
+            padding: 100px 0 80px;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr 300px;
+            gap: 24px;
+            align-items: start;
+        }
+        .dash-sidebar {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px 10px;
+            border: 1px solid rgba(0, 212, 255, 0.04);
+            position: sticky;
+            top: 100px;
+        }
+        .dash-sidebar .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .dash-sidebar .menu-item:hover {
+            background: rgba(0, 212, 255, 0.04);
+            color: var(--text-primary);
+        }
+        .dash-sidebar .menu-item.active {
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--accent-cyan);
+            border-left: 3px solid var(--accent-cyan);
+        }
+        .dash-sidebar .menu-item i {
+            width: 18px;
+            text-align: center;
+        }
+        .dash-sidebar .divider {
+            height: 1px;
+            background: rgba(0, 212, 255, 0.04);
+            margin: 8px 14px;
+        }
+
+        .dash-main {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .stat-mini {
+            background: var(--bg-card);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 212, 255, 0.04);
+        }
+        .stat-mini .num {
+            font-size: 1.8rem;
+            font-weight: 700;
+            transition: color 0.5s;
+        }
+        .stat-mini .lbl {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+
+        .map-3d-container {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 212, 255, 0.04);
+            overflow: hidden;
+            height: 280px;
+            position: relative;
+        }
+        .map-3d-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+        .map-3d-container .map-overlay {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            z-index: 2;
+        }
+        .map-3d-container .map-overlay .title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .map-3d-container .map-overlay .sub {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .dash-nav-btn {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            transition: var(--transition);
+            pointer-events: auto;
+        }
+        .dash-nav-btn:hover {
+            background: rgba(0, 212, 255, 0.3);
+        }
+
+        .dash-right {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .dash-right .info-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px;
+            border: 1px solid rgba(0, 212, 255, 0.04);
+        }
+        .dash-right .info-card .label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+        .dash-right .info-card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin: 2px 0;
+        }
+        .threat-badge {
+            display: inline-block;
+            padding: 3px 14px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            margin-top: 4px;
+        }
+        .threat-badge.low {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(52, 211, 153, 0.1);
+        }
+        .threat-badge.med {
+            background: rgba(251, 191, 36, 0.12);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+        }
+        .threat-badge.high {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-red);
+            border: 1px solid rgba(248, 113, 113, 0.1);
+        }
+
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .toggle-wrap:last-child {
+            border-bottom: none;
+        }
+        .toggle {
+            width: 40px;
+            height: 22px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 60px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+        .toggle.active {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+        }
+        .toggle .thumb {
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: var(--transition);
+        }
+        .toggle.active .thumb {
+            left: 21px;
+        }
+
+        /* Colony Grid */
+        .colony-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .colony-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.04);
+            transition: var(--transition);
+        }
+        .colony-card:hover {
+            border-color: rgba(0, 212, 255, 0.12);
+            transform: translateY(-4px);
+        }
+        @keyframes shakeColony {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            50% { transform: translateX(4px); }
+            75% { transform: translateX(-4px); }
+            100% { transform: translateX(0); }
+        }
+        .shake-danger {
+            animation: shakeColony 0.4s infinite;
+            border-color: rgba(248, 113, 113, 0.6) !important;
+            box-shadow: 0 0 15px rgba(248, 113, 113, 0.2);
+        }
+
+        .colony-card .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        .colony-card .name {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .colony-card .status {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            padding: 2px 12px;
+            border-radius: 60px;
+            font-weight: 600;
+        }
+        .status-healthy {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-green);
+            border: 1px solid rgba(52, 211, 153, 0.1);
+        }
+        .status-warning {
+            background: rgba(251, 191, 36, 0.12);
+            color: var(--accent-yellow);
+            border: 1px solid rgba(251, 191, 36, 0.1);
+        }
+        .status-danger {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-red);
+            border: 1px solid rgba(248, 113, 113, 0.1);
+        }
+        .colony-card .stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .colony-card .stats .item .val {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .colony-card .stats .item .lbl {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .colony-card .bar {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .colony-card .bar .fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s ease;
+        }
+        .fill-cyan {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+        }
+        .fill-yellow {
+            background: linear-gradient(90deg, var(--accent-yellow), #fcd34d);
+        }
+        .fill-red {
+            background: linear-gradient(90deg, var(--accent-red), #fca5a5);
+        }
+        .fill-green {
+            background: linear-gradient(90deg, var(--accent-green), #6ee7b7);
+        }
+        .colony-card .dna {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* Risk */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--accent-cyan);
+            margin-bottom: 6px;
+            transition: var(--transition);
+        }
+        .risk-item:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+        .risk-item .label {
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .risk-item .pct {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .risk-item .pct.low {
+            color: var(--accent-green);
+        }
+        .risk-item .pct.med {
+            color: var(--accent-yellow);
+        }
+        .risk-item .pct.high {
+            color: var(--accent-red);
+        }
+
+        /* Health */
+        .health-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .health-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.04);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .health-card:hover {
+            border-color: rgba(0, 212, 255, 0.1);
+        }
+        .health-card .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+        .health-card .name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .health-card .role {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .health-card .stress {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+        .health-card .stress .val {
+            font-weight: 700;
+        }
+        .health-card .stress .val.good {
+            color: var(--accent-green);
+        }
+        .health-card .stress .val.warn {
+            color: var(--accent-yellow);
+        }
+        .health-card .stress .val.danger {
+            color: var(--accent-red);
+        }
+        .health-card .meta {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        /* Emergency */
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .emergency-card {
+            background: rgba(248, 113, 113, 0.04);
+            border: 1px solid rgba(248, 113, 113, 0.1);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            transition: var(--transition);
+        }
+        .emergency-card:hover {
+            background: rgba(248, 113, 113, 0.08);
+        }
+        .emergency-card .badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            padding: 2px 10px;
+            border-radius: 60px;
+            font-weight: 600;
+        }
+        .badge-critical {
+            background: rgba(248, 113, 113, 0.15);
+            color: var(--accent-red);
+        }
+        .badge-urgent {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        /* Market */
+        .market-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .trade-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.5s ease;
+        }
+        .trade-item.updated {
+            background: rgba(0, 212, 255, 0.15);
+        }
+        .trade-item .from {
+            font-weight: 500;
+            font-size: 0.85rem;
+            flex: 1;
+        }
+        .trade-item .to {
+            color: var(--accent-cyan);
+            font-size: 0.85rem;
+            flex: 1;
+            text-align: center;
+        }
+        .trade-item .price {
+            font-weight: 600;
+            color: var(--accent-green);
+            font-size: 0.85rem;
+            flex: 1;
+            text-align: right;
+        }
+
+        /* Simulator */
+        .sim-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 16px;
+        }
+        .sim-controls button {
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            color: var(--text-primary);
+            padding: 8px 20px;
+            border-radius: 60px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .sim-controls button:hover {
+            background: rgba(0, 212, 255, 0.12);
+        }
+        .sim-controls .planet-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            min-width: 140px;
+            text-align: center;
+        }
+        .sim-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .sim-stat {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+        }
+        .sim-stat .num {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .sim-stat .lbl {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        /* AI Avatar */
+        .ai-avatar {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .ai-avatar .avatar-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #fff;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            transition: var(--transition);
+        }
+        .ai-avatar .avatar-circle:hover {
+            transform: scale(1.05);
+        }
+        .ai-avatar .speech-bubble {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            max-width: 260px;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            display: none;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+        }
+        .ai-avatar .speech-bubble.show {
+            display: block;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 28px;
+            max-width: 480px;
+            width: 90%;
+            border: 1px solid rgba(0, 212, 255, 0.08);
+            position: relative;
+        }
+        .modal-content .close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .modal-content .close:hover {
+            color: var(--text-primary);
+        }
+
+        .detailed-modal-content {
+            background: #13172c !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            max-width: 500px !important;
+        }
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+        .micro-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            margin-bottom: 2px;
+        }
+        .detailed-modal-content .bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .detailed-modal-content .fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        /* Alert Banner */
+        .alert-banner {
+            display: none;
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            color: var(--accent-red);
+            font-weight: 500;
+            font-size: 0.9rem;
+            align-items: center;
+            gap: 12px;
+        }
+        .alert-banner.show {
+            display: flex;
+        }
+        .alert-banner i {
+            font-size: 1.2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .dash-sidebar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+                position: relative;
+                top: 0;
+                padding: 12px;
+                overflow-x: auto;
+            }
+            .dash-sidebar .menu-item {
+                padding: 6px 14px;
+                font-size: 0.75rem;
+                white-space: nowrap;
+            }
+            .dash-sidebar .divider {
+                display: none;
+            }
+            .dash-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 992px) {
+            #hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-sub {
+                margin: 16px auto 28px;
+            }
+            .hero-actions {
+                justify-content: center;
+            }
+            .hero-stats {
+                justify-content: center;
+            }
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            .hero-3d-wrapper {
+                height: 280px;
+            }
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .risk-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .dash-right {
+                grid-template-columns: 1fr;
+            }
+            .market-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 16px;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 20px;
+                justify-content: center;
+            }
+            .hero-3d-wrapper {
+                height: 200px;
+            }
+            .nav-links {
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 68px;
+                left: 16px;
+                right: 16px;
+                background: var(--bg-secondary);
+                padding: 20px;
+                border-radius: var(--radius);
+                border: 1px solid rgba(0, 212, 255, 0.06);
+                gap: 12px;
+            }
+            .mobile-toggle {
+                display: block;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .colony-grid {
+                grid-template-columns: 1fr;
+            }
+            .health-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+            .sim-stats {
+                grid-template-columns: 1fr;
+            }
+            .sim-controls {
+                flex-wrap: wrap;
+            }
+            .dash-right {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-container {
+            height: 150px;
+            margin-top: 8px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: bounce 2s infinite;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        @keyframes bounce {
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(8px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-logo">
+                <!-- Yıldız yerine resim -->
+                <img src="image.png" alt="NEURA COLONY" style="height: 98px; width: auto; border-radius: 8px;" />
+                <span>NEURA COLONY</span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#dashboard">Gösterge Paneli</a></li>
+                <li><a href="#colonies">Koloniler</a></li>
+                <li><a href="#risks">Risk Merkezi</a></li>
+                <li><a href="#health">Sağlık</a></li>
+                <li><a href="#market">Pazar</a></li>
+                <li><a href="#simulator">Simülatör</a></li>
+                <li><a href="#" class="btn-primary btn-sm" id="demoRequestBtn">Demo Talep Et</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div id="hero-canvas"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Uzayda İnsan<br />
+                    <span class="highlight">Uygarlığı için</span><br />
+                    AI İşletim Sistemi
+                </h1>
+                <p class="hero-sub">Tek Koloni. Tek Zeka. NEURA COLONY tüm sistemleri canlı olarak yönetir.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary" id="exploreDashBtn"><i class="fas fa-rocket"></i> Keşfet</button>
+                    <button class="btn-outline" id="watchDemoBtn"><i class="fas fa-play-circle"></i> Demo</button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat"><span class="num" id="statColonies">148</span><span class="label">Koloniler</span></div>
+                    <div class="stat"><span class="num" id="statPopulation">54.2M</span><span class="label">Nüfus</span></div>
+                    <div class="stat"><span class="num" id="statThreats">18.423</span><span class="label">Önlenen Tehdit</span></div>
+                </div>
+            </div>
+            <div class="hero-3d-wrapper">
+                <canvas id="heroThreeCanvas"></canvas>
+                <div class="hero-3d-overlay">
+                    <span class="tag" id="heroTagText"><i class="fas fa-satellite"></i> Mars Alpha · Gerçek Zamanlı</span>
+                    <span class="live"><span class="dot"></span> CANLI · <span id="livePopulation">41.228</span> kolonist</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator"><span>Kaydır</span><i class="fas fa-chevron-down"></i></div>
+    </section>
+
+    <section id="dashboard">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-cubes"></i> Komuta Merkezi</span>
+                <h2>NEURA <span class="glow-text">Gösterge Paneli</span></h2>
+                <p>Tüm koloni sistemlerinin gerçek zamanlı durumu.</p>
+            </div>
+            <div class="dashboard-grid">
+                <aside class="dash-sidebar">
+                    <a href="#" class="menu-item active" data-target="overview"><i class="fas fa-th-large"></i> Genel Bakış</a>
+                    <a href="#" class="menu-item" data-target="energy"><i class="fas fa-bolt"></i> Enerji</a>
+                    <a href="#" class="menu-item" data-target="resources"><i class="fas fa-droplet"></i> Kaynaklar</a>
+                    <a href="#" class="menu-item" data-target="health"><i class="fas fa-heartbeat"></i> Sağlık</a>
+                    <a href="#" class="menu-item" data-target="security"><i class="fas fa-shield-alt"></i> Güvenlik</a>
+                    <a href="#" class="menu-item" data-target="colonies"><i class="fas fa-globe-americas"></i> Koloniler</a>
+                    <div class="divider"></div>
+                    <a href="#" class="menu-item" data-target="aisettings"><i class="fas fa-robot"></i> AI Ayarları</a>
+                    <a href="#" class="menu-item" data-target="predictive"><i class="fas fa-chart-line"></i> Tahmine Dayalı AI</a>
+                </aside>
+
+                <div class="dash-main">
+                    <div class="stats-row">
+                        <div class="stat-mini"><div class="num" id="energyVal" style="color:var(--accent-cyan);">78%</div><div class="lbl">Enerji</div></div>
+                        <div class="stat-mini"><div class="num" id="waterVal" style="color:var(--accent-green);">92%</div><div class="lbl">Su</div></div>
+                        <div class="stat-mini"><div class="num" id="foodVal" style="color:var(--accent-yellow);">81%</div><div class="lbl">Gıda</div></div>
+                        <div class="stat-mini"><div class="num" id="populationVal" style="color:var(--accent-purple);">412K</div><div class="lbl">Nüfus</div></div>
+                    </div>
+
+                    <div class="map-3d-container">
+                        <canvas id="mapThreeCanvas"></canvas>
+                        <div class="map-overlay" style="pointer-events: auto;">
+                            <div style="display:flex; align-items:center;">
+                                <button class="dash-nav-btn" id="dashPrevBtn"><i class="fas fa-chevron-left"></i></button>
+                                <div class="title" id="dashMapTitle">🌍 Mars Alpha Üssü</div>
+                                <button class="dash-nav-btn" id="dashNextBtn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="sub">Detaylar için kubbeye tıkla</div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="title"><i class="fas fa-brain" style="color:var(--accent-cyan);margin-right:8px;"></i> AI Karar Akışı</span>
+                                <span class="icon"><i class="fas fa-clock"></i></span>
+                            </div>
+                            <div class="decision-feed" id="decisionFeed"></div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="title"><i class="fas fa-chart-line" style="color:var(--accent-cyan);margin-right:8px;"></i> 48 Saatlik Tahmin</span>
+                                <span class="icon"><i class="fas fa-robot"></i></span>
+                            </div>
+                            <div class="prediction-grid" id="predictionGrid"></div>
+                            <div style="margin-top:12px;font-size:0.8rem;color:var(--text-secondary);background:rgba(0,212,255,0.04);padding:8px 14px;border-radius:var(--radius-sm);" id="predictionRecommendation">
+                                <i class="fas fa-lightbulb" style="color:var(--accent-yellow);"></i> Öneri: Su Tesisi İnşa Et
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dash-right">
+                    <div class="info-card">
+                        <div class="label">Tehdit Seviyesi</div>
+                        <div class="value" id="threatLevel" style="color:var(--accent-green);">DÜŞÜK</div>
+                        <span class="threat-badge low" id="threatBadge"><i class="fas fa-check-circle"></i> Tüm sistemler normal</span>
+                        <div style="margin-top:8px;font-size:0.75rem;color:var(--text-secondary);"><i class="fas fa-clock"></i> Son tarama: <span id="lastScan">12s</span> önce</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">AI Tahmini</div>
+                        <div style="font-size:0.9rem;font-weight:500;margin:4px 0;" id="aiPredictionTitle">⚠️ Güneş paneli verimliliği düşüyor</div>
+                        <div style="font-size:0.75rem;color:var(--text-secondary);" id="aiPredictionDesc">48 saat içinde risk olasılığı <strong style="color:var(--accent-yellow);">%81</strong></div>
+                        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;" id="aiActions">
+                            <span style="font-size:0.65rem;background:rgba(0,212,255,0.06);padding:3px 12px;border-radius:60px;"><i class="fas fa-sync"></i> Otomatik aktarım</span>
+                            <span style="font-size:0.65rem;background:rgba(0,212,255,0.06);padding:3px 12px;border-radius:60px;"><i class="fas fa-bolt"></i> Yedek reaktör</span>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">AI Ayarları</div>
+                        <div class="toggle-wrap"><span style="font-size:0.8rem;">Tahmine Dayalı AI</span><div class="toggle active" onclick="this.classList.toggle('active')"><div class="thumb"></div></div></div>
+                        <div class="toggle-wrap"><span style="font-size:0.8rem;">Otomatik Düzeltme</span><div class="toggle active" onclick="this.classList.toggle('active')"><div class="thumb"></div></div></div>
+                        <div class="toggle-wrap"><span style="font-size:0.8rem;">Sağlık İzleme</span><div class="toggle active" onclick="this.classList.toggle('active')"><div class="thumb"></div></div></div>
+                    </div>
+                    <div class="info-card">
+                        <div class="label">Koloni DNA'sı · <span id="dnaPlanetName">Mars Alpha</span></div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                            <span style="font-size:0.65rem;background:rgba(0,212,255,0.06);padding:3px 10px;border-radius:60px;" id="dnaEnergy">Enerji %92</span>
+                            <span style="font-size:0.65rem;background:rgba(52,211,153,0.06);padding:3px 10px;border-radius:60px;" id="dnaHealth">Sağlık %81</span>
+                            <span style="font-size:0.65rem;background:rgba(251,191,36,0.06);padding:3px 10px;border-radius:60px;" id="dnaSecurity">Güvenlik %95</span>
+                            <span style="font-size:0.65rem;background:rgba(139,92,246,0.06);padding:3px 10px;border-radius:60px;" id="dnaHappiness">Mutluluk %88</span>
+                        </div>
+                        <div style="font-size:0.7rem;color:var(--accent-cyan);margin-top:4px;" id="dnaType">KENDİNE YETERLİ · Nüfus artır</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="colonies">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-globe-americas"></i> Koloniler</span>
+                <h2>Yönetilen <span class="glow-text">Üsler</span></h2>
+                <p>Canlı koloni durumları.</p>
+            </div>
+            <div class="colony-grid" id="colonyGrid"></div>
+        </div>
+    </section>
+
+    <section id="risks">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-shield-alt"></i> Güvenlik</span>
+                <h2>AI Risk <span class="glow-text">Merkezi</span></h2>
+                <p>Gerçek zamanlı tehdit algılama.</p>
+            </div>
+            <div id="alertBanner" class="alert-banner"><i class="fas fa-exclamation-triangle"></i> <span id="alertText">Uyarı: Yangın riski %70'i aştı!</span></div>
+            <div class="risk-grid">
+                <div class="card">
+                    <div class="card-header"><span class="title">🛡️ Aktif Tehditler</span><span class="icon"><i class="fas fa-bolt" style="color:var(--accent-red);"></i></span></div>
+                    <div id="riskDetail"></div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="title">📊 Tehdit Dağılımı</span><span class="icon"><i class="fas fa-chart-pie"></i></span></div>
+                    <div style="height:180px;"><canvas id="riskChart"></canvas></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="health">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-heartbeat"></i> Sağlık</span>
+                <h2>Yerleşimci <span class="glow-text">Sağlığı</span></h2>
+                <p>Biyometrik izleme ve psikolojik destek.</p>
+            </div>
+            <div class="health-grid" id="healthGrid"></div>
+            <div style="margin-top:32px;">
+                <div class="section-header" style="margin-bottom:20px;"><span class="label"><i class="fas fa-ambulance"></i> Acil Durum</span><h2 style="font-size:1.6rem;">Acil <span class="glow-text">Müdahale</span></h2></div>
+                <div class="emergency-grid" id="emergencyGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="market">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-coins"></i> NEURA Pazarı</span>
+                <h2>Gezegenler Arası <span class="glow-text">Ticaret</span></h2>
+                <p>AI güdümlü kaynak ticareti.</p>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="title">📈 Son İşlemler</span><span class="icon"><i class="fas fa-robot"></i></span></div>
+                <div class="market-grid" id="marketGrid"></div>
+                <div style="margin-top:12px;font-size:0.75rem;color:var(--text-secondary);text-align:right;"><i class="fas fa-check-circle" style="color:var(--accent-green);"></i> Tüm işlemler AI onaylı</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="simulator">
+        <div class="container">
+            <div class="section-header">
+                <span class="label"><i class="fas fa-project-diagram"></i> Uygarlık Simülatörü</span>
+                <h2>Gelecek <span class="glow-text">Projeksiyonları</span></h2>
+                <p>AI, önümüzdeki on yılı simüle eder.</p>
+            </div>
+            <div class="card">
+                <div class="card-header"><span class="title">📊 <span id="simPlanetName">Mars Alpha</span> · 10 Yıllık Görünüm</span><span class="icon"><i class="fas fa-chart-bar"></i></span></div>
+                <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;" id="simData">
+                    <div><div style="font-size:0.65rem;color:var(--text-secondary);">Mevcut Nüfus</div><div style="font-size:1.4rem;font-weight:700;" id="simCurrentPop">412.553</div></div>
+                    <div><div style="font-size:0.65rem;color:var(--text-secondary);">Projeksiyon (2035)</div><div style="font-size:1.4rem;font-weight:700;color:var(--accent-cyan);" id="simProjectedPop">1.2M</div></div>
+                    <div><div style="font-size:0.65rem;color:var(--text-secondary);">Gıda Talebi Artışı</div><div style="font-size:1.4rem;font-weight:700;color:var(--accent-yellow);" id="simFoodDemand">+41%</div></div>
+                    <div><div style="font-size:0.65rem;color:var(--text-secondary);">Enerji Talebi</div><div style="font-size:1.4rem;font-weight:700;color:var(--accent-red);" id="simEnergyDemand">+58%</div></div>
+                </div>
+                <div class="sim-stats" id="simStats">
+                    <div class="sim-stat"><div class="num" style="color:var(--accent-green);" id="simSolar">2</div><div class="lbl">Güneş Çiftliği</div></div>
+                    <div class="sim-stat"><div class="num" style="color:var(--accent-cyan);" id="simWaterReactor">1</div><div class="lbl">Su Reaktörü</div></div>
+                    <div class="sim-stat"><div class="num" style="color:var(--accent-yellow);" id="simDomes">3</div><div class="lbl">Tarım Kubbesi</div></div>
+                </div>
+                <div style="margin-top:12px;font-size:0.8rem;background:rgba(0,212,255,0.04);padding:10px 16px;border-radius:var(--radius-sm);" id="simRecommendation">
+                    <i class="fas fa-robot" style="color:var(--accent-cyan);"></i> AI Önerisi: 2 Güneş Çiftliği, 1 Su Reaktörü, 3 Tarım Kubbesi inşa edin.
+                </div>
+                <div class="sim-controls">
+                    <button id="simPrev"><i class="fas fa-chevron-left"></i> Geri</button>
+                    <span class="planet-name" id="simPlanetDisplay">🌍 Mars Alpha</span>
+                    <button id="simNext">İleri <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="border-top:1px solid rgba(0,212,255,0.04);padding:32px 0;margin-top:40px;">
+        <div class="container" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+            <div style="font-size:0.8rem;color:var(--text-secondary);"><strong>NEURA COLONY</strong> · Uzayda İnsan Uygarlığı için AI</div>
+            <div style="display:flex;gap:20px;"><a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.75rem;">Gizlilik</a><a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.75rem;">Koşullar</a><a href="#" style="color:var(--text-secondary);text-decoration:none;font-size:0.75rem;">Döküman</a></div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="domeModal"><div class="modal-content"><span class="close" onclick="document.getElementById('domeModal').classList.remove('open')">&times;</span><h3 style="margin-bottom:12px;">🌐 Kubbe Durumu · Mars Alpha</h3><div id="domeDetail"><div class="dome-status" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span>Kubbe A</span><span class="badge badge-green" style="background:rgba(52,211,153,0.12);color:var(--accent-green);padding:2px 12px;border-radius:60px;font-size:0.7rem;">Sağlıklı</span></div><div class="dome-status" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span>Kubbe B</span><span class="badge badge-yellow" style="background:rgba(251,191,36,0.12);color:var(--accent-yellow);padding:2px 12px;border-radius:60px;font-size:0.7rem;">Uyarı · Oksijen Sızıntısı</span></div><div class="dome-status" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);"><span>Lab C</span><span class="badge badge-red" style="background:rgba(248,113,113,0.12);color:var(--accent-red);padding:2px 12px;border-radius:60px;font-size:0.7rem;">Kritik · Yangın</span></div><div class="dome-status" style="display:flex;justify-content:space-between;padding:8px 0;"><span>Sektör D</span><span class="badge badge-green" style="background:rgba(52,211,153,0.12);color:var(--accent-green);padding:2px 12px;border-radius:60px;font-size:0.7rem;">Güvenli</span></div></div><div style="margin-top:12px;padding:10px;background:rgba(0,212,255,0.04);border-radius:var(--radius-sm);font-size:0.8rem;"><i class="fas fa-robot" style="color:var(--accent-cyan);"></i> AI Eylemi: Koridor kapatılıyor, drone'lar gönderiliyor.</div></div></div>
+
+    <div class="modal-overlay" id="doctorModal"><div class="modal-content"><span class="close" onclick="document.getElementById('doctorModal').classList.remove('open')">&times;</span><h3 style="margin-bottom:12px;">🩺 Doktor Yönlendirmesi</h3><p style="color:var(--text-secondary);margin-bottom:12px;"><span id="docPatientName">Yerleşimci</span> için doktor randevusu oluşturuluyor.</p><div style="background:rgba(0,212,255,0.04);border-radius:var(--radius-sm);padding:12px;font-size:0.85rem;"><i class="fas fa-check-circle" style="color:var(--accent-green);"></i> Yönlendirme başarılı. Yeni personel atanıyor...</div><button class="btn-primary" style="margin-top:16px;width:100%;justify-content:center;" onclick="document.getElementById('doctorModal').classList.remove('open')">Tamam</button></div></div>
+
+    <div class="modal-overlay" id="emergencyModal"><div class="modal-content"><span class="close" onclick="document.getElementById('emergencyModal').classList.remove('open')">&times;</span><h3 style="margin-bottom:12px;">🚑 Acil Müdahale</h3><p style="color:var(--text-secondary);margin-bottom:8px;" id="emergencyInfo">Kişi bilgileri</p><div style="background:rgba(52,211,153,0.04);border-radius:var(--radius-sm);padding:12px;font-size:0.85rem;"><i class="fas fa-check-circle" style="color:var(--accent-green);"></i> Sağlık ekibi yola çıktı. Tahmini varış: <strong>3 dakika</strong></div><button class="btn-primary" style="margin-top:16px;width:100%;justify-content:center;" onclick="document.getElementById('emergencyModal').classList.remove('open')">Tamam</button></div></div>
+
+    <!-- Detaylı Koloni Modal (10 boyutlu metrik, tahmin, AI kararı, müdahale butonu) -->
+    <div class="modal-overlay" id="detailedColonyModal">
+        <div class="modal-content detailed-modal-content">
+            <span class="close" onclick="document.getElementById('detailedColonyModal').classList.remove('open')">&times;</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px;">
+                <h2 id="detailPlanetName" style="display:flex; align-items:center; gap:8px; font-size:1.4rem;">
+                    <span class="icon">🌍</span> Dünya
+                </h2>
+                <span class="badge badge-red" id="detailRiskBadge" style="background:rgba(248,113,113,0.15); color:#f87171; padding:4px 14px; border-radius:12px; font-weight:600;">Risk 57%</span>
+            </div>
+
+            <div style="margin-bottom:20px;">
+                <div class="metric-row"><span style="color:var(--text-secondary);">🔋 Enerji</span><span id="detailEnergy">45%</span></div>
+                <div class="bar"><div class="fill fill-yellow" id="detailEnergyBar" style="width:45%;"></div></div>
+                
+                <div class="metric-row" style="margin-top:12px;"><span style="color:var(--text-secondary);">😊 Memnuniyet</span><span id="detailSat">36%</span></div>
+                <div class="bar"><div class="fill fill-cyan" id="detailSatBar" style="width:36%;"></div></div>
+                
+                <div class="metric-row" style="margin-top:12px;"><span style="color:var(--text-secondary);">🏢 Yönetim</span><span id="detailGov">41%</span></div>
+                <div class="bar"><div class="fill fill-yellow" id="detailGovBar" style="width:41%;"></div></div>
+                
+                <div style="display:flex; justify-content:space-between; margin-top:18px; padding:12px; background:rgba(255,255,255,0.03); border-radius:8px;">
+                    <span style="color:var(--text-secondary);"><i class="fas fa-users"></i> Nüfus</span>
+                    <span style="color:var(--accent-yellow); font-weight:700;" id="detailPop">7.8 milyar</span>
+                </div>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); padding:18px; border-radius:12px; margin-bottom:20px;">
+                <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:16px; font-weight:600;">📊 Toplum Tahminleme Motoru</div>
+                <div class="metric-row"><span>⚡ Enerji Tüketimi</span><span id="detailEngCons">45%</span></div>
+                <div class="bar"><div class="fill fill-yellow" id="detailEngConsBar" style="width:45%;"></div></div>
+                
+                <div class="metric-row" style="margin-top:12px;"><span>📈 Suç Oranı</span><span id="detailCrime">64%</span></div>
+                <div class="bar"><div class="fill fill-red" id="detailCrimeBar" style="width:64%;"></div></div>
+                
+                <div class="metric-row" style="margin-top:12px;"><span>⚠️ Kriz Olasılığı</span><span id="detailCrisis">57%</span></div>
+                <div class="bar"><div class="fill fill-red" id="detailCrisisBar" style="width:57%;"></div></div>
+            </div>
+
+            <div style="margin-bottom:24px;">
+                <div style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:12px; font-weight:600;">🧩 10 Boyutlu Koloni Metrikleri</div>
+                <div class="grid-2" style="gap:24px;">
+                    <div>
+                        <div class="micro-row"><span>Kaynak yön.</span><span id="dimKaynak">66%</span></div><div class="bar" style="height:3px;"><div class="fill fill-green" id="dimKaynakBar" style="width:66%;"></div></div>
+                        <div class="micro-row"><span>Güvenlik</span><span id="dimGuvenlik">42%</span></div><div class="bar" style="height:3px;"><div class="fill fill-cyan" id="dimGuvenlikBar" style="width:42%;"></div></div>
+                        <div class="micro-row"><span>Eğitim</span><span id="dimEgitim">31%</span></div><div class="bar" style="height:3px;"><div class="fill fill-red" id="dimEgitimBar" style="width:31%;"></div></div>
+                        <div class="micro-row"><span>Lojistik</span><span id="dimLojistik">33%</span></div><div class="bar" style="height:3px;"><div class="fill fill-yellow" id="dimLojistikBar" style="width:33%;"></div></div>
+                        <div class="micro-row"><span>Sosyal yaşam</span><span id="dimSosyal">32%</span></div><div class="bar" style="height:3px;"><div class="fill fill-cyan" id="dimSosyalBar" style="width:32%;"></div></div>
+                    </div>
+                    <div>
+                        <div class="micro-row"><span>Haberleşme</span><span id="dimHaber">77%</span></div><div class="bar" style="height:3px;"><div class="fill fill-cyan" id="dimHaberBar" style="width:77%;"></div></div>
+                        <div class="micro-row"><span>Sağlık</span><span id="dimSaglik">17%</span></div><div class="bar" style="height:3px;"><div class="fill fill-red" id="dimSaglikBar" style="width:17%;"></div></div>
+                        <div class="micro-row"><span>Enerji</span><span id="dimEnerji">33%</span></div><div class="bar" style="height:3px;"><div class="fill fill-yellow" id="dimEnerjiBar" style="width:33%;"></div></div>
+                        <div class="micro-row"><span>Ticaret</span><span id="dimTicaret">50%</span></div><div class="bar" style="height:3px;"><div class="fill fill-yellow" id="dimTicaretBar" style="width:50%;"></div></div>
+                        <div class="micro-row"><span>Yapay zeka sist.</span><span id="dimYapay">44%</span></div><div class="bar" style="height:3px;"><div class="fill fill-cyan" id="dimYapayBar" style="width:44%;"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background:rgba(139, 92, 246, 0.1); border-left:3px solid #8b5cf6; padding:12px 16px; border-radius:8px; font-size:0.8rem; margin-bottom:20px;">
+                <strong style="color:#c4b5fd;">🧠 Yapay Zeka Karar Önerisi:</strong> <span id="detailAiSuggestion">⚠️ Zayıf alanlar: Sağlık, Eğitim, Lojistik, Sosyal yaşam. Acil iyileştirme önerilir.</span>
+            </div>
+
+            <button class="btn-primary" id="detailInterveneBtn" style="width:100%; justify-content:center; padding:14px; background:linear-gradient(135deg, #3b82f6, #1d4ed8);"><i class="fas fa-magic"></i> Müdahale Et</button>
+        </div>
+    </div>
+
+    <div class="ai-avatar" id="aiAvatar">
+        <div class="speech-bubble" id="speechBubble">İyi akşamlar Komutan. Her şey kontrol altında.</div>
+        <div class="avatar-circle" id="avatarCircle"><i class="fas fa-robot"></i></div>
+    </div>
+
+    <script>
+        // ─── Tüm JavaScript kodları aynen (önceki haliyle) ───
+        // (Buraya kadar olan tüm script içeriği aynen kullanılacak.
+        //  Tek değişiklik navbar'daki logo HTML kısmıydı.)
+        // Aşağıda kısaca özet olarak veriyorum, ancak tam çalışması için
+        // önceki cevaptaki script bloğunu aynen kullanın.
+        // ───
+        document.getElementById('mobileToggle').addEventListener('click', function() {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+
+        const avatarMessages = [
+            'İyi akşamlar Komutan. Her şey kontrol altında.',
+            'Bir toz fırtınası yaklaşıyor. Önlemler alındı.',
+            'Enerji verimliliği %15 arttı. Tebrikler.',
+            'Dome B\'de oksijen seviyesi stabil.',
+            'Siber saldırı tespit edildi. Güvenlik duvarı güçlendi.',
+            'Yeni ticaret rotası öneriliyor. Onay bekleniyor.',
+            'Nüfus artışı planlanan seviyede.',
+            'Su geri dönüşüm oranı %92\'ye ulaştı.',
+            'Yakıt stokları yeterli seviyede.',
+            'Mars Alpha\'da yaşam desteği %100.'
+        ];
+        let avatarIndex = 0;
+        const avatarCircle = document.getElementById('avatarCircle');
+        const speechBubble = document.getElementById('speechBubble');
+        avatarCircle.addEventListener('click', function() {
+            speechBubble.textContent = avatarMessages[avatarIndex % avatarMessages.length];
+            avatarIndex++;
+            speechBubble.classList.toggle('show');
+            clearTimeout(window.bubbleTimeout);
+            if (speechBubble.classList.contains('show')) {
+                window.bubbleTimeout = setTimeout(() => { speechBubble.classList.remove('show'); }, 7000);
+            }
+        });
+
+        const dashPlanets = ['Mars Alpha', 'Titan One', 'Ay Üssü', 'Europa İstasyonu', 'Ganymede Merkezi', 'Anka Kolonisi'];
+        let dashPlanetIndex = 0;
+
+        function updateDashboardPlanet() {
+            const planet = dashPlanets[dashPlanetIndex];
+            document.getElementById('dashMapTitle').innerHTML = '🌍 ' + planet + ' Üssü';
+            document.getElementById('dnaPlanetName').textContent = planet;
+            document.getElementById('heroTagText').innerHTML = '<i class="fas fa-satellite"></i> ' + planet + ' · Gerçek Zamanlı';
+            document.getElementById('energyVal').textContent = rnd(40, 98) + '%';
+            document.getElementById('waterVal').textContent = rnd(30, 99) + '%';
+            document.getElementById('foodVal').textContent = rnd(40, 95) + '%';
+            document.getElementById('populationVal').textContent = rnd(80, 800) + 'K';
+            const stats = document.querySelectorAll('.stat-mini .num');
+            stats.forEach(s => {
+                s.style.opacity = '0.3';
+                setTimeout(() => s.style.opacity = '1', 200);
+            });
+        }
+
+        document.getElementById('dashPrevBtn').addEventListener('click', () => { 
+            dashPlanetIndex = (dashPlanetIndex - 1 + dashPlanets.length) % dashPlanets.length; 
+            updateDashboardPlanet(); 
+        });
+        document.getElementById('dashNextBtn').addEventListener('click', () => { 
+            dashPlanetIndex = (dashPlanetIndex + 1) % dashPlanets.length; 
+            updateDashboardPlanet(); 
+        });
+
+        document.getElementById('exploreDashBtn').addEventListener('click', () => document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' }));
+        document.getElementById('watchDemoBtn').addEventListener('click', () => alert('🎥 NEURA COLONY demosu hazırlanıyor.'));
+        document.getElementById('demoRequestBtn').addEventListener('click', (e) => { e.preventDefault(); alert('📩 Demo talebiniz alındı.'); });
+
+        document.querySelectorAll('.dash-sidebar .menu-item').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.dash-sidebar .menu-item').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                const target = this.dataset.target;
+                const map = { health: '#health', security: '#risks', colonies: '#colonies' };
+                if (map[target]) document.querySelector(map[target]).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        function rnd(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+        function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+        const colonyNames = ['Mars Alpha', 'Titan One', 'Ay Üssü', 'Europa İstasyonu', 'Ganymede Merkezi', 'Anka Kolonisi'];
+        const statuses = ['Sağlıklı', 'Uyarı', 'Kritik'];
+        const statusClasses = ['status-healthy', 'status-warning', 'status-danger'];
+        const barClasses = ['fill-cyan', 'fill-yellow', 'fill-red'];
+        const dnas = ['Kendine yeterli', 'Kaynak bağımlı', 'Yüksek verim', 'Kırılgan', 'Dengeli', 'Büyüyor'];
+        let colonyData = [];
+
+        function genColonies() {
+            colonyData = colonyNames.map((name, i) => {
+                const energy = rnd(20, 98);
+                const water = rnd(20, 98);
+                const pop = rnd(50, 450) + 'K';
+                let idx = 0;
+                let riskNum = rnd(10, 30);
+                if(energy < 40 || water < 40) { idx = 1; riskNum = rnd(40, 69); }
+                if(energy < 25 || water < 25) { idx = 2; riskNum = rnd(70, 95); }
+
+                const metrics10 = {
+                    kaynak: rnd(20, 95),
+                    guvenlik: rnd(20, 95),
+                    egitim: rnd(20, 95),
+                    lojistik: rnd(20, 95),
+                    sosyal: rnd(20, 95),
+                    haber: rnd(20, 95),
+                    saglik: rnd(20, 95),
+                    enerji: energy,
+                    ticaret: rnd(20, 95),
+                    yapay: rnd(20, 95)
+                };
+                if (riskNum > 60) {
+                    Object.keys(metrics10).forEach(k => {
+                        metrics10[k] = Math.max(10, metrics10[k] - rnd(10, 30));
+                    });
+                }
+
+                return {
+                    name,
+                    status: statuses[idx],
+                    statusClass: statusClasses[idx],
+                    energy: energy,
+                    water: water,
+                    pop: pop,
+                    barClass: barClasses[idx],
+                    dna: dnas[i % dnas.length],
+                    risk: riskNum,
+                    happiness: rnd(30, 95),
+                    governance: rnd(30, 90),
+                    metrics10: metrics10
+                };
+            });
+            return colonyData;
+        }
+        genColonies();
+        renderColonies();
+
+        function renderColonies() {
+            document.getElementById('colonyGrid').innerHTML = colonyData.map(c => `
+                <div class="colony-card ${c.status === 'Kritik' ? 'shake-danger' : ''}">
+                    <div class="top"><span class="name">${c.name}</span><span class="status ${c.statusClass}">${c.status}</span></div>
+                    <div class="stats">
+                        <div class="item"><span class="val">${c.energy}%</span><span class="lbl">Enerji</span></div>
+                        <div class="item"><span class="val">${c.water}%</span><span class="lbl">Su</span></div>
+                        <div class="item"><span class="val">${c.pop}</span><span class="lbl">Nüfus</span></div>
+                    </div>
+                    <div class="bar"><div class="fill ${c.barClass}" style="width:${c.energy}%;"></div></div>
+                    <div class="dna">DNA: ${c.dna}</div>
+                    <button class="btn-outline btn-sm" style="width:100%; margin-top:14px; padding: 6px; font-weight:600;" onclick="showDetailedColony('${c.name}')"><i class="fas fa-search-plus"></i> Detaylı Göster</button>
+                </div>
+            `).join('');
+        }
+
+        window.showDetailedColony = function(colonyName) {
+            const c = colonyData.find(x => x.name === colonyName);
+            if(!c) return;
+
+            document.getElementById('detailPlanetName').innerHTML = `<span class="icon">🌍</span> ${c.name}`;
+            const riskBadge = document.getElementById('detailRiskBadge');
+            riskBadge.textContent = `Risk ${c.risk}%`;
+            riskBadge.style.color = c.risk > 70 ? '#f87171' : c.risk > 40 ? '#fbbf24' : '#34d399';
+
+            document.getElementById('detailEnergy').textContent = c.energy + '%';
+            document.getElementById('detailEnergyBar').style.width = c.energy + '%';
+            document.getElementById('detailSat').textContent = c.happiness + '%';
+            document.getElementById('detailSatBar').style.width = c.happiness + '%';
+            document.getElementById('detailGov').textContent = c.governance + '%';
+            document.getElementById('detailGovBar').style.width = c.governance + '%';
+            document.getElementById('detailPop').textContent = c.pop;
+
+            const engCons = Math.min(100, c.energy + rnd(-10, 10));
+            document.getElementById('detailEngCons').textContent = engCons + '%';
+            document.getElementById('detailEngConsBar').style.width = engCons + '%';
+            const crime = Math.min(100, 100 - c.happiness + rnd(-10, 10));
+            document.getElementById('detailCrime').textContent = crime + '%';
+            document.getElementById('detailCrimeBar').style.width = crime + '%';
+            document.getElementById('detailCrisis').textContent = c.risk + '%';
+            document.getElementById('detailCrisisBar').style.width = c.risk + '%';
+
+            const m = c.metrics10;
+            const dims = ['Kaynak', 'Guvenlik', 'Egitim', 'Lojistik', 'Sosyal', 'Haber', 'Saglik', 'Enerji', 'Ticaret', 'Yapay'];
+            const keys = ['kaynak','guvenlik','egitim','lojistik','sosyal','haber','saglik','enerji','ticaret','yapay'];
+            let worstDims = [];
+            keys.forEach((k, idx) => {
+                let val = m[k] || rnd(20, 80);
+                document.getElementById('dim' + dims[idx]).textContent = val + '%';
+                let bar = document.getElementById('dim' + dims[idx] + 'Bar');
+                bar.style.width = val + '%';
+                bar.className = 'fill ' + (val > 70 ? 'fill-green' : val > 40 ? 'fill-yellow' : 'fill-red');
+                if (val < 35) {
+                    let trName = dims[idx];
+                    if (trName === 'Kaynak') trName = 'Kaynak Yönetimi';
+                    if (trName === 'Sosyal') trName = 'Sosyal Yaşam';
+                    if (trName === 'Haber') trName = 'Haberleşme';
+                    if (trName === 'Yapay') trName = 'Yapay Zeka Sistemleri';
+                    worstDims.push(trName);
+                }
+            });
+
+            if (worstDims.length === 0) worstDims.push('Minör altyapı');
+            document.getElementById('detailAiSuggestion').textContent = `⚠️ Zayıf alanlar: ${worstDims.slice(0,4).join(', ')}. Acil iyileştirme önerilir.`;
+
+            const interveneBtn = document.getElementById('detailInterveneBtn');
+            interveneBtn.onclick = function() {
+                c.energy = Math.min(100, c.energy + 15);
+                c.happiness = Math.min(100, c.happiness + 15);
+                c.governance = Math.min(100, c.governance + 15);
+                Object.keys(c.metrics10).forEach(k => {
+                    c.metrics10[k] = Math.min(100, c.metrics10[k] + rnd(8, 15));
+                });
+                c.risk = Math.max(5, c.risk - 20);
+                document.getElementById('detailedColonyModal').classList.remove('open');
+                renderColonies();
+                alert(`✅ ${c.name} kolonisine müdahale edildi! Tüm metrikler iyileştirildi.`);
+            };
+
+            document.getElementById('detailedColonyModal').classList.add('open');
+        };
+
+        const healthNames = [
+            'Emma', 'Michael', 'Aisha', 'David', 'Sarah', 'James', 'Lucas', 'Sophia', 
+            'Ethan', 'Olivia', 'Kerem', 'Zeynep', 'Cem', 'Mehmet', 'Ayşe', 
+            'John', 'Mary', 'Carlos', 'Yuki', 'Amina', 'Fatma', 'Ahmet', 'Ali', 'Zeynep'
+        ];
+        const healthInits = ['E','M','A','D','S','J','L','S','E','O','K','Z','C','M','A','J','M','C','Y','A','F','A','A','Z'];
+
+        let healthData = [];
+
+        function genSingleHealth(name, initial) {
+            const stress = rnd(5, 95);
+            let status, statusClass, rec;
+            if (stress < 30) { status = 'İyi'; statusClass = 'good'; rec = ''; } 
+            else if (stress < 60) { status = 'Orta'; statusClass = 'warn'; rec = 'Meditasyon'; } 
+            else if (stress < 80) { status = 'Uyarı'; statusClass = 'danger'; rec = 'Psikolojik Seans'; } 
+            else { status = 'Kritik'; statusClass = 'danger'; rec = 'Acil danışma'; }
+            return {
+                name: name,
+                initial: initial,
+                stress: stress,
+                loneliness: rnd(5, 90),
+                sleep: (4 + Math.random() * 5).toFixed(1) + 's',
+                status: status,
+                statusClass: statusClass,
+                rec: rec
+            };
+        }
+
+        function genInitialHealth() {
+            const count = rnd(8, 12);
+            const shuffledIndices = [...Array(healthNames.length).keys()].sort(() => Math.random() - 0.5).slice(0, count);
+            return shuffledIndices.map(i => genSingleHealth(healthNames[i], healthInits[i]));
+        }
+        healthData = genInitialHealth();
+
+        function renderHealth() {
+            document.getElementById('healthGrid').innerHTML = healthData.map(a => `
+                <div class="health-card">
+                    <div class="avatar">${a.initial}</div>
+                    <div class="name">${a.name}</div>
+                    <div class="role">Yerleşimci</div>
+                    <div class="stress"><span>😰 Stres</span><span class="val ${a.statusClass}">${a.stress}%</span></div>
+                    <div class="meta">💔 Yalnızlık ${a.loneliness}% · 💤 Uyku ${a.sleep}</div>
+                    ${a.rec ? `<button class="btn-health" onclick="referToDoctor('${a.name}')"><i class="fas fa-user-md"></i> Doktora Yönlendir</button>` : ''}
+                </div>
+            `).join('');
+        }
+        renderHealth();
+
+        window.referToDoctor = function(name) {
+            document.getElementById('docPatientName').textContent = name;
+            document.getElementById('doctorModal').classList.add('open');
+
+            healthData = healthData.filter(h => h.name !== name);
+            const availableIndices = [...Array(healthNames.length).keys()].filter(i => !healthData.find(h => h.name === healthNames[i]));
+            
+            if(availableIndices.length > 0) {
+                const newIdx = availableIndices[rnd(0, availableIndices.length - 1)];
+                healthData.push(genSingleHealth(healthNames[newIdx], healthInits[newIdx]));
+            }
+
+            setTimeout(() => {
+                renderHealth();
+            }, 500);
+        }
+
+        const emergencyTypes = ['Kalp Krizi', 'Ani Bayılma', 'Trafik Kazası', 'Kronik Rahatsızlık', 'Solunum Yetmezliği', 'Alerjik Reaksiyon', 'Yanık', 'Kanama', 'Kırık', 'Zehirlenme'];
+        const emergencyNames = [
+            'Ali Yılmaz', 'Zeynep Kaya', 'Mehmet Demir', 'Elif Çelik', 'Can Öztürk', 'Selin Aydın',
+            'John Smith', 'Maria Gonzalez', 'Kenji Tanaka', 'Fatima Al-Hassan', 
+            'Ayşe Korkmaz', 'Ahmet Şahin', 'Emma Watson', 'Lucas Brown'
+        ];
+        const emergencyAddresses = [
+            'Dome A, 34', 'Lab C, 12', 'Sektör D, 5', 'Kubbe B, 8', 'Merkez, 22', 'Dome A, 7',
+            'Sektor E, 9', 'Kubbe C, 15', 'Lab D, 4', 'Sektor F, 11', 'Dome B, 3', 'Lab A, 21',
+            'Sektör G, 6', 'Kubbe A, 19'
+        ];
+
+        function genEmergency() {
+            const count = rnd(4, 6);
+            const shuffled = emergencyNames.map((n, i) => ({ name: n, addr: emergencyAddresses[i % emergencyAddresses.length], type: emergencyTypes[i % emergencyTypes.length] })).sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+        let emergencyData = genEmergency();
+
+        function renderEmergency() {
+            document.getElementById('emergencyGrid').innerHTML = emergencyData.map(e => `
+                <div class="emergency-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-weight:600;">${e.name}</span>
+                        <span class="badge badge-critical">ACİL</span>
+                    </div>
+                    <div style="font-size:0.75rem;color:var(--text-secondary);margin:4px 0;">📍 ${e.addr}</div>
+                    <div style="font-size:0.8rem;color:var(--accent-red);">${e.type}</div>
+                    <button class="btn-danger" style="margin-top:8px;" onclick="dispatchEmergency('${e.name}')"><i class="fas fa-ambulance"></i> Sağlık Ekibi Gönder</button>
+                </div>
+            `).join('');
+        }
+        renderEmergency();
+
+        window.dispatchEmergency = function(name) {
+            document.getElementById('emergencyInfo').textContent = '🚑 ' + name + ' için acil sağlık ekibi gönderiliyor.';
+            document.getElementById('emergencyModal').classList.add('open');
+        }
+
+        const riskLabels = ['🔥 Yangın · Sektör C', '💨 Oksijen Sızıntısı · Dome B', '⚡ Güç Dalgalanması · Lab', '🌊 Su Basıncı · Tank 4'];
+        let riskValues = [rnd(5, 50), rnd(5, 50), rnd(5, 50), rnd(5, 50)];
+
+        function renderRisks() {
+            const container = document.getElementById('riskDetail');
+            container.innerHTML = riskLabels.map((label, i) => `
+                <div class="risk-item">
+                    <span class="label">${label}</span>
+                    <span class="pct ${riskValues[i] > 70 ? 'high' : riskValues[i] > 40 ? 'med' : 'low'}">${riskValues[i]}%</span>
+                </div>
+            `).join('');
+            
+            const highRisk = riskValues.some(v => v > 70);
+            const banner = document.getElementById('alertBanner');
+            const alertText = document.getElementById('alertText');
+            if (highRisk) {
+                banner.classList.add('show');
+                const idx = riskValues.findIndex(v => v > 70);
+                alertText.textContent = '🚨 Uyarı: ' + riskLabels[idx].replace('🔥 ', '').replace('💨 ', '').replace('⚡ ', '').replace('🌊 ', '') + ' ' + riskValues[idx] + '% seviyesine ulaştı! Acil müdahale gerekli.';
+            } else {
+                banner.classList.remove('show');
+            }
+        }
+        renderRisks();
+
+        const marketPlanets = ['Mars Alpha', 'Ay Üssü', 'Ganymede Merkezi', 'Anka Kolonisi', 'Titan One', 'Europa İstasyonu', 'Dünya Yörünge', 'Venüs İstasyonu'];
+        const marketUnits = ['MW · ', 'ton H₂O · ', 'ton gıda · ', 'MW · '];
+
+        function genMarket() {
+            let trades = [];
+            for(let i=0; i<4; i++) {
+                let f = marketPlanets[rnd(0, marketPlanets.length-1)];
+                let t = marketPlanets[rnd(0, marketPlanets.length-1)];
+                while(f === t) t = marketPlanets[rnd(0, marketPlanets.length-1)];
+                trades.push({
+                    from: f,
+                    to: t,
+                    amount: rnd(50, 250),
+                    unit: marketUnits[i % marketUnits.length],
+                    price: (1.5 + Math.random() * 5).toFixed(1)
+                });
+            }
+            return trades;
+        }
+        let marketData = genMarket();
+
+        function renderMarket() {
+            const container = document.getElementById('marketGrid');
+            container.innerHTML = marketData.map(t => `
+                <div class="trade-item updated">
+                    <span class="from">${t.from}</span>
+                    <span class="to"><i class="fas fa-arrow-right"></i> ${t.to}</span>
+                    <span class="price">${t.amount} ${t.unit}${t.price} SC</span>
+                </div>
+            `).join('');
+            setTimeout(() => {
+                document.querySelectorAll('.trade-item').forEach(el => el.classList.remove('updated'));
+            }, 500);
+        }
+        renderMarket();
+
+        const simPlanets = ['Mars Alpha', 'Titan One', 'Ay Üssü', 'Europa İstasyonu', 'Ganymede Merkezi', 'Anka Kolonisi'];
+        let simIndex = 0;
+
+        function updateSimulator() {
+            const planet = simPlanets[simIndex];
+            document.getElementById('simPlanetName').textContent = planet;
+            document.getElementById('simPlanetDisplay').textContent = '🌍 ' + planet;
+            const pop = rnd(300, 500) + '.' + rnd(0, 999);
+            document.getElementById('simCurrentPop').textContent = pop.replace('.', '.');
+            document.getElementById('simProjectedPop').textContent = (rnd(800, 1600) / 1000).toFixed(1) + 'M';
+            document.getElementById('simFoodDemand').textContent = '+' + rnd(20, 70) + '%';
+            document.getElementById('simEnergyDemand').textContent = '+' + rnd(30, 80) + '%';
+            document.getElementById('simSolar').textContent = rnd(1, 5);
+            document.getElementById('simWaterReactor').textContent = rnd(0, 3);
+            document.getElementById('simDomes').textContent = rnd(1, 6);
+            const recs = [
+                'Büyümeyi desteklemek için ' + rnd(1, 3) + ' Güneş Çiftliği, ' + rnd(0, 2) + ' Su Reaktörü, ' + rnd(1, 4) + ' Tarım Kubbesi inşa edin.',
+                'Nüfus artışı için ' + rnd(2, 5) + ' yeni konut modülü ekleyin.',
+                'Kaynak verimliliğini artırmak için ' + rnd(1, 3) + ' geri dönüşüm tesisi kurun.',
+                'Su tasarrufu için ' + rnd(1, 3) + ' yeni arıtma tesisi inşa edin.'
+            ];
+            document.getElementById('simRecommendation').innerHTML = '<i class="fas fa-robot" style="color:var(--accent-cyan);"></i> AI Önerisi: ' + pick(recs);
+        }
+        updateSimulator();
+
+        document.getElementById('simPrev').addEventListener('click', () => { simIndex = (simIndex - 1 + simPlanets.length) % simPlanets.length; updateSimulator(); });
+        document.getElementById('simNext').addEventListener('click', () => { simIndex = (simIndex + 1) % simPlanets.length; updateSimulator(); });
+
+        function renderPredictions() {
+            const labels = ['Enerji Kesintisi', 'Meteor Çarpması', 'Su Kıtlığı', 'Psikolojik Risk'];
+            const vals = [rnd(60, 95), rnd(1, 20), rnd(25, 60), rnd(10, 40)];
+            const classes = vals.map(v => v > 70 ? 'high' : v > 40 ? 'med' : 'low');
+            document.getElementById('predictionGrid').innerHTML = labels.map((l, i) => `
+                <div class="prediction-item">
+                    <div class="label">${l}</div>
+                    <div class="value ${classes[i]}">${vals[i]}%</div>
+                </div>
+            `).join('');
+        }
+        renderPredictions();
+
+        const decisionLog = [
+            { time: '13:42', text: 'Güneş fırtınası tespit edildi. <span class="highlight">Yedek Reaktöre Geç</span>' },
+            { time: '13:18', text: 'Dome B\'de oksijen sızıntısı. <span class="highlight">Koridoru kapat</span>' },
+            { time: '12:55', text: 'Su rezervi düşük. <span class="highlight">Buz madenciliğini etkinleştir</span>' },
+            { time: '12:10', text: 'Siber saldırı girişimi. <span class="highlight">Güvenlik duvarı güçlendirildi</span>' },
+            { time: '11:45', text: 'Meteor yağmuru. <span class="highlight">Koruma kalkanları aktif</span>' }
+        ];
+        let decisionIdx = 0;
+
+        function updateDecisionFeed() {
+            const feed = document.getElementById('decisionFeed');
+            const item = decisionLog[decisionIdx % decisionLog.length];
+            const div = document.createElement('div');
+            div.className = 'decision-item';
+            div.innerHTML = `<span class="time">${item.time}</span><span class="content">${item.text}</span>`;
+            feed.prepend(div);
+            if (feed.children.length > 6) feed.removeChild(feed.lastChild);
+            decisionIdx++;
+        }
+        updateDecisionFeed();
+
+        const ctxTrend = document.createElement('canvas');
+        ctxTrend.id = 'trendChart';
+        document.querySelector('.grid-2 .card:first-child .card-header').after(ctxTrend);
+        const chartCtx = ctxTrend.getContext('2d');
+        new Chart(chartCtx, {
+            type: 'line',
+            data: {
+                labels: ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
+                datasets: [
+                    { label: 'Enerji', data: [72, 68, 74, 71, 78, 82, 78], borderColor: '#00d4ff', backgroundColor: 'rgba(0,212,255,0.05)', tension: 0.3, fill: true },
+                    { label: 'Su', data: [88, 86, 89, 91, 90, 92, 91], borderColor: '#34d399', backgroundColor: 'rgba(52,211,153,0.05)', tension: 0.3, fill: true }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3c8', font: { size: 10 }, boxWidth: 8 } } }, scales: { x: { ticks: { color: '#94a3c8', font: { size: 8 } }, grid: { color: 'rgba(255,255,255,0.02)' } }, y: { min: 40, max: 100, ticks: { color: '#94a3c8', font: { size: 8 } }, grid: { color: 'rgba(255,255,255,0.02)' } } } }
+        });
+        ctxTrend.parentElement.style.height = '150px';
+
+        const riskCtx = document.getElementById('riskChart').getContext('2d');
+        let riskChart = new Chart(riskCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Yangın', 'Sızıntı', 'Dalgalanma', 'Basınç', 'Diğer'],
+                datasets: [{ data: [15, 12, 8, 5, 4], backgroundColor: ['#f87171', '#fbbf24', '#60a5fa', '#34d399', '#94a3c8'], borderColor: 'transparent' }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3c8', font: { size: 10 }, boxWidth: 8 } } }, cutout: '65%' }
+        });
+
+        function updateAll() {
+            const energy = parseInt(document.getElementById('energyVal').textContent);
+            const avg = energy;
+            let level, color, badgeClass, badgeText;
+            if (avg > 70) { level = 'DÜŞÜK'; color = 'var(--accent-green)'; badgeClass = 'low'; badgeText = 'Tüm sistemler normal'; } 
+            else if (avg > 50) { level = 'ORTA'; color = 'var(--accent-yellow)'; badgeClass = 'med'; badgeText = 'Bazı sistemler uyarı veriyor'; } 
+            else { level = 'YÜKSEK'; color = 'var(--accent-red)'; badgeClass = 'high'; badgeText = 'Acil müdahale gerekiyor!'; }
+            
+            document.getElementById('threatLevel').textContent = level;
+            document.getElementById('threatLevel').style.color = color;
+            const badge = document.getElementById('threatBadge');
+            badge.className = 'threat-badge ' + badgeClass;
+            badge.innerHTML = `<i class="fas fa-${level==='DÜŞÜK'?'check-circle':level==='ORTA'?'exclamation-triangle':'times-circle'}"></i> ${badgeText}`;
+            document.getElementById('lastScan').textContent = rnd(1, 30) + 's';
+
+            renderPredictions();
+            const recs = ['Su Tesisi İnşa Et (başarı %' + rnd(85, 98) + ')', 'Güneş Paneli Genişlet (başarı %' + rnd(75, 95) + ')', 'Yedek Oksijen Deposu (başarı %' + rnd(80, 97) + ')'];
+            document.getElementById('predictionRecommendation').innerHTML = '<i class="fas fa-lightbulb" style="color:var(--accent-yellow);"></i> Öneri: ' + pick(recs);
+
+            const predTitles = ['⚠️ Güneş paneli verimliliği düşüyor', '⚠️ Su kaynakları azalıyor', '⚠️ Oksijen üretimi yavaşlıyor', '⚠️ Gıda stokları kritik seviyede'];
+            document.getElementById('aiPredictionTitle').textContent = pick(predTitles);
+            document.getElementById('aiPredictionDesc').innerHTML = '48 saat içinde risk olasılığı <strong style="color:var(--accent-yellow);">%' + rnd(55, 95) + '</strong>';
+
+            document.getElementById('dnaEnergy').textContent = 'Enerji %' + rnd(70, 98);
+            document.getElementById('dnaHealth').textContent = 'Sağlık %' + rnd(60, 92);
+            document.getElementById('dnaSecurity').textContent = 'Güvenlik %' + rnd(70, 99);
+            document.getElementById('dnaHappiness').textContent = 'Mutluluk %' + rnd(65, 95);
+            
+            genColonies();
+            renderColonies();
+            updateDecisionFeed();
+
+            const riskData = riskChart.data.datasets[0].data;
+            riskData[0] = rnd(5, 35); riskData[1] = rnd(5, 30); riskData[2] = rnd(5, 25); riskData[3] = rnd(2, 20); riskData[4] = rnd(2, 15);
+            riskChart.update();
+
+            riskValues = riskValues.map(() => rnd(5, 85));
+            renderRisks();
+
+            document.getElementById('livePopulation').textContent = rnd(40000, 44000).toLocaleString('tr-TR');
+        }
+
+        setInterval(updateAll, 7000);
+
+        setInterval(() => {
+            healthData.forEach(h => {
+                h.stress = rnd(Math.max(5, h.stress-10), Math.min(95, h.stress+10));
+                if (h.stress < 30) { h.statusClass = 'good'; h.rec = ''; } 
+                else if (h.stress < 60) { h.statusClass = 'warn'; h.rec = 'Meditasyon'; } 
+                else { h.statusClass = 'danger'; h.rec = 'Psikolojik Seans'; }
+            });
+            renderHealth();
+        }, 15000);
+
+        setInterval(() => {
+            emergencyData = genEmergency();
+            renderEmergency();
+        }, 9000);
+
+        setInterval(() => {
+            marketData = genMarket();
+            renderMarket();
+        }, 12000);
+
+        setTimeout(updateAll, 300);
+
+        (function initHeroThree() {
+            const canvas = document.getElementById('heroThreeCanvas');
+            const container = canvas.parentElement;
+            const w = container.clientWidth, h = container.clientHeight || 460;
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0b0e1a);
+            const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+            camera.position.set(0, 1.5, 5);
+            camera.lookAt(0, 0, 0);
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            const ambient = new THREE.AmbientLight(0x222244, 0.4);
+            scene.add(ambient);
+            const dirLight = new THREE.DirectionalLight(0x00d4ff, 0.6);
+            dirLight.position.set(1, 2, 1);
+            scene.add(dirLight);
+            const backLight = new THREE.DirectionalLight(0x8b5cf6, 0.3);
+            backLight.position.set(-1, 1, -2);
+            scene.add(backLight);
+            const sphereGeo = new THREE.SphereGeometry(1.2, 64, 64);
+            const sphereMat = new THREE.MeshPhongMaterial({ color: 0x1a3a5a, emissive: 0x0a1a3a, emissiveIntensity: 0.3, transparent: true, opacity: 0.85, shininess: 60 });
+            const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+            scene.add(sphere);
+            const ringGeo = new THREE.TorusGeometry(1.6, 0.02, 16, 100);
+            const ringMat = new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.25 });
+            const ring = new THREE.Mesh(ringGeo, ringMat);
+            ring.rotation.x = Math.PI / 3;
+            ring.rotation.z = 0.2;
+            scene.add(ring);
+            const ring2 = new THREE.TorusGeometry(1.8, 0.015, 16, 100);
+            const ringMat2 = new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.15 });
+            const ring2m = new THREE.Mesh(ring2, ringMat2);
+            ring2m.rotation.x = -0.4;
+            ring2m.rotation.y = 0.5;
+            scene.add(ring2m);
+            const particleCount = 600;
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            for (let i = 0; i < particleCount; i++) {
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos(2 * Math.random() - 1);
+                const r = 1.8 + Math.random() * 1.8;
+                positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+                positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 0.6;
+                positions[i * 3 + 2] = r * Math.cos(phi);
+                const c = new THREE.Color().setHSL(0.55 + Math.random() * 0.15, 0.8, 0.5 + Math.random() * 0.3);
+                colors[i * 3] = c.r;
+                colors[i * 3 + 1] = c.g;
+                colors[i * 3 + 2] = c.b;
+            }
+            const ptGeo = new THREE.BufferGeometry();
+            ptGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            ptGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            const ptMat = new THREE.PointsMaterial({ size: 0.025, vertexColors: true, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false });
+            const particles = new THREE.Points(ptGeo, ptMat);
+            scene.add(particles);
+            const satGroup = new THREE.Group();
+            for (let i = 0; i < 8; i++) {
+                const sat = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.04, 0.08), new THREE.MeshBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.5 }));
+                const angle = (i / 8) * Math.PI * 2;
+                const rad = 2.4;
+                sat.position.set(rad * Math.cos(angle), 0.1 * Math.sin(angle * 2), rad * Math.sin(angle));
+                satGroup.add(sat);
+            }
+            scene.add(satGroup);
+            let time = 0;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                time += 0.004;
+                sphere.rotation.x = Math.sin(time * 0.15) * 0.1;
+                sphere.rotation.y += 0.003;
+                ring.rotation.z += 0.002;
+                ring2m.rotation.x += 0.001;
+                ring2m.rotation.y += 0.002;
+                particles.rotation.y += 0.0006;
+                satGroup.rotation.y += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            function resize() {
+                const w2 = container.clientWidth, h2 = container.clientHeight || 460;
+                camera.aspect = w2 / h2;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w2, h2);
+            }
+            window.addEventListener('resize', resize);
+            window.__heroThree = { resize };
+        })();
+
+        (function initMapThree() {
+            const canvas = document.getElementById('mapThreeCanvas');
+            const container = canvas.parentElement;
+            const w = container.clientWidth, h = container.clientHeight || 280;
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x070b16);
+            const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
+            camera.position.set(0, 2.2, 4.5);
+            camera.lookAt(0, 0, 0);
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            const ambient = new THREE.AmbientLight(0x222244, 0.5);
+            scene.add(ambient);
+            const dir = new THREE.DirectionalLight(0x00d4ff, 0.5);
+            dir.position.set(1, 2, 1);
+            scene.add(dir);
+            const gridHelper = new THREE.GridHelper(6, 20, 0x00d4ff, 0x1a3a5a);
+            gridHelper.position.y = -0.8;
+            gridHelper.material.transparent = true;
+            gridHelper.material.opacity = 0.15;
+            scene.add(gridHelper);
+            const domeData = [
+                { pos: [-1.2, 0, -0.8], color: 0x34d399 },
+                { pos: [1.2, 0, 0.2], color: 0xfbbf24 },
+                { pos: [-0.4, 0, 1.4], color: 0xf87171 },
+                { pos: [1.6, 0, -1.2], color: 0x34d399 },
+                { pos: [-1.8, 0, 1.0], color: 0x34d399 },
+                { pos: [0.6, 0, -1.6], color: 0x34d399 }
+            ];
+            const domeMeshes = [];
+            domeData.forEach(d => {
+                const domeMat = new THREE.MeshPhongMaterial({ color: d.color, emissive: new THREE.Color(d.color).multiplyScalar(0.2), transparent: true, opacity: 0.7, shininess: 40 });
+                const dome = new THREE.Mesh(new THREE.SphereGeometry(0.35, 24, 24), domeMat);
+                dome.position.set(d.pos[0], -0.4, d.pos[1]);
+                dome.scale.y = 0.5;
+                scene.add(dome);
+                domeMeshes.push(dome);
+                const ring = new THREE.Mesh(new THREE.RingGeometry(0.3, 0.4, 24), new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.1, side: THREE.DoubleSide }));
+                ring.position.set(d.pos[0], -0.55, d.pos[1]);
+                ring.rotation.x = -Math.PI / 2;
+                scene.add(ring);
+            });
+            const lineMat = new THREE.LineBasicMaterial({ color: 0x00d4ff, transparent: true, opacity: 0.06 });
+            for (let i = 0; i < domeData.length; i++) {
+                for (let j = i + 1; j < domeData.length; j++) {
+                    const geo = new THREE.BufferGeometry().setFromPoints([
+                        new THREE.Vector3(domeData[i].pos[0], -0.4, domeData[i].pos[1]),
+                        new THREE.Vector3(domeData[j].pos[0], -0.4, domeData[j].pos[1])
+                    ]);
+                    scene.add(new THREE.Line(geo, lineMat));
+                }
+            }
+            const pCount = 150;
+            const pPos = new Float32Array(pCount * 3);
+            for (let i = 0; i < pCount; i++) {
+                pPos[i * 3] = (Math.random() - 0.5) * 6;
+                pPos[i * 3 + 1] = Math.random() * 1.5 - 0.2;
+                pPos[i * 3 + 2] = (Math.random() - 0.5) * 6;
+            }
+            const pGeo = new THREE.BufferGeometry();
+            pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+            const pMat = new THREE.PointsMaterial({ color: 0x00d4ff, size: 0.015, transparent: true, opacity: 0.3, blending: THREE.AdditiveBlending });
+            const pts = new THREE.Points(pGeo, pMat);
+            scene.add(pts);
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            canvas.addEventListener('click', function(e) {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(domeMeshes);
+                if (intersects.length > 0) document.getElementById('domeModal').classList.add('open');
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                pts.rotation.y += 0.0003;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            function resize() {
+                const w2 = container.clientWidth, h2 = container.clientHeight || 280;
+                camera.aspect = w2 / h2;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w2, h2);
+            }
+            window.addEventListener('resize', resize);
+            window.__mapThree = { resize };
+        })();
+
+        document.querySelectorAll('.modal-overlay').forEach(m => {
+            m.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+        });
+
+        console.log('🌠 NEURA COLONY · v5.0 · Tüm sistemler canlı!');
+    </script>
+</body>
+</html>
