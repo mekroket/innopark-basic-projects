@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="popup.css">
+  <title>Akademik Personel Toplayıcı</title>
+</head>
+<body>
+  <main class="popup-shell">
+    <header class="header">
+      <div>
+        <p class="eyebrow">Manifest V3</p>
+        <h1>Personel Toplayıcı</h1>
+      </div>
+      <span id="stateBadge" class="state-badge">Hazır</span>
+    </header>
+
+    <section class="stats" aria-label="Tarama bilgileri">
+      <div class="stat">
+        <span>Tarama Durumu</span>
+        <strong id="statusEl">Hazır</strong>
+      </div>
+      <div class="stat">
+        <span>Toplanan Kayıt</span>
+        <strong id="countEl">0</strong>
+      </div>
+      <div class="stat">
+        <span>İşlenen Sayfa</span>
+        <strong id="pageEl">0</strong>
+      </div>
+      <div class="stat">
+        <span>Geçen Süre</span>
+        <strong id="elapsedEl">00:00</strong>
+      </div>
+    </section>
+
+    <section class="activity" aria-label="Son işlem">
+      <span>Son İşlem</span>
+      <strong id="lastActionEl">Hazır</strong>
+      <small id="currentUrlEl">Aktif sekme bekleniyor</small>
+    </section>
+
+    <section class="actions" aria-label="İşlemler">
+      <button id="startBtn" class="primary">Başlat</button>
+      <button id="pauseBtn">Duraklat</button>
+      <button id="resumeBtn">Devam Et</button>
+      <button id="stopBtn" class="danger">Durdur</button>
+      <button id="exportBtn" class="success">Excel Oluştur</button>
+      <button id="sendBtn" class="success">Siteye Aktar</button>
+      <button id="clearBtn" class="ghost">Verileri Temizle</button>
+    </section>
+    <section class="settings" aria-label="Web sitesi ayarlarÄ±">
+      <label for="apiUrlInput">API URL</label>
+      <div class="setting-row">
+        <input id="apiUrlInput" type="url" placeholder="https://example.com/api/import.php" autocomplete="off">
+      </div>
+      <label for="apiKeyInput">API Key</label>
+      <div class="setting-row">
+        <input id="apiKeyInput" type="password" placeholder="Bearer token" autocomplete="off">
+        <button id="saveApiSettingsBtn" class="ghost">Kaydet</button>
+      </div>
+      <small id="notificationEl" role="status" aria-live="polite"></small>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>
