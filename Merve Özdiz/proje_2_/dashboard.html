@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>NovaRadar | Operasyon Merkezi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #050510; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; height: 100vh; overflow: hidden; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #050510; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 4px; border: 1px solid #00f0ff; }
+        ::-webkit-scrollbar-thumb:hover { background: #a200ff; }
+
+        .sidebar { width: 250px; flex-shrink: 0; background: rgba(20, 20, 40, 0.9); border-right: 1px solid #333; padding: 20px; display: flex; flex-direction: column; z-index: 10; }
+        .logo { font-family: 'Orbitron'; font-size: 24px; color: #00f0ff; margin-bottom: 40px; text-align: center; letter-spacing: 2px; }
+        .logo span { color: #a200ff; }
+        .menu-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 8px; cursor: pointer; transition: 0.3s; color: #a0a0c0; }
+        .menu-item:hover, .menu-item.active { background: rgba(0, 240, 255, 0.1); color: #00f0ff; border-left: 3px solid #00f0ff; }
+        
+        .main-content { flex: 1; padding: 30px; overflow-y: auto; }
+        .header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px; }
+        .header-text h1 { font-family: 'Orbitron'; color: #fff; font-size: 28px; }
+        .header-text p { color: #a0a0c0; font-size: 16px; margin-bottom: 5px; }
+        .yetki-rozet { background: rgba(68, 255, 68, 0.1); border: 1px solid #44ff44; color: #44ff44; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-family: 'Orbitron'; font-size: 12px; letter-spacing: 1px; }
+
+        .tab-content { display: none; animation: fadeIn 0.4s; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .kpi-card { background: rgba(255, 255, 255, 0.03); border: 1px solid #333; padding: 20px; border-radius: 12px; transition: 0.3s; }
+        .kpi-card.guncellendi { background: rgba(0, 240, 255, 0.2); border-color: #00f0ff; transform: scale(1.02); }
+        .kpi-card.kritik-aktif { border-color: #ff4444 !important; animation: pulseKritik 1.5s infinite alternate; }
+        @keyframes pulseKritik { 
+            from { box-shadow: 0 0 5px rgba(255, 68, 68, 0.2); background: rgba(255, 68, 68, 0.02); } 
+            to { box-shadow: 0 0 20px rgba(255, 68, 68, 0.5); background: rgba(255, 68, 68, 0.08); } 
+        }
+
+        .kpi-card h4 { color: #a0a0c0; margin-bottom: 10px; font-weight: normal; }
+        .kpi-card h2 { font-size: 28px; color: #00f0ff; transition: 0.5s; }
+        
+        .table-container { background: rgba(255, 255, 255, 0.02); padding: 20px; border-radius: 12px; border: 1px solid #333; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 15px; border-bottom: 1px solid #444; color: #a200ff; font-family: 'Orbitron'; }
+        td { padding: 15px; border-bottom: 1px solid #222; }
+        .btn-detay { background: linear-gradient(90deg, #a200ff, #00f0ff); border: none; color: #fff; font-family: 'Orbitron'; font-weight: bold; padding: 8px 12px; border-radius: 5px; cursor: pointer; transition: 0.3s; font-size: 13px; }
+        .btn-detay:hover { opacity: 0.8; box-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+        .risk-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; }
+
+        .log-item { background: rgba(255,255,255,0.05); padding: 15px; border-left: 4px solid #00f0ff; margin-bottom: 10px; border-radius: 4px; display: flex; justify-content: space-between; transition: 0.3s;}
+        .log-item:hover { background: rgba(0, 240, 255, 0.05); transform: translateX(5px); }
+        .log-time { color: #a0a0c0; font-size: 12px; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal-content { background: #0a0a1a; border: 1px solid #00f0ff; border-radius: 12px; width: 750px; max-width: 95%; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 40px rgba(0, 240, 255, 0.2); }
+        .modal-header { background: rgba(0, 240, 255, 0.1); padding: 20px; border-bottom: 1px solid #00f0ff; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-family: 'Orbitron'; color: #00f0ff; margin: 0; }
+        .btn-kapat { background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+        .modal-body { padding: 20px; max-height: 70vh; overflow-y: auto; }
+        
+        .btn-aksiyon { padding: 8px 15px; font-family: 'Orbitron'; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .btn-al { background: #44ff44; color: #000; }
+        .btn-al:hover { background: #22cc22; box-shadow: 0 0 10px #44ff44; }
+        .btn-uret { background: #ffcc00; color: #000; }
+        .btn-uret:hover { background: #ccaa00; box-shadow: 0 0 10px #ffcc00; }
+        .btn-aksiyon:disabled { background: #555 !important; color: #888 !important; cursor: not-allowed; box-shadow: none !important; }
+        
+        .modal-table { width: 100%; border-collapse: collapse; margin-top: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; overflow: hidden; }
+        .modal-table th { background: rgba(0, 240, 255, 0.05); padding: 12px; border-bottom: 1px solid #444; color: #00f0ff; font-size: 14px; }
+        .modal-table td { padding: 12px; border-bottom: 1px solid #222; font-size: 15px; vertical-align: middle; }
+        .modal-table tr:last-child td { border-bottom: none; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">NOVA<span>RADAR</span></div>
+        <div class="menu-item active" onclick="sekmeyeGec('tab-ozet', this)">🏠 Genel Bakış</div>
+        <div class="menu-item" onclick="sekmeyeGec('tab-envanter', this)">📦 Envanter Yönetimi</div>
+        <div class="menu-item" onclick="sekmeyeGec('tab-raporlar', this)">📊 İşlem Raporları</div>
+        <div style="margin-top: auto;">
+            <div class="menu-item" style="color:#ff4444;" onclick="cikisYap()">🚪 Güvenli Çıkış</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="header-text">
+                <p id="subTitle">🪐 Operations Center</p>
+                <h1>Sistem Yöneticisi Paneli</h1>
+            </div>
+            <div class="yetki-rozet" id="rozetYetki">✔️ KİLİTLİ OTURUM</div>
+        </div>
+
+        <div id="tab-ozet" class="tab-content active">
+            <div class="kpi-grid">
+                <div class="kpi-card"><h4>Yönetilen Kaynak</h4><h2 id="kpiKaynak">5</h2></div>
+                <div class="kpi-card" id="kartKritik"><h4>Kritik Uyarı</h4><h2 id="kpiKritik" style="color:#ff4444;">0</h2></div>
+                <div class="kpi-card" id="kartButce"><h4>Bölgesel Bütçe (CR)</h4><h2 id="kpiButce">24,500,000</h2></div>
+                <div class="kpi-card" style="border-color: #00f0ff;"><h4>Sistem Durumu</h4><h2 style="color:#00f0ff;">Aktif</h2></div>
+            </div>
+            
+            <div style="background: rgba(162, 0, 255, 0.1); border-left: 4px solid #a200ff; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:10px;">
+                    <h3 style="color:#a200ff; font-family:'Orbitron'; margin:0;">🤖 NOVA-AI SİSTEM ANALİZİ</h3>
+                    <button class="btn-detay" style="background: #a200ff; border: 1px solid #fff; box-shadow: 0 0 10px rgba(162,0,255,0.5);" onclick="geminiAnaliziIste()">Yapay Zekaya Danış 🧠</button>
+                </div>
+                <p style="color:#ccc; line-height:1.6;" id="aiGenelOzet">Sistem verileri hazır. Güncel bir strateji raporu için yapay zekaya danışın.</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                <div class="table-container">
+                    <h3 style="font-family:'Orbitron'; color:#00f0ff; margin-bottom:15px;">📉 Bütçe Finans Trendi (Haftalık)</h3>
+                    <canvas id="butceGrafik" height="90"></canvas>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
+                        <div style="background: rgba(68, 255, 68, 0.05); border: 1px solid #44ff44; padding: 10px; border-radius: 8px; text-align: center;">
+                            <h5 style="color:#aaa; font-size:11px;">GÜNLÜK GİDER</h5>
+                            <h3 style="color:#44ff44;">-125k CR</h3>
+                        </div>
+                        <div style="background: rgba(162, 0, 255, 0.05); border: 1px solid #a200ff; padding: 10px; border-radius: 8px; text-align: center;">
+                            <h5 style="color:#aaa; font-size:11px;">HAFTALIK TREND</h5>
+                            <h3 style="color:#a200ff;">% -2.4</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(180deg, rgba(20,20,30,1) 0%, rgba(30,30,45,0.5) 100%);">
+                    <h3 style="font-family:'Orbitron'; color:#ffcc00; margin-bottom:15px; text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);">⚙️ AI Proaktif Mod</h3>
+                    <p style="font-size:13px; color:#aaa; margin-bottom:20px; padding: 0 15px;">Kritik stok durumunda sistemi güvenceye alan otonom emir devresi:</p>
+                    
+                    <div style="background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 10px; border: 1px solid #333;">
+                        <input type="checkbox" id="proaktifCheckbox" checked style="transform: scale(1.8); cursor: pointer; margin-bottom: 10px;">
+                        <div style="font-weight:bold; color:#44ff44; letter-spacing: 2px; font-size: 14px; margin-top: 5px;">SİSTEM OTONOMDA</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-envanter" class="tab-content">
+            <div class="table-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="font-family: 'Orbitron';" id="tabloBaslik">📦 Envanter Verileri</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Kaynak</th><th>Stok (Birim)</th><th>Tüketim (Gün)</th><th>Kalan Süre</th><th>Durum</th><th>Operasyon Merkezi</th></tr>
+                    </thead>
+                    <tbody id="tabloGovdesi"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-raporlar" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom:20px;">
+                <h2 style="font-family:'Orbitron'; color:#00f0ff;">Geçmiş Lojistik Operasyonları</h2>
+                <button class="btn-detay" style="background: linear-gradient(90deg, #ffcc00, #ff8800); color: #000;" onclick="logAnaliziYap()">📊 Operasyonel Verimlilik Raporu Al</button>
+            </div>
+            
+            <div id="logAiAnalizi" style="margin-bottom: 20px; padding: 15px; background: rgba(255,204,0,0.1); border-left: 4px solid #ffcc00; border-radius: 8px; display: none;"></div>
+
+            <div id="logKutusu">
+                <p style="color:#aaa;">Henüz bir işlem gerçekleştirilmedi.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="aksiyonModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalBaslik">Operasyon Merkezi</h2>
+                <button class="btn-kapat" onclick="modalKapat('aksiyonModal')">✖</button>
+            </div>
+            <div class="modal-body">
+                <p id="aiYorumu" style="color:#ccc; font-size:14px; margin-bottom:5px;"></p>
+                <div id="fiyatListesi"></div>
+            </div>
+        </div>
+    </div>
+
+   <div id="trendModal" class="modal">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header">
+                <h2 id="trendBaslik">📈 Stok Erime Projeksiyonu</h2>
+                <button class="btn-kapat" onclick="modalKapat('trendModal')">✖</button>
+            </div>
+            <div class="modal-body">
+                <p style="color:#aaa; font-size:13px; margin-bottom:15px; text-align:center;">Önümüzdeki 7 gün için öngörülen stok tükenme grafiği.</p>
+                <canvas id="kaynakTrendGrafik" height="150"></canvas>
+                <div id="trendAiYorumu" style="margin-top:20px; padding:15px; background:rgba(0,240,255,0.05); border:1px solid #00f0ff; border-radius:8px; font-size:14px; color:#00f0ff; text-align:center;">
+                    AI Projeksiyonu yükleniyor...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const varsayilanDB = {
+            "Merkür": { kaynaklar: [ { id: "titanyum", isim: "Titanyum", stok: 1500, tuketim: 50, fiyat: 11000, teslim: "3 Gün" }, { id: "demir", isim: "Demir", stok: 8000, tuketim: 200, fiyat: 120, teslim: "2 Gün" }, { id: "silikat", isim: "Silikat", stok: 500, tuketim: 100, fiyat: 400, teslim: "4 Gün" }, { id: "radyum", isim: "Radyum", stok: 20, tuketim: 5, fiyat: 45000, teslim: "7 Gün" }, { id: "bakir", isim: "Bakır", stok: 3000, tuketim: 120, fiyat: 800, teslim: "3 Gün" } ] },
+            "Venüs": { kaynaklar: [ { id: "karbon", isim: "Karbon", stok: 12000, tuketim: 300, fiyat: 50, teslim: "2 Gün" }, { id: "safir", isim: "Safir", stok: 80, tuketim: 20, fiyat: 5200, teslim: "4 Gün" }, { id: "bakir", isim: "Bakır", stok: 5000, tuketim: 250, fiyat: 780, teslim: "2 Gün" }, { id: "cinko", isim: "Çinko", stok: 4000, tuketim: 100, fiyat: 300, teslim: "3 Gün" }, { id: "kursun", isim: "Kurşun", stok: 6000, tuketim: 150, fiyat: 200, teslim: "4 Gün" } ] },
+            "Dünya": { kaynaklar: [ { id: "su", isim: "Su", stok: 50000, tuketim: 1000, fiyat: 10, teslim: "1 Gün" }, { id: "oksijen", isim: "Oksijen", stok: 45000, tuketim: 800, fiyat: 15, teslim: "1 Gün" }, { id: "lityum", isim: "Lityum", stok: 350, tuketim: 100, fiyat: 3200, teslim: "2 Gün" }, { id: "altin", isim: "Altın", stok: 800, tuketim: 10, fiyat: 8500, teslim: "2 Gün" }, { id: "demir", isim: "Demir", stok: 15000, tuketim: 400, fiyat: 100, teslim: "1 Gün" } ] },
+            "Mars": { kaynaklar: [ { id: "safir", isim: "Safir", stok: 420, tuketim: 90, fiyat: 5000, teslim: "Anında" }, { id: "kizilkum", isim: "Kızıl Kum", stok: 12500, tuketim: 150, fiyat: 120, teslim: "Anında" }, { id: "demiroksit", isim: "Demir Oksit", stok: 800, tuketim: 40, fiyat: 850, teslim: "Anında" }, { id: "titanyum", isim: "Titanyum", stok: 50, tuketim: 10, fiyat: 12000, teslim: "Anında" }, { id: "lityum", isim: "Lityum", stok: 1200, tuketim: 50, fiyat: 3400, teslim: "Anında" } ] },
+            "Jüpiter": { kaynaklar: [ { id: "hidrojen", isim: "Hidrojen", stok: 80000, tuketim: 2000, fiyat: 8, teslim: "5 Gün" }, { id: "helyum3", isim: "Helyum-3", stok: 150, tuketim: 300, fiyat: 14000, teslim: "6 Gün" }, { id: "amonyak", isim: "Amonyak", stok: 6000, tuketim: 120, fiyat: 250, teslim: "5 Gün" }, { id: "elmas", isim: "Elmas", stok: 200, tuketim: 5, fiyat: 25000, teslim: "7 Gün" }, { id: "metan", isim: "Metan", stok: 25000, tuketim: 400, fiyat: 40, teslim: "5 Gün" } ] },
+            "Satürn": { kaynaklar: [ { id: "helyum3", isim: "Helyum-3", stok: 18000, tuketim: 400, fiyat: 13500, teslim: "7 Gün" }, { id: "su", isim: "Saf Su", stok: 30000, tuketim: 500, fiyat: 12, teslim: "8 Gün" }, { id: "metan", isim: "Metan", stok: 20000, tuketim: 300, fiyat: 45, teslim: "8 Gün" }, { id: "karbon", isim: "Karbon", stok: 8000, tuketim: 150, fiyat: 55, teslim: "7 Gün" }, { id: "kukurt", isim: "Kükürt", stok: 4500, tuketim: 90, fiyat: 180, teslim: "7 Gün" } ] },
+            "Uranüs": { kaynaklar: [ { id: "amonyak", isim: "Amonyak Buzu", stok: 12000, tuketim: 200, fiyat: 230, teslim: "10 Gün" }, { id: "metan", isim: "Metan Buzu", stok: 15000, tuketim: 250, fiyat: 50, teslim: "10 Gün" }, { id: "trityum", isim: "Trityum", stok: 80, tuketim: 15, fiyat: 18000, teslim: "12 Gün" }, { id: "hidrojen", isim: "Hidrojen", stok: 40000, tuketim: 800, fiyat: 9, teslim: "10 Gün" }, { id: "safir", isim: "Safir", stok: 300, tuketim: 5, fiyat: 4800, teslim: "11 Gün" } ] },
+            "Neptün": { kaynaklar: [ { id: "nitrojen", isim: "Nitrojen", stok: 22000, tuketim: 400, fiyat: 60, teslim: "14 Gün" }, { id: "su", isim: "Su Buzu", stok: 18000, tuketim: 300, fiyat: 15, teslim: "15 Gün" }, { id: "paladyum", isim: "Paladyum", stok: 40, tuketim: 10, fiyat: 15000, teslim: "16 Gün" }, { id: "titanyum", isim: "Titanyum", stok: 2500, tuketim: 40, fiyat: 10500, teslim: "14 Gün" }, { id: "elmas", isim: "Elmas", stok: 500, tuketim: 8, fiyat: 24000, teslim: "15 Gün" } ] }
+        };
+
+        let aktifGezegen = localStorage.getItem("aktifOturum") || "Mars";
+        let galaksiDB = JSON.parse(localStorage.getItem("galaksiHafizasi")) || varsayilanDB;
+        
+        let sirketButcesi = parseFloat(localStorage.getItem("butce_" + aktifGezegen)) || 24500000;
+        let islemGecmisi = JSON.parse(localStorage.getItem("log_" + aktifGezegen)) || [];
+
+        let trendChartObj = null;
+
+        function verileriHafizayaKaydet() {
+            localStorage.setItem("galaksiHafizasi", JSON.stringify(galaksiDB));
+            localStorage.setItem("butce_" + aktifGezegen, sirketButcesi.toString());
+            localStorage.setItem("log_" + aktifGezegen, JSON.stringify(islemGecmisi));
+        }
+
+        window.onload = () => {
+            document.getElementById("subTitle").innerText = `🪐 ${aktifGezegen} Operations Center`;
+            document.getElementById("rozetYetki").innerText = `✔️ KİLİTLİ OTURUM: ${aktifGezegen.toUpperCase()} YETKİSİ`;
+            document.getElementById("tabloBaslik").innerText = `📦 ${aktifGezegen} Envanter Verileri`;
+            
+            document.getElementById('proaktifCheckbox').addEventListener('change', arayuzuGuncelle);
+            
+            arayuzuGuncelle();
+            loglariEkranaBas(); 
+            anaGrafigiYükle();
+
+            setInterval(() => {
+                let degisimOldu = false;
+                galaksiDB[aktifGezegen].kaynaklar.forEach(kaynak => {
+                    if(kaynak.stok > 0) {
+                        let saatlikTuketim = Math.max(1, Math.floor(kaynak.tuketim / 24)); 
+                        kaynak.stok -= saatlikTuketim;
+                        if(kaynak.stok < 0) kaynak.stok = 0;
+                        degisimOldu = true;
+                    }
+                });
+
+                if(degisimOldu) {
+                    arayuzuGuncelle(); 
+                }
+            }, 5000); 
+        };
+
+        function sekmeyeGec(sekmeId, secilenMenu) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(menu => menu.classList.remove('active'));
+            document.getElementById(sekmeId).classList.add('active');
+            if(secilenMenu) secilenMenu.classList.add('active');
+        }
+
+        function arayuzuGuncelle() {
+            const tablo = document.getElementById("tabloGovdesi");
+            tablo.innerHTML = "";
+            let kritikSayisi = 0;
+            const isProaktifMod = document.getElementById('proaktifCheckbox').checked;
+
+            galaksiDB[aktifGezegen].kaynaklar.forEach((kaynak) => {
+                if (kaynak.stok < 0) { kaynak.stok = 0; }
+
+                const kalanGun = Math.floor(kaynak.stok / kaynak.tuketim);
+                let riskText = "Stabil"; let renk = "#44ff44";
+                
+                if (kalanGun < 6) { riskText = "Kritik"; renk = "#ff4444"; kritikSayisi++; } 
+                else if (kalanGun < 15) { riskText = "Uyarı"; renk = "#ffcc00"; }
+
+                tablo.innerHTML += `
+                    <tr>
+                        <td style="color:#00f0ff; font-weight:bold;">${kaynak.isim}</td>
+                        <td style="font-weight:bold; font-size:16px;">${kaynak.stok}</td>
+                        <td>${kaynak.tuketim}</td>
+                        <td style="color:${renk}; font-weight:bold;">${kalanGun} Gün</td>
+                        <td><span class="risk-dot" style="background:${renk}; box-shadow: 0 0 5px ${renk};"></span> ${riskText}</td>
+                        <td>
+                          <button class="btn-detay" style="background: linear-gradient(90deg, #ffcc00, #ff8800); color: #000; margin-right: 8px;" onclick="trendGoster('${kaynak.isim}', ${kaynak.stok}, ${kaynak.tuketim})">📈 Trend</button>
+                          <button class="btn-detay" onclick="operasyonAc('${kaynak.id}', '${kaynak.isim}')">Piyasayı Gör</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById("kpiKritik").innerText = kritikSayisi;
+            document.getElementById("kpiButce").innerText = sirketButcesi.toLocaleString('en-US');
+            
+            const kKart = document.getElementById("kartKritik");
+            if (kritikSayisi > 0) { kKart.classList.add("kritik-aktif"); } 
+            else { kKart.classList.remove("kritik-aktif"); }
+
+            const aiKutu = document.getElementById("aiGenelOzet");
+            // Sadece AI analizi henüz yapılmamışsa veya sistem temizlenmişse bu metni bas
+            if (!aiKutu.innerHTML.includes("[Canlı AI Raporu]")) {
+                if (kritikSayisi > 0 && isProaktifMod) {
+                    aiKutu.innerHTML = `⚠️ <span style="color:#ff4444;">DİKKAT: ${kritikSayisi} adet kaynak kritik seviyede!</span> Acil eylem planı için hemen yapay zekaya danışın.`;
+                } else {
+                    aiKutu.innerHTML = `Sistem verileri stabil. Güncel bir lojistik stratejisi için yapay zekaya danışın.`;
+                }
+            }
+                
+            verileriHafizayaKaydet();
+        }
+
+        async function geminiAnaliziIste() {
+            // ŞİFRENİ BURAYA YAPIŞTIR (Tırnak işaretlerini silme)
+            const API_KEY = "BURAYA_KEY_GELECEK"; 
+            
+            const aiKutusu = document.getElementById("aiGenelOzet");
+            const isProaktifMod = document.getElementById('proaktifCheckbox').checked;
+            
+            aiKutusu.innerHTML = `<span style="color:#00f0ff;">NovaAI galaktik ağa bağlanıyor ve verileri analiz ediyor... Lütfen bekleyin ⏳</span>`;
+
+            let kritikSayisi = 0;
+            let kritikKaynakIsimleri = [];
+            galaksiDB[aktifGezegen].kaynaklar.forEach(k => {
+                if ((k.stok / k.tuketim) < 6) {
+                    kritikSayisi++;
+                    kritikKaynakIsimleri.push(k.isim);
+                }
+            });
+
+            let promptMetni = `Sen NovaRadar adlı uzay lojistik sisteminin yapay zeka asistanısın. Şu an ${aktifGezegen} üssünün verilerini inceliyorsun. Bütçemiz ${sirketButcesi.toLocaleString()} CR. `;
+            
+            if (kritikSayisi > 0) {
+                promptMetni += `Sistemde kritik seviyeye düşen kaynaklar var: ${kritikKaynakIsimleri.join(", ")}. Yöneticiye kısa, profesyonel, bilimkurgu temalı ve acil müdahale tavsiyesi içeren 2 cümlelik bir kriz raporu sun. Asla markdown, yıldız veya kalın yazı kullanma, düz metin olsun.`;
+            } else {
+                promptMetni += `Sistemdeki tüm kaynaklar stabil durumda. Yöneticiye işlerin yolunda olduğunu belirten, bütçeyi koruması gerektiğini hatırlatan, kısa, profesyonel ve bilimkurgu temalı 2 cümlelik bir durum raporu sun. Asla markdown, yıldız veya kalın yazı kullanma, düz metin olsun.`;
+            }
+
+            try {
+                // En stabil model uç noktası
+                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+                
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptMetni }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if(data.error) {
+                    aiKutusu.innerHTML = `⚠️ API Bağlantı Hatası: ${data.error.message}`;
+                    return;
+                }
+
+                const geminiCevabi = data.candidates[0].content.parts[0].text;
+                let finalHTML = `<strong style="color:#a200ff;">[Canlı AI Raporu]:</strong> ${geminiCevabi}`;
+                
+                if (kritikSayisi > 0 && isProaktifMod) {
+                    finalHTML += `<br><br><button class="btn-detay" style="background: linear-gradient(90deg, #ff4444, #a200ff); font-size:12px; letter-spacing:1px;" onclick="sekmeyeGec('tab-envanter', document.querySelectorAll('.menu-item')[1])">🚨 ACİL MÜDAHALE ET</button>`;
+                }
+
+                aiKutusu.innerHTML = finalHTML;
+
+            } catch (error) {
+                console.error("Yapay zeka bağlantı hatası:", error);
+                aiKutusu.innerHTML = "⚠️ Yapay Zeka ağına şu an ulaşılamıyor. Lütfen verileri manuel inceleyin.";
+            }
+        }
+
+        function trendGoster(isim, stok, tuketim) {
+            document.getElementById("trendBaslik").innerText = `📈 ${isim} Erime Projeksiyonu`;
+            document.getElementById("trendModal").style.display = "flex";
+
+            const ctx = document.getElementById('kaynakTrendGrafik').getContext('2d');
+            
+            let gunler = ['Bugün', '1. Gün', '2. Gün', '3. Gün', '4. Gün', '5. Gün', '6. Gün'];
+            let stokTahminleri = [];
+            let hesaplananStok = stok;
+
+            for(let i=0; i<7; i++) {
+                stokTahminleri.push(Math.max(0, hesaplananStok));
+                hesaplananStok -= tuketim;
+            }
+
+            if (trendChartObj) { trendChartObj.destroy(); }
+
+            trendChartObj = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: gunler,
+                    datasets: [{
+                        label: 'Kalan Stok Tahmini',
+                        data: stokTahminleri,
+                        borderColor: '#ffcc00',
+                        backgroundColor: 'rgba(255, 204, 0, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' }, min: 0 }
+                    }
+                }
+            });
+        }
+
+        function operasyonAc(kaynakId, kaynakIsmi) {
+            document.getElementById("modalBaslik").innerText = `📦 ${kaynakIsmi} Tedarik Ağı`;
+            document.getElementById("aksiyonModal").style.display = "flex";
+            
+            // AI Yorum kutusunu bekleme moduna alıyoruz
+            const aiYorumKutusu = document.getElementById("aiYorumu");
+            aiYorumKutusu.innerHTML = `<span style="color:#00f0ff;">🧠 NovaAI piyasa verilerini analiz ediyor...</span>`;
+
+            let uygunSaticiBulundu = false;
+            let pazarVerileriMetni = `Şu an ${aktifGezegen} üssündeyiz. Bütçemiz: ${sirketButcesi} CR. İhtiyacımız olan kaynak: ${kaynakIsmi}. Pazar durumu şöyle: `;
+            
+            let fiyatHTML = `
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>Tedarikçi Konumu</th>
+                            <th>Mevcut Stok</th>
+                            <th>Teslimat</th>
+                            <th>Birim Maliyet</th>
+                            <th style="text-align:right;">Aksiyon</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            Object.keys(galaksiDB).forEach(saticiGezegen => {
+                if (saticiGezegen !== aktifGezegen) {
+                    const saticiKaynak = galaksiDB[saticiGezegen].kaynaklar.find(k => k.id === kaynakId);
+                    if(saticiKaynak && saticiKaynak.stok > 0) {
+                        uygunSaticiBulundu = true;
+                        let alinabilirMiktar = saticiKaynak.stok >= 100 ? 100 : saticiKaynak.stok;
+                        
+                        // Yapay zekaya göndermek için veriyi metne döküyoruz
+                        pazarVerileriMetni += `${saticiGezegen}'de ${saticiKaynak.fiyat} CR (Teslimat: ${saticiKaynak.teslim}). `;
+
+                        fiyatHTML += `
+                            <tr>
+                                <td>🪐 <b>${saticiGezegen}</b></td>
+                                <td style="font-weight:bold;">${saticiKaynak.stok} Birim</td>
+                                <td style="color:#aaa; font-size:13px;">${saticiKaynak.teslim}</td>
+                                <td style="color:#44ff44; font-weight:bold;">${saticiKaynak.fiyat} CR</td>
+                                <td style="text-align:right;">
+                                    <button class="btn-aksiyon btn-al" onclick="satinAl('${saticiGezegen}', '${kaynakId}', ${alinabilirMiktar}, ${saticiKaynak.fiyat}, this)">${alinabilirMiktar} Birim Al</button>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+            });
+
+            let uretimMaliyeti = 25000;
+            pazarVerileriMetni += `Kendi üssümüzde yerel üretim yaparsak anında teslim alıyoruz ama maliyeti ${uretimMaliyeti} CR. Bana lojistik yöneticisi olarak en mantıklı, en kârlı veya en güvenli seçeneği profesyonel bir dille, 2 cümleyle tavsiye et. Sadece tavsiyeyi söyle. Markdown kullanma.`;
+
+            fiyatHTML += `
+                <tr style="background: rgba(255, 204, 0, 0.05);">
+                    <td>🏭 <b>Yerel Üretim Bandı</b></td>
+                    <td style="color:#ffcc00;">Sınırsız</td>
+                    <td style="color:#aaa; font-size:13px;">Anında İşlem</td>
+                    <td style="color:#ffcc00; font-weight:bold;">${uretimMaliyeti} CR</td>
+                    <td style="text-align:right;">
+                        <button class="btn-aksiyon btn-uret" onclick="uretimYap('${kaynakId}', 50, ${uretimMaliyeti}, this)">50 Birim Üret</button>
+                    </td>
+                </tr>
+            </tbody></table>`;
+
+            document.getElementById("fiyatListesi").innerHTML = fiyatHTML;
+
+            // Piyasada ürün kalmadıysa AI'ı yormaya gerek yok
+            if (!uygunSaticiBulundu) {
+                aiYorumKutusu.innerHTML = `<span style="color:#ffcc00; font-weight:bold;">TEDARİK ZİNCİRİ KOPTU:</span> Dış piyasada kaynak tükendi. Lütfen acil yerel üretim emri veriniz.`;
+            } else {
+                // Her şey tamamsa arka planda Gemini'ye soruyu sor!
+                aiTedarikDanismani(pazarVerileriMetni, aiYorumKutusu);
+            }
+        }
+
+        // Yeni Fonksiyon: Modalin İçindeki Özel Danışman
+        async function aiTedarikDanismani(promptMetni, kutuElementi) {
+            // DİKKAT: Şifreni BURAYA DA yapıştırmalısın! (Tırnakları silmeden)
+            const API_KEY = "BURAYA_KEY_GELECEK"; 
+            
+            // Eğer ana sayfada "gemini-pro" veya başka bir isim çalıştıysa, onu buraya da yazmalısın.
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: promptMetni }] }] })
+                });
+                const data = await response.json();
+                
+                if(data.error) {
+                    // API'den gelen gerçek hatayı doğrudan ekrana yazdırıyoruz!
+                    kutuElementi.innerHTML = `<span style="color:#ff4444;">⚠️ API Hatası: ${data.error.message}</span>`;
+                    return;
+                }
+                const tavsiye = data.candidates[0].content.parts[0].text;
+                kutuElementi.innerHTML = `<span style="color:#a200ff; font-weight:bold;">🧠 AI Danışman:</span> <span style="color:#fff;">${tavsiye}</span>`;
+            } catch (error) {
+                // İnternet veya yazım hatası varsa bunu yazdırır
+                kutuElementi.innerHTML = `<span style="color:#ff4444;">⚠️ Bağlantı Hatası: ${error.message}</span>`;
+            }
+        }
+           
+        function satinAl(saticiGezegen, kaynakId, miktar, birimFiyat, btnElement) {
+            btnElement.disabled = true;
+            btnElement.innerText = "İşleniyor...";
+
+            const saticiKaynak = galaksiDB[saticiGezegen].kaynaklar.find(k => k.id === kaynakId);
+            if (!saticiKaynak || saticiKaynak.stok < miktar) {
+                alert(`⚠️ İŞLEM İPTAL EDİLDİ: ${saticiGezegen} bölgesinde yeterli stok bulunmuyor!`);
+                btnElement.disabled = false; btnElement.innerText = `${miktar} Birim Al`;
+                return;
+            }
+
+            const toplamMaliyet = miktar * birimFiyat;
+            const teslimSuresi = 3;
+
+            if(sirketButcesi < toplamMaliyet) { 
+                alert("Yetersiz Bütçe!"); 
+                btnElement.disabled = false; btnElement.innerText = `${miktar} Birim Al`;
+                return; 
+            }
+
+            const retIhtimali = Math.random();
+            if (retIhtimali < 0.20) {
+                alert(`⚠️ TİCARİ RET ALINDI!\n${saticiGezegen} diplomatik nedenler veya kendi iç stok güvenliği sebebiyle bu kaynağı satmayı reddetti.`);
+                logEkle(`Diplomatik Ret: ${saticiGezegen} satış talebini geri çevirdi.`, 0, "#ff4444");
+                modalKapat('aksiyonModal');
+                return; 
+            }
+
+            saticiKaynak.stok -= miktar;
+            sirketButcesi -= toplamMaliyet;
+
+            let saticiMevcutButce = parseFloat(localStorage.getItem("butce_" + saticiGezegen)) || 24500000;
+            saticiMevcutButce += toplamMaliyet; 
+            localStorage.setItem("butce_" + saticiGezegen, saticiMevcutButce.toString());
+
+            let saticiMevcutLoglar = JSON.parse(localStorage.getItem("log_" + saticiGezegen)) || [];
+            const aktifSaat = new Date().toLocaleTimeString();
+            const saticiLogGirdisi = `
+                <div class="log-item" style="border-left: 4px solid #44ff44;">
+                    <div><span class="log-time">[${aktifSaat}]</span> Satış Yapıldı: ${aktifGezegen} Sektörüne ${miktar} birim ${saticiKaynak.isim} lojistik kargosuyla sevk edildi.</div>
+                    <div style="color:#44ff44; font-weight:bold;">+${toplamMaliyet.toLocaleString()} CR</div>
+                </div>`;
+            saticiMevcutLoglar.unshift(saticiLogGirdisi); 
+            localStorage.setItem("log_" + saticiGezegen, JSON.stringify(saticiMevcutLoglar));
+
+            logEkle(`Sipariş Verildi: ${saticiGezegen}'den ${miktar} birim ${kaynakId} yolda.`, toplamMaliyet, "#ffcc00");
+            alert(`Sipariş Onaylandı!\n${saticiGezegen} bölgesinden ${miktar} birim ${kaynakId} yola çıktı.\nTeslimat süresi: 3 gün.`);
+            
+            btnElement.innerText = `${miktar} Birim Al`;
+            btnElement.disabled = false;
+            
+            islemTamamla();
+        }
+
+        function uretimYap(kaynakId, miktar, maliyet, btnElement) {
+            btnElement.disabled = true;
+            btnElement.innerText = "Üretiliyor...";
+
+            if(sirketButcesi < maliyet) { 
+                alert("Yetersiz Bütçe!"); 
+                btnElement.disabled = false; btnElement.innerText = "50 Birim Üret";
+                return; 
+            }
+            
+            const kaynak = galaksiDB[aktifGezegen].kaynaklar.find(k => k.id === kaynakId);
+            kaynak.stok += miktar;
+            sirketButcesi -= maliyet;
+            logEkle(`İç Üretim: ${aktifGezegen} tesislerinde ${miktar} birim ${kaynak.isim} üretildi.`, maliyet, "#ffcc00");
+            islemTamamla();
+        }
+
+        function islemTamamla() {
+            modalKapat('aksiyonModal'); 
+            arayuzuGuncelle();
+            
+            document.getElementById("aiGenelOzet").innerHTML = `Lojistik işlem tamamlandı. Yeni veriler ışığında strateji oluşturmak için yapay zekaya danışın.`;
+            
+            document.getElementById("kartButce").classList.add("guncellendi");
+            setTimeout(() => { document.getElementById("kartButce").classList.remove("guncellendi"); }, 600);
+        }
+
+        function logEkle(mesaj, maliyet, renk) {
+            const saat = new Date().toLocaleTimeString();
+            const logHTML = `
+                <div class="log-item">
+                    <div><span class="log-time">[${saat}]</span> ${mesaj}</div>
+                    <div style="color:${renk}; font-weight:bold;">-${maliyet.toLocaleString()} CR</div>
+                </div>`;
+            
+            islemGecmisi.unshift(logHTML); 
+            verileriHafizayaKaydet(); 
+            loglariEkranaBas();
+        }
+
+        function loglariEkranaBas() {
+            const logKutusu = document.getElementById("logKutusu");
+            if(islemGecmisi.length > 0) {
+                logKutusu.innerHTML = islemGecmisi.join("");
+            } else {
+                logKutusu.innerHTML = `<p style="color:#aaa;">Henüz bir işlem gerçekleştirilmedi.</p>`;
+            }
+        }
+
+        function modalKapat(modalId) { document.getElementById(modalId).style.display = "none"; }
+        function cikisYap() { window.location.href = "login.html"; }
+
+        function anaGrafigiYükle() {
+            const ctx = document.getElementById('butceGrafik').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                   labels: ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar' ],
+                    datasets: [{
+                        label: 'Kalan Bütçe (Milyon CR)',
+                        data: [25.0, 24.9, 24.8, 24.6, 24.55, 24.5, 24.5],
+                        borderColor: '#a200ff',
+                        backgroundColor: 'rgba(162, 0, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00f0ff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#aaa' } },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, min: 24.0, ticks: { color: '#aaa' } }
+                    }
+                }
+            });
+        }
+
+
+        async function trendYorumuAl(isim, kalanGun) {
+            const API_KEY = "BURAYA_KEY_GELECEK"; 
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            const kutu = document.getElementById("trendAiYorumu");
+            
+            kutu.innerHTML = "🧠 Projeksiyon analiz ediliyor...";
+            let prompt = `Bir uzay istasyonunda ${isim} stoğu ${kalanGun} gün içinde tamamen tükenecek. Bilimkurgu temalı, bu kaynağın bitmesinin üssü nasıl etkileyeceğini söyleyen 2 cümlelik bir risk tahmini yap. Markdown kullanma.`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                if(data.error) throw new Error(data.error.message);
+                kutu.innerHTML = `<strong>NovaAI Risk Tahmini:</strong> ${data.candidates[0].content.parts[0].text}`;
+            } catch (e) {
+                kutu.innerHTML = `⚠️ Tahmin modülü çevrimdışı.`;
+            }
+        }
+
+        // 4. YAPAY ZEKA: LOG (İŞLEM) DENETÇİSİ 
+        async function logAnaliziYap() {
+            const API_KEY = "BURAYA_KEY_GELECEK"; 
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+            const analizKutusu = document.getElementById("logAiAnalizi");
+            
+            analizKutusu.style.display = "block";
+            analizKutusu.innerHTML = `<span style="color:#ffcc00;">🧠 AI Geçmiş operasyonları okuyor ve denetliyor... ⏳</span>`;
+
+            if(islemGecmisi.length === 0) {
+                analizKutusu.innerHTML = "İncelenecek bir lojistik operasyon bulunamadı.";
+                return;
+            }
+
+            let safLoglar = islemGecmisi.slice(0, 8).map(log => log.replace(/<[^>]*>?/gm, '')).join(" | ");
+            let prompt = `Sen katı bir lojistik denetçisisin. Son 8 işlem şunlar: ${safLoglar}. Yöneticiyi bütçe kullanımı ve aldığı kararlar açısından eleştir veya öv. Sonuna 100 üzerinden bir başarı puanı ekle. 3 kısa cümle olsun. Markdown kullanma.`;
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                });
+                const data = await response.json();
+                if(data.error) throw new Error(data.error.message);
+                analizKutusu.innerHTML = `<strong style="color:#ff8800;">Operasyonel Denetim Raporu:</strong> <br>${data.candidates[0].content.parts[0].text}`;
+            } catch (e) {
+                analizKutusu.innerHTML = `⚠️ Denetim modülü şu an kullanılamıyor.`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>NovaRadar | Uzay Lojistik İstasyonu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background: #050510; 
+            color: white; 
+            font-family: 'Rajdhani', sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+        
+        .hero-container { 
+            text-align: center; 
+        }
+
+        .logo-img {
+            width: 150px; 
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(162, 0, 255, 0.4)); /* Logoya hafif bir mor neon gölge ekledim */
+        }
+        
+        h1 { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 72px; 
+            letter-spacing: 8px; 
+            margin: 0; 
+            margin-bottom: 10px;
+        }
+        
+        .nova { color: #00f0ff; }
+        .radar { color: #a200ff; }
+        
+        p { 
+            font-size: 22px; 
+            color: #a0a0c0; 
+            margin-top: 10px; 
+            margin-bottom: 40px; 
+            letter-spacing: 2px;
+        }
+        
+        a {
+            text-decoration: none;
+        }
+
+        .btn-enter { 
+            padding: 15px 40px; 
+            background: transparent; 
+            border: 2px solid #00f0ff; 
+            color: #00f0ff; 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 18px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 5px; /* Daha modern bir buton görünümü */
+        }
+        
+        .btn-enter:hover { 
+            background: #00f0ff; 
+            color: #050510; 
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.5); /* İşte şimdi bu parlama efekti çalışacak! */
+        }
+    </style>
+</head>
+<body>
+    <div class="hero-container">
+        <img src="logo.png" alt="NovaRadar Logo" class="logo-img">
+        
+        <h1><span class="nova">NOVA</span><span class="radar">RADAR</span></h1>
+        
+        <p>Akıllı Tedarik, Sınırsız Verimlilik.</p>
+
+        <a href="login.html">
+            <button class="btn-enter">SİSTEME GİRİŞ YAP</button>
+        </a>
+    </div>
+</body>
+</html>

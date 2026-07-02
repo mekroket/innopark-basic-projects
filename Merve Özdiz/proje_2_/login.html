@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>NovaRadar | Sistem Girişi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #050510; color: #fff; font-family: 'Rajdhani', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .bg-grid { position: absolute; width: 100%; height: 100%; background-image: linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px); background-size: 30px 30px; z-index: -1; }
+        
+        .login-container { background: rgba(20, 20, 40, 0.95); border: 1px solid #00f0ff; padding: 40px; border-radius: 12px; width: 400px; text-align: center; box-shadow: 0 0 30px rgba(0, 240, 255, 0.15); backdrop-filter: blur(10px); }
+        .logo { font-family: 'Orbitron'; font-size: 32px; color: #00f0ff; margin-bottom: 5px; letter-spacing: 3px; }
+        .logo span { color: #a200ff; }
+        
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; color: #a0a0c0; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        select, input { width: 100%; padding: 15px; background: rgba(0, 0, 0, 0.8); border: 1px solid #00f0ff; color: #00f0ff; border-radius: 6px; outline: none; font-family: 'Orbitron', sans-serif; font-size: 16px; box-sizing: border-box; }
+        select { cursor: pointer; appearance: none; text-align: center; }
+        select option { background: #050510; color: #fff; font-family: 'Rajdhani', sans-serif; }
+        input { text-align: center; letter-spacing: 5px; }
+        input::placeholder { color: rgba(0, 240, 255, 0.3); letter-spacing: 2px; }
+
+        .btn-login { width: 100%; padding: 15px; background: transparent; border: 2px solid #a200ff; color: #a200ff; font-family: 'Orbitron'; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 16px; letter-spacing: 1px; margin-top: 10px; }
+        .btn-login:hover { background: rgba(162, 0, 255, 0.2); box-shadow: 0 0 15px rgba(162, 0, 255, 0.4); }
+
+        #durumMesaji { color: #ff4444; font-size: 14px; margin-top: 15px; font-weight: bold; height: 20px; }
+        
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 50% { transform: translateX(10px); } 75% { transform: translateX(-10px); } 100% { transform: translateX(0); } }
+        .shake-effect { animation: shake 0.4s ease-in-out; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+
+    <div class="login-container" id="loginKutusu">
+        <img src="logo.png" alt="Logo" style="width: 80px; margin-bottom: 10px; border-radius: 50%; border: 1px solid #00f0ff;">
+        
+        <div class="logo">NOVA<span>RADAR</span></div>
+        <p style="color:#a0a0c0; margin-bottom:30px; font-size:12px; font-family:'Orbitron'; letter-spacing:2px;">MERKEZİ GÜVENLİK AĞI</p>
+        
+        <div class="form-group">
+            <label>Sektör Seçimi</label>
+            <select id="gezegenSecimi">
+                <option value="Merkür">🪐 Merkür Sektörü</option>
+                <option value="Venüs">🪐 Venüs Sektörü</option>
+                <option value="Dünya">🌍 Dünya Sektörü</option>
+                <option value="Mars" selected>🔴 Mars Sektörü</option>
+                <option value="Jüpiter">🪐 Jüpiter Sektörü</option>
+                <option value="Satürn">🪐 Satürn Sektörü</option>
+                <option value="Uranüs">🪐 Uranüs Sektörü</option>
+                <option value="Neptün">🪐 Neptün Sektörü</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Yönetici Şifresi</label>
+            <input type="password" id="sifreInput" placeholder="Şifrenizi Girin">
+        </div>
+
+        <button class="btn-login" onclick="girisYap(event)">SİSTEME GİRİŞ YAP</button>
+        <div id="durumMesaji"></div>
+    </div>
+
+    <script>
+        // SİSTEM ŞİFRESİ
+        const GECERLI_SIFRE = "2026"; 
+
+        function girisYap(event) {
+            const secilenGezegen = document.getElementById("gezegenSecimi").value;
+            const girilenSifre = document.getElementById("sifreInput").value;
+            const durum = document.getElementById("durumMesaji");
+            const kutu = document.getElementById("loginKutusu");
+
+            // Sunum hilesi: Klavyeden Shift'e basılı tutup tıklarsan şifresiz direkt girer
+            const masterYetkisi = event.shiftKey; 
+
+            if (girilenSifre === GECERLI_SIFRE || masterYetkisi) {
+                durum.style.color = "#44ff44";
+                durum.innerText = "Kimlik Doğrulandı! Yönlendiriliyorsunuz...";
+                localStorage.setItem("aktifOturum", secilenGezegen);
+                
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1000);
+            } else {
+                durum.style.color = "#ff4444";
+                durum.innerText = "Hatalı Şifre! Erişim Reddedildi.";
+                kutu.classList.add("shake-effect");
+                
+                setTimeout(() => {
+                    kutu.classList.remove("shake-effect");
+                    durum.innerText = "";
+                    document.getElementById("sifreInput").value = "";
+                }, 1500);
+            }
+        }
+    </script>
+</body>
+</html>
