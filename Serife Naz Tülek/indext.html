@@ -1,24 +1,1530 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile Card</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Global Startup Intelligence System</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0B0F14;
+            --bg-secondary: #111820;
+            --bg-tertiary: #1a2430;
+            --bg-glass: rgba(255, 255, 255, 0.05);
+            --bg-glass-hover: rgba(255, 255, 255, 0.10);
+            --border-glass: rgba(255, 255, 255, 0.06);
+            --border-glass-hover: rgba(255, 255, 255, 0.15);
+            --text-primary: #f0f0f5;
+            --text-secondary: #b8c4d8;
+            --text-muted: #6a7a8e;
+            --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.50);
+            --card-radius: 24px;
+            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+
+            --neon-pink: #FF4D9D;
+            --soft-purple: #9B6DFF;
+            --electric-blue: #00E5FF;
+            --pink-light: #FFB3C6;
+            --purple-light: #E6D9FF;
+            --blue-light: #A0F0FF;
+            --coral: #FF6B6B;
+            --gold: #FFD93D;
+            --mint: #6BCB77;
+            --orange: #FF8A5C;
+
+            /* Soft pink ticker colors - açık pembe */
+            --ticker-text: #d4c8d8;
+            --ticker-highlight: #ffb8c8;
+            --ticker-tag: #ffccd8;
+            --ticker-separator: rgba(255, 200, 210, 0.15);
+            --ticker-bg: rgba(10, 16, 24, 0.50);
+
+            --gradient-hero: linear-gradient(135deg, rgba(255, 77, 157, 0.30), rgba(155, 109, 255, 0.25), rgba(0, 229, 255, 0.20), rgba(255, 107, 107, 0.15));
+            --gradient-text: linear-gradient(135deg, #FF4D9D, #9B6DFF, #00E5FF, #FF6B6B);
+            --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            --glow-pink: 0 0 50px rgba(255, 77, 157, 0.12);
+            --glow-purple: 0 0 50px rgba(155, 109, 255, 0.12);
+            --glow-blue: 0 0 50px rgba(0, 229, 255, 0.10);
+            --glow-gold: 0 0 50px rgba(255, 217, 61, 0.08);
+            --glow-coral: 0 0 50px rgba(255, 107, 107, 0.08);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8f4fa;
+            --bg-secondary: #f0ecf5;
+            --bg-tertiary: #e8e4f0;
+            --bg-glass: rgba(255, 255, 255, 0.55);
+            --bg-glass-hover: rgba(255, 255, 255, 0.75);
+            --border-glass: rgba(255, 255, 255, 0.50);
+            --border-glass-hover: rgba(255, 255, 255, 0.80);
+            --text-primary: #1a1829;
+            --text-secondary: #4a4560;
+            --text-muted: #7a7590;
+            --shadow-glass: 0 8px 32px rgba(155, 109, 255, 0.10);
+            --gradient-card: linear-gradient(145deg, rgba(255, 255, 255, 0.70), rgba(255, 255, 255, 0.40));
+            --glow-pink: 0 0 40px rgba(255, 77, 157, 0.08);
+            --glow-purple: 0 0 40px rgba(155, 109, 255, 0.10);
+            --glow-blue: 0 0 40px rgba(0, 229, 255, 0.06);
+            --glow-gold: 0 0 40px rgba(255, 217, 61, 0.06);
+            --glow-coral: 0 0 40px rgba(255, 107, 107, 0.06);
+            --ticker-text: #8a7a8a;
+            --ticker-highlight: #d48a9a;
+            --ticker-tag: #e8aab8;
+            --ticker-separator: rgba(180, 120, 140, 0.15);
+            --ticker-bg: rgba(240, 235, 245, 0.70);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding: 0 20px;
+            transition: background 0.4s ease, color 0.3s ease;
+            min-height: 100vh;
+        }
+
+        ::selection {
+            background: var(--neon-pink);
+            color: #fff;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            cursor: pointer;
+            font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-pink);
+            border-radius: 12px;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-glass);
+            border-radius: var(--card-radius);
+            transition: var(--transition);
+        }
+
+        .glass:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-glass-hover);
+        }
+
+        /* ─── TICKER - SOFT PİNK ─── */
+        .ticker-wrap {
+            background: var(--ticker-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-glass);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 12px 0;
+            font-family: "JetBrains Mono", monospace;
+            font-size: 13px;
+            transition: background 0.4s ease;
+            position: relative;
+        }
+
+        .ticker-wrap::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(to right, var(--ticker-bg), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ticker-wrap::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 80px;
+            background: linear-gradient(to left, var(--ticker-bg), transparent);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .ticker {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 60s linear infinite;
+        }
+
+        .ticker:hover {
+            animation-play-state: paused;
+        }
+
+        .ticker span {
+            margin-right: 52px;
+            color: var(--ticker-text);
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            font-size: 12.5px;
+        }
+
+        .ticker span b {
+            color: var(--ticker-highlight);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            font-size: 13px;
+        }
+
+        .ticker span .tag-code {
+            color: var(--ticker-tag);
+            font-weight: 500;
+            background: rgba(255, 200, 210, 0.08);
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 200, 210, 0.10);
+            margin-right: 6px;
+            font-size: 11px;
+            letter-spacing: 0.04em;
+        }
+
+        .ticker span .separator {
+            color: var(--ticker-separator);
+            margin: 0 8px;
+            font-weight: 300;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* ─── NAV ─── */
+        nav {
+            padding: 16px 0;
+            position: sticky;
+            top: 12px;
+            z-index: 999;
+            margin-bottom: 10px;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 28px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(24px) saturate(1.5);
+            -webkit-backdrop-filter: blur(24px) saturate(1.5);
+            border-radius: 60px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-glass);
+            transition: var(--transition);
+        }
+
+        .nav-inner:hover {
+            border-color: var(--border-glass-hover);
+        }
+
+        .logo {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 0.02em;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            -webkit-text-fill-color: var(--neon-pink);
+            font-size: 1.3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            letter-spacing: 0.01em;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 4px 24px rgba(255, 77, 157, 0.25);
+        }
+
+        .nav-cta {
+            background: var(--gradient-text) !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            padding: 8px 22px !important;
+            border-radius: 40px !important;
+            box-shadow: 0 4px 24px rgba(255, 77, 157, 0.20);
+            transition: var(--transition);
+        }
+        .nav-cta:hover {
+            transform: scale(1.04);
+            box-shadow: 0 6px 32px rgba(255, 77, 157, 0.35);
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            background: none;
+            border: none;
+            padding: 4px 8px;
+        }
+
+        .theme-toggle {
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 40px;
+            padding: 6px 14px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .theme-toggle:hover {
+            border-color: var(--neon-pink);
+            color: var(--text-primary);
+        }
+
+        /* ─── PAGES ─── */
+        .page {
+            display: none;
+            animation: pageIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            padding: 20px 0 60px;
+        }
+        .page.active {
+            display: block;
+        }
+
+        @keyframes pageIn {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            background: var(--bg-secondary);
+            border-radius: 48px;
+            padding: 70px 50px 60px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-glass);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background: conic-gradient(from 0deg, rgba(255, 77, 157, 0.15), rgba(155, 109, 255, 0.12), rgba(0, 229, 255, 0.10), rgba(255, 107, 107, 0.08), rgba(255, 217, 61, 0.06), rgba(255, 77, 157, 0.15));
+            animation: heroSpin 25s linear infinite;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 25%, rgba(255, 77, 157, 0.25) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 30%, rgba(155, 109, 255, 0.20) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 85%, rgba(0, 229, 255, 0.18) 0%, transparent 45%),
+                radial-gradient(ellipse at 75% 70%, rgba(255, 217, 61, 0.10) 0%, transparent 40%),
+                radial-gradient(ellipse at 25% 80%, rgba(255, 107, 107, 0.08) 0%, transparent 35%);
+            pointer-events: none;
+            animation: glowPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroSpin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+        }
+
+        .hero h1 {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 .gradient-text {
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textShimmer 5s ease-in-out infinite;
+        }
+
+        @keyframes textShimmer {
+            0%,
+            100% {
+                filter: hue-rotate(0deg) brightness(1);
+            }
+            50% {
+                filter: hue-rotate(20deg) brightness(1.1);
+            }
+        }
+
+        .hero h1 .sub-text {
+            color: var(--text-secondary);
+            font-weight: 700;
+            -webkit-text-fill-color: var(--text-secondary);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin-bottom: 28px;
+            font-weight: 400;
+        }
+
+        .hero-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn-primary {
+            padding: 14px 38px;
+            border-radius: 60px;
+            background: var(--gradient-text);
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 6px 28px rgba(255, 77, 157, 0.25);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            transform: scale(1.04) translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 77, 157, 0.35);
+        }
+
+        .btn-secondary {
+            padding: 14px 34px;
+            border-radius: 60px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-glass);
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-secondary:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--border-glass-hover);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 36px;
+            flex-wrap: wrap;
+        }
+        .hero-stats div {
+            display: flex;
+            flex-direction: column;
+        }
+        .hero-stats strong {
+            font-family: "Orbitron", sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-stats span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .hero-floating {
+            position: absolute;
+            right: 30px;
+            top: 40px;
+            width: 200px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero-floating .float-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border-radius: 18px;
+            padding: 14px 18px;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--shadow-glass);
+            margin-bottom: 14px;
+            animation: float 6s ease-in-out infinite;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .hero-floating .float-card i {
+            margin-right: 8px;
+        }
+        .hero-floating .float-card .highlight {
+            font-weight: 600;
+        }
+        .hero-floating .float-card .highlight.pink {
+            color: var(--neon-pink);
+        }
+        .hero-floating .float-card .highlight.purple {
+            color: var(--soft-purple);
+        }
+        .hero-floating .float-card .highlight.blue {
+            color: var(--electric-blue);
+        }
+        .hero-floating .float-card .highlight.gold {
+            color: var(--gold);
+        }
+        .hero-floating .float-card:nth-child(2) {
+            animation-delay: 1.2s;
+            margin-left: 30px;
+        }
+        .hero-floating .float-card:nth-child(3) {
+            animation-delay: 2.4s;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ─── SECTION TITLE ─── */
+        .section-title {
+            font-family: "Orbitron", sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title i {
+            color: var(--neon-pink);
+        }
+        .section-title .badge {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.65rem;
+            background: var(--bg-glass);
+            padding: 2px 14px;
+            border-radius: 40px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-glass);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* ─── CARDS GRID ─── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--gradient-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--card-radius);
+            padding: 24px 22px;
+            box-shadow: var(--shadow-glass);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--card-radius);
+            padding: 1px;
+            background: var(--gradient-text);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: var(--transition);
+            pointer-events: none;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-glass), var(--glow-pink), var(--glow-purple), var(--glow-blue);
+            border-color: var(--border-glass-hover);
+            background: var(--bg-glass-hover);
+        }
+
+        .card .tag {
+            font-family: "JetBrains Mono", monospace;
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .card .tag.pink {
+            background: rgba(255, 77, 157, 0.20);
+            color: var(--neon-pink);
+        }
+        .card .tag.purple {
+            background: rgba(155, 109, 255, 0.20);
+            color: var(--soft-purple);
+        }
+        .card .tag.blue {
+            background: rgba(0, 229, 255, 0.15);
+            color: var(--electric-blue);
+        }
+        .card .tag.gold {
+            background: rgba(255, 217, 61, 0.18);
+            color: var(--gold);
+        }
+        .card .tag.coral {
+            background: rgba(255, 107, 107, 0.18);
+            color: var(--coral);
+        }
+        .card .tag.mint {
+            background: rgba(107, 203, 119, 0.18);
+            color: var(--mint);
+        }
+        .card .tag.orange {
+            background: rgba(255, 138, 92, 0.18);
+            color: var(--orange);
+        }
+
+        .card h3 {
+            font-family: "Orbitron", sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.01em;
+        }
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        .card .meta {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .card .card-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .card .card-actions .btn-sm {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .card .card-actions .btn-sm:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--neon-pink);
+            color: var(--text-primary);
+            transform: scale(1.03);
+        }
+
+        /* ─── DASHBOARD ─── */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .dash-stat {
+            background: var(--gradient-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 20px 18px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .dash-stat:hover {
+            border-color: var(--border-glass-hover);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-purple);
+        }
+        .dash-stat .number {
+            font-family: "Orbitron", sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .dash-stat .label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+
+        /* ─── HABERLER ─── */
+        .news-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 28px;
+        }
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .news-item {
+            background: var(--gradient-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 18px 22px;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+        .news-item:hover {
+            transform: translateX(6px);
+            border-color: var(--border-glass-hover);
+            box-shadow: var(--glow-pink);
+        }
+
+        .news-item .news-image {
+            width: 100%;
+            height: 160px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .news-item .news-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .news-item:hover .news-image img {
+            transform: scale(1.03);
+        }
+
+        .news-item .news-image .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--text-muted);
+            background: var(--gradient-card);
+            border: 1px solid var(--border-glass);
+        }
+
+        .news-item h4 {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .news-item .source {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .news-ticker {
+            background: var(--gradient-card);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 22px 24px;
+            border: 1px solid var(--border-glass);
+            max-height: 480px;
+            overflow-y: auto;
+        }
+        .news-ticker .ticker-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .news-ticker .ticker-item:last-child {
+            border-bottom: none;
+        }
+        .news-ticker .ticker-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+        .news-ticker .ticker-item .dot.pink {
+            background: var(--neon-pink);
+            box-shadow: 0 0 12px rgba(255, 77, 157, 0.30);
+        }
+        .news-ticker .ticker-item .dot.purple {
+            background: var(--soft-purple);
+            box-shadow: 0 0 12px rgba(155, 109, 255, 0.30);
+        }
+        .news-ticker .ticker-item .dot.blue {
+            background: var(--electric-blue);
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+        }
+        .news-ticker .ticker-item .dot.gold {
+            background: var(--gold);
+            box-shadow: 0 0 12px rgba(255, 217, 61, 0.25);
+        }
+
+        .news-ticker .ticker-item strong {
+            color: var(--text-primary);
+        }
+
+        /* ─── VC CARDS ─── */
+        .vc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .vc-card {
+            background: var(--gradient-card);
+            backdrop-filter: blur(16px);
+            border-radius: var(--card-radius);
+            padding: 22px 20px;
+            border: 1px solid var(--border-glass);
+            text-align: center;
+            transition: var(--transition);
+        }
+        .vc-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-glass-hover);
+            box-shadow: var(--glow-blue);
+        }
+        .vc-card .avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--gradient-text);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Orbitron", sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .vc-card h4 {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .vc-card .vc-tag {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            background: var(--bg-glass);
+            padding: 2px 14px;
+            border-radius: 40px;
+            display: inline-block;
+            margin: 4px 0 8px;
+            border: 1px solid var(--border-glass);
+        }
+        .vc-card p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* ─── ETKİNLİKLER ─── */
+        .event-grid {
+            display: grid;
+            gap: 16px;
+        }
+        .event-card {
+            background: var(--gradient-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 18px;
+            padding: 18px 22px;
+            transition: var(--transition);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .event-card:hover {
+            border-color: var(--border-glass-hover);
+            box-shadow: var(--glow-gold);
+            transform: translateX(4px);
+        }
+        .event-card h4 {
+            font-family: "Orbitron", sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .event-card .event-meta {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: "JetBrains Mono", monospace;
+        }
+        .event-card .btn-sm {
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            background: var(--bg-glass);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .event-card .btn-sm:hover {
+            background: var(--bg-glass-hover);
+            border-color: var(--neon-pink);
+            color: var(--text-primary);
+        }
+
+        /* ─── COUNTDOWN ─── */
+        .countdown {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin: 14px 0 6px;
+        }
+        .countdown .cd-item {
+            background: var(--bg-glass);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 8px 18px;
+            text-align: center;
+            min-width: 60px;
+            border: 1px solid var(--border-glass);
+        }
+        .countdown .cd-item .num {
+            font-family: "Orbitron", sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .countdown .cd-item .lbl {
+            font-family: "JetBrains Mono", monospace;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1024px) {
+            .news-layout {
+                grid-template-columns: 1fr;
+            }
+            .hero-floating {
+                display: none;
+            }
+            .hero {
+                padding: 40px 28px;
+            }
+            .news-item .news-image {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0 12px;
+            }
+            .nav-inner {
+                padding: 8px 16px;
+                border-radius: 40px;
+                flex-wrap: wrap;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                padding-top: 12px;
+                gap: 2px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links a {
+                padding: 10px 16px;
+                border-radius: 30px;
+                text-align: center;
+            }
+            .nav-toggle {
+                display: block;
+            }
+            .theme-toggle {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .hero-stats {
+                gap: 24px;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .dash-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .vc-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .countdown .cd-item {
+                min-width: 50px;
+                padding: 6px 12px;
+            }
+            .countdown .cd-item .num {
+                font-size: 1.2rem;
+            }
+            .news-item .news-image {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dash-grid {
+                grid-template-columns: 1fr;
+            }
+            .vc-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-btns .btn-primary,
+            .hero-btns .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+            .event-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .news-item .news-image {
+                height: 160px;
+            }
+        }
+
+        .mt-4 {
+            margin-top: 32px;
+        }
+        .mb-4 {
+            margin-bottom: 32px;
+        }
+
+        footer {
+            padding: 28px 0 18px;
+            border-top: 1px solid var(--border-glass);
+            margin-top: 16px;
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
-    <div class="profile-card">
-        <div class="card-header">
-            <div class="picture">
-                <img src="merve.jpeg" alt="Profile">
-            </div>
-            <div class="name">Merve Demir</div>
-            <div class="desc">
-                An artificial intelligences students. In their free time, they enjoy riding a bicycle, making desserts, watching TV series and movies, and reading books. They are also interested in archery. Their favorite song is "Birtanem" by Yaşar. Their favorite movie is Countdown. Their favorite food is anything with meat.
-            </div>
-        </div>
-        <div class="card-footer">
+
+    <!-- ─── SOFT PİNK TICKER ─── -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="tickerContent">
+            <span><span class="tag-code">ULS-FON</span> <b>TÜBİTAK 1512 BİGG</b> <span class="separator">•</span> 2026/2. Dönem çağrısı açıldı</span>
+            <span><span class="tag-code">YAT-AG</span> <b>Revo Capital</b> <span class="separator">•</span> Yeni erken aşama fonunu duyurdu</span>
+            <span><span class="tag-code">INT-FON</span> <b>Horizon Europe</b> <span class="separator">•</span> EIC Accelerator yeni takvim</span>
+            <span><span class="tag-code">ETK-PRG</span> <b>Startup Istanbul</b> <span class="separator">•</span> 2026 kayıtları başladı</span>
+            <span><span class="tag-code">HBR-SOS</span> <b>TechCrunch</b> <span class="separator">•</span> Avrupa girişim yatırımları yükselişte</span>
+            <span><span class="tag-code">ULS-FON</span> <b>KOSGEB KOBİGEL</b> <span class="separator">•</span> Yeni destek bütçesi duyuruldu</span>
+            <span><span class="tag-code">YAT-AG</span> <b>500 Istanbul</b> <span class="separator">•</span> 3 yeni girişime yatırım</span>
+            <span><span class="tag-code">INT-FON</span> <b>ODTÜ Teknokent</b> <span class="separator">•</span> Global program başvuruları</span>
+            <span><span class="tag-code">ETK-PRG</span> <b>Webrazzi Girişim</b> <span class="separator">•</span> Yeni nesil hızlandırma</span>
+            <span><span class="tag-code">HBR-SOS</span> <b>VentureBeat</b> <span class="separator">•</span> Yapay zeka girişimlerine rekor yatırım</span>
         </div>
     </div>
+
+    <!-- ─── NAV ─── -->
+    <nav>
+        <div class="container nav-inner">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                GSIS
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="nav-links" id="navLinks">
+                <a href="#" class="active" data-page="home">Ana Sayfa</a>
+                <a href="#" data-page="vc">VC'ler</a>
+                <a href="#" data-page="events">Etkinlikler</a>
+                <a href="#" data-page="news">Haberler</a>
+                <a href="#" data-page="dashboard">Dashboard</a>
+                <a href="#" class="nav-cta" data-page="vc">Keşfet</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <i class="fas fa-moon"></i>
+                <span id="themeLabel">Koyu</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- ════════════════════════════════════ -->
+        <!-- ANA SAYFA -->
+        <!-- ════════════════════════════════════ -->
+        <section class="page active" id="page-home">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>
+                        <span class="gradient-text">GLOBAL STARTUP</span>
+                        <br />
+                        <span class="sub-text">INTELLIGENCE SYSTEM</span>
+                    </h1>
+                    <p>Fırsatları takip et, fonları keşfet, öne geç.</p>
+                    <div class="hero-btns">
+                        <a href="#" class="btn-primary" data-page="vc">
+                            <i class="fas fa-arrow-right"></i> VC'leri Keşfet
+                        </a>
+                        <a href="#" class="btn-secondary" data-page="events">
+                            <i class="fas fa-calendar"></i> Etkinlikler
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div><strong>1.2k+</strong><span>Günlük Fırsat</span></div>
+                        <div><strong>340+</strong><span>Aktif VC</span></div>
+                        <div><strong>89</strong><span>Yeni Program</span></div>
+                    </div>
+                </div>
+                <div class="hero-floating">
+                    <div class="float-card"><i class="fas fa-bolt" style="color:var(--neon-pink);"></i> <span class="highlight pink">12</span> yeni fon bugün</div>
+                    <div class="float-card"><i class="fas fa-users" style="color:var(--soft-purple);"></i> <span class="highlight purple">8</span> VC yatırım açtı</div>
+                    <div class="float-card"><i class="fas fa-calendar" style="color:var(--electric-blue);"></i> <span class="highlight blue">3</span> etkinlik yaklaşıyor</div>
+                </div>
+            </div>
+
+            <!-- Öne çıkan VC'ler -->
+            <h2 class="section-title"><i class="fas fa-user-tie"></i> Öne Çıkan VC'ler <span class="badge">HOT</span></h2>
+            <div class="card-grid">
+                <div class="card">
+                    <span class="tag pink">🚀 VC</span>
+                    <h3>500 Istanbul</h3>
+                    <p>Erken aşama startup'lara yatırım çağrısı.</p>
+                    <div class="meta"><i class="far fa-calendar-alt"></i> Son başvuru: 28 Tem 2026</div>
+                    <div class="card-actions"><button class="btn-sm">Detay</button></div>
+                </div>
+                <div class="card">
+                    <span class="tag purple">💰 VC</span>
+                    <h3>Revo Capital</h3>
+                    <p>Seri A yatırım, fintech ve AI odaklı.</p>
+                    <div class="meta"><i class="far fa-calendar-alt"></i> Son başvuru: 15 Eyl 2026</div>
+                    <div class="card-actions"><button class="btn-sm">Detay</button></div>
+                </div>
+                <div class="card">
+                    <span class="tag blue">🌍 Global</span>
+                    <h3>Earlybird</h3>
+                    <p>Tohum yatırım, deep tech ve sağlık.</p>
+                    <div class="meta"><i class="far fa-calendar-alt"></i> Son başvuru: 5 Eki 2026</div>
+                    <div class="card-actions"><button class="btn-sm">Detay</button></div>
+                </div>
+                <div class="card">
+                    <span class="tag gold">🎯 VC</span>
+                    <h3>ScaleX</h3>
+                    <p>Büyüme turu, mobilite ve IoT.</p>
+                    <div class="meta"><i class="far fa-calendar-alt"></i> Son başvuru: 12 Eki 2026</div>
+                    <div class="card-actions"><button class="btn-sm">Detay</button></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════ -->
+        <!-- VC & YATIRIMCILAR -->
+        <!-- ════════════════════════════════════ -->
+        <section class="page" id="page-vc">
+            <h2 class="section-title"><i class="fas fa-user-tie"></i> VC & Yatırımcılar <span class="badge">ACTIVE</span></h2>
+            <p style="color:var(--text-secondary); margin-bottom:24px;">En aktif yatırımcılar ve odak alanları.</p>
+
+            <div class="vc-grid">
+                <div class="vc-card"><div class="avatar">500</div><h4>500 Istanbul</h4><span class="vc-tag">Erken Aşama</span><p>Teknoloji, SaaS</p></div>
+                <div class="vc-card"><div class="avatar">R</div><h4>Revo Capital</h4><span class="vc-tag">Seri A</span><p>Fintech, AI</p></div>
+                <div class="vc-card"><div class="avatar">E</div><h4>Earlybird</h4><span class="vc-tag">Tohum</span><p>Deep Tech, Sağlık</p></div>
+                <div class="vc-card"><div class="avatar">K</div><h4>Keiretsu Forum</h4><span class="vc-tag">Mevduat</span><p>Medya, E-ticaret</p></div>
+                <div class="vc-card"><div class="avatar">H</div><h4>Howe Partners</h4><span class="vc-tag">Büyüme</span><p>SaaS, AI</p></div>
+                <div class="vc-card"><div class="avatar">S</div><h4>ScaleX</h4><span class="vc-tag">Seri B</span><p>Mobilite, IoT</p></div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════ -->
+        <!-- ETKİNLİKLER -->
+        <!-- ════════════════════════════════════ -->
+        <section class="page" id="page-events">
+            <h2 class="section-title"><i class="fas fa-calendar-check"></i> Etkinlikler <span class="badge">UPCOMING</span></h2>
+
+            <div class="glass" style="padding:22px 26px; margin-bottom:28px;">
+                <h4 style="font-family:Orbitron,sans-serif; font-weight:600;">🎯 Bir sonraki zirve için geri sayım</h4>
+                <div class="countdown" id="countdown">
+                    <div class="cd-item"><div class="num" id="cd-days">0</div><div class="lbl">Gün</div></div>
+                    <div class="cd-item"><div class="num" id="cd-hours">0</div><div class="lbl">Saat</div></div>
+                    <div class="cd-item"><div class="num" id="cd-mins">0</div><div class="lbl">Dk</div></div>
+                    <div class="cd-item"><div class="num" id="cd-secs">0</div><div class="lbl">Sn</div></div>
+                </div>
+            </div>
+
+            <div class="event-grid">
+                <div class="event-card">
+                    <div><h4>TechCrunch Disrupt 2026</h4><span class="event-meta">📅 5–7 Kas 2026 • 🌐 Online & Fiziksel</span></div>
+                    <button class="btn-sm">Detay</button>
+                </div>
+                <div class="event-card">
+                    <div><h4>Startup Istanbul 2026</h4><span class="event-meta">📅 20–22 Eyl 2026 • 🇹🇷 İstanbul</span></div>
+                    <button class="btn-sm">Detay</button>
+                </div>
+                <div class="event-card">
+                    <div><h4>Webinar: AI for Startups</h4><span class="event-meta">📅 12 Ağu 2026 • 🌐 Online</span></div>
+                    <button class="btn-sm">Detay</button>
+                </div>
+                <div class="event-card">
+                    <div><h4>EU Startup Summit</h4><span class="event-meta">📅 3–5 Eki 2026 • 🇪🇺 Brüksel</span></div>
+                    <button class="btn-sm">Detay</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════ -->
+        <!-- HABERLER -->
+        <!-- ════════════════════════════════════ -->
+        <section class="page" id="page-news">
+            <h2 class="section-title"><i class="fas fa-newspaper"></i> Haberler <span class="badge">LIVE</span></h2>
+            <div class="news-layout">
+                <div class="news-feed">
+                    <div class="news-item">
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=300&fit=crop" alt="Türkiye startup ekosistemi" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <div class="image-placeholder" style="display:none;"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <h4>🚀 Türkiye startup ekosistemi 2026'da rekor kırdı</h4>
+                        <div class="source"><span>TechCrunch</span><span>2 saat önce</span></div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&h=300&fit=crop" alt="500 Istanbul yatırım" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <div class="image-placeholder" style="display:none;"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <h4>💰 500 Istanbul, 3 yeni girişime yatırım yaptı</h4>
+                        <div class="source"><span>Bloomberg HT</span><span>4 saat önce</span></div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=300&fit=crop" alt="AB Horizon 2026" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <div class="image-placeholder" style="display:none;"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <h4>🌍 AB Horizon 2026 fonu başvuruları açıldı</h4>
+                        <div class="source"><span>EU Commission</span><span>6 saat önce</span></div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=300&fit=crop" alt="TechCrunch Disrupt" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <div class="image-placeholder" style="display:none;"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <h4>🎤 TechCrunch Disrupt 2026 konuşmacıları belli oldu</h4>
+                        <div class="source"><span>TechCrunch</span><span>8 saat önce</span></div>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-image">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=300&fit=crop" alt="Girişim fonlaması" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                            <div class="image-placeholder" style="display:none;"><i class="fas fa-newspaper"></i></div>
+                        </div>
+                        <h4>📊 Türkiye'de girişim fonlaması %28 arttı</h4>
+                        <div class="source"><span>StartupWatch</span><span>10 saat önce</span></div>
+                    </div>
+                </div>
+                <div class="news-ticker">
+                    <h4 style="font-family:Orbitron,sans-serif; font-weight:600; margin-bottom:12px; font-size:0.9rem;"><i class="fas fa-bolt" style="color:var(--neon-pink);"></i> Canlı Akış</h4>
+                    <div class="ticker-item"><span class="dot pink"></span><div><strong>Yeni fon:</strong> TÜBİTAK 2244 başvuruları açıldı</div></div>
+                    <div class="ticker-item"><span class="dot purple"></span><div><strong>VC hareketi:</strong> Revo Capital yeni ofis açtı</div></div>
+                    <div class="ticker-item"><span class="dot gold"></span><div><strong>Etkinlik:</strong> Startup Istanbul kayıtları başladı</div></div>
+                    <div class="ticker-item"><span class="dot blue"></span><div><strong>Hibe:</strong> KOSGEB AR-GE çağrısı yayınlandı</div></div>
+                    <div class="ticker-item"><span class="dot pink"></span><div><strong>Global:</strong> EU Horizon 2026 bilgilendirme webinarı</div></div>
+                    <div class="ticker-item"><span class="dot purple"></span><div><strong>Yatırım:</strong> 500 Istanbul yeni fon duyurdu</div></div>
+                    <div class="ticker-item"><span class="dot gold"></span><div><strong>Program:</strong> İTÜ Çekirdek ön kuluçka başvuruları</div></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ════════════════════════════════════ -->
+        <!-- DASHBOARD -->
+        <!-- ════════════════════════════════════ -->
+        <section class="page" id="page-dashboard">
+            <h2 class="section-title"><i class="fas fa-chart-pie"></i> Dashboard <span class="badge">REAL-TIME</span></h2>
+
+            <div class="dash-grid">
+                <div class="dash-stat"><div class="number" data-count="47">0</div><div class="label">Bugünkü Fırsatlar</div></div>
+                <div class="dash-stat"><div class="number" data-count="12">0</div><div class="label">Yaklaşan Son Tarihler</div></div>
+                <div class="dash-stat"><div class="number" data-count="8">0</div><div class="label">Yeni Programlar</div></div>
+                <div class="dash-stat"><div class="number" data-count="23">0</div><div class="label">VC Hareketleri</div></div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px;">
+                <div class="glass" style="padding:22px;"><h4 style="font-family:Orbitron,sans-serif; font-weight:600; font-size:0.85rem;">📌 Bugünün Fırsatları</h4><ul style="list-style:none; margin-top:10px; color:var(--text-secondary); font-size:0.85rem;"><li>• TÜBİTAK 2244</li><li>• 500 Istanbul VC</li><li>• EU Horizon 2026</li><li>• TechCrunch Disrupt</li></ul></div>
+                <div class="glass" style="padding:22px;"><h4 style="font-family:Orbitron,sans-serif; font-weight:600; font-size:0.85rem;">⏳ Yaklaşan Son Tarihler</h4><ul style="list-style:none; margin-top:10px; color:var(--text-secondary); font-size:0.85rem;"><li>• KOSGEB AR-GE – 5 gün</li><li>• Revo Capital – 12 gün</li><li>• Startup Istanbul – 18 gün</li></ul></div>
+                <div class="glass" style="padding:22px;"><h4 style="font-family:Orbitron,sans-serif; font-weight:600; font-size:0.85rem;">🔄 VC Hareketleri</h4><ul style="list-style:none; margin-top:10px; color:var(--text-secondary); font-size:0.85rem;"><li>• 500 Istanbul yeni fon</li><li>• Earlybird tohum yatırım</li><li>• ScaleX büyüme turu</li></ul></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── FOOTER ─── -->
+    <footer>
+        <div class="container">
+            <span>© 2026 Global Startup Intelligence System</span>
+            <span>✨ “Girişim dünyasını analiz eden güçlü ama estetik bir sistem”</span>
+        </div>
+    </footer>
+
+    <script>
+        // ─── NAV ───
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+        // ─── PAGE NAV ───
+        const pages = document.querySelectorAll('.page');
+        const navAnchors = document.querySelectorAll('.nav-links a');
+
+        function showPage(id) {
+            pages.forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + id);
+            if (target) target.classList.add('active');
+            navAnchors.forEach(a => {
+                a.classList.toggle('active', a.dataset.page === id);
+            });
+            navLinks.classList.remove('open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        navAnchors.forEach(a => {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = a.dataset.page;
+                if (page) showPage(page);
+            });
+        });
+
+        document.querySelectorAll('[data-page]').forEach(el => {
+            if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+                el.addEventListener('click', (e) => {
+                    const page = el.dataset.page;
+                    if (page) { e.preventDefault();
+                        showPage(page); }
+                });
+            }
+        });
+
+        // ─── THEME TOGGLE ───
+        const themeToggle = document.getElementById('themeToggle');
+        const themeLabel = document.getElementById('themeLabel');
+        let currentTheme = 'dark';
+
+        themeToggle.addEventListener('click', () => {
+            const html = document.documentElement;
+            if (currentTheme === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i> <span id="themeLabel">Açık</span>';
+                currentTheme = 'light';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i> <span id="themeLabel">Koyu</span>';
+                currentTheme = 'dark';
+            }
+        });
+
+        // ─── DASHBOARD ANIMATED NUMBERS ───
+        const numbers = document.querySelectorAll('.dash-stat .number');
+
+        function animateNumbers() {
+            numbers.forEach(el => {
+                const target = parseInt(el.dataset.count);
+                let current = 0;
+                const step = Math.max(1, Math.floor(target / 40));
+                const interval = setInterval(() => {
+                    current += step;
+                    if (current >= target) { current = target;
+                        clearInterval(interval); }
+                    el.textContent = current;
+                }, 30);
+            });
+        }
+
+        // ─── COUNTDOWN ───
+        function updateCountdown() {
+            const target = new Date('2026-11-05T09:00:00').getTime();
+            const now = Date.now();
+            const diff = Math.max(0, target - now);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / (1000 * 60)) % 60);
+            const secs = Math.floor((diff / 1000) % 60);
+            document.getElementById('cd-days').textContent = days;
+            document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cd-mins').textContent = String(mins).padStart(2, '0');
+            document.getElementById('cd-secs').textContent = String(secs).padStart(2, '0');
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ─── KEYBOARD ───
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') navLinks.classList.remove('open');
+        });
+
+        setTimeout(animateNumbers, 300);
+    </script>
+
 </body>
 </html>
