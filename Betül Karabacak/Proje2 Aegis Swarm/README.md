@@ -56,4 +56,4 @@ Tarayıcınız otomatik olarak açılacak ve AEGIS SWARM Canlı Telemetri merkez
 
 ---
 
-*Geleceğin uzay kolonileri, kendi bağışıklık sistemine sahip olacak. Bizimle güvendesiniz.*
+*Geleceğin uzay kolonileri, kendi bağışıklık sistemine sahip olacak. Bizimle güvendesiniz.* 
