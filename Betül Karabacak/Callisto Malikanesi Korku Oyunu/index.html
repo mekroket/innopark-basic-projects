@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Callisto Malikanesi: Son Hizmetçi</title>
+<style>
+  /* ---- Fontlar (yüklenemezse monospace fallback) ---- */
+  @font-face {
+    font-family: 'Alagard';
+    src: url('assets/fonts/alagard.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'M6x11';
+    src: url('assets/fonts/m6x11.ttf') format('truetype');
+  }
+
+  html, body {
+    margin: 0; padding: 0;
+    background: #000;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* Oyun 960x540 sabit; pencereye orantılı sığdırılır */
+  #wrap {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 960px; height: 540px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+  }
+
+  #game {
+    display: block;
+    width: 960px; height: 540px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    background: #000;
+  }
+
+  /* ================= DİYALOG PANELİ (Stardew stili) ================= */
+  #dlg {
+    display: none;
+    position: absolute;
+    left: 50%; bottom: 20px;
+    transform: translateX(-50%);
+    width: 70%;
+    z-index: 30;
+  }
+  #dlg-box {
+    position: relative;
+    background: #3e3329;                 /* ahşap gövde */
+    border: 4px solid #231822;           /* dış çerçeve */
+    border-radius: 14px;
+    box-shadow: 0 0 0 2px #6d5640 inset, 0 6px 18px rgba(0,0,0,.7);
+    padding: 12px 16px 12px 16px;
+    min-height: 74px;
+  }
+  #dlg-inner {
+    background: #3c3534;                 /* metin alanı */
+    border: 2px solid #6d5640;           /* iç vurgu */
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-height: 52px;
+    margin-left: 46px;                   /* taşan portre kutusuna yer aç */
+  }
+  #dlg-text {
+    font-family: 'M6x11', monospace;
+    font-size: 19px;
+    line-height: 1.35;
+    color: #d8c8b8;
+    letter-spacing: .5px;
+    white-space: pre-wrap;
+  }
+  #dlg-text.thought { font-style: italic; color: #c3b4c6; }
+  /* Portre kutusu — panelin üst-sol köşesinden dışarı taşar */
+  #dlg-portrait {
+    position: absolute;
+    top: -46px; left: -26px;
+    width: 84px; height: 84px;
+    background: #231822;
+    border: 4px solid #6d5640;
+    border-radius: 10px;
+    box-shadow: 0 0 0 3px #231822, 0 4px 10px rgba(0,0,0,.8);
+    background-size: cover;              /* ortala + kırp (cover) — asla ezme */
+    background-position: 50% 14%;
+    image-rendering: pixelated;
+    overflow: hidden;
+  }
+  #dlg-name {
+    position: absolute;
+    top: -16px; left: 72px;
+    background: #481512;                 /* bordo rozet */
+    color: #d8c8b8;
+    font-family: 'Alagard', monospace;
+    font-size: 15px;
+    padding: 3px 14px 2px 14px;
+    border: 3px solid #231822;
+    border-radius: 8px;
+    letter-spacing: 1px;
+  }
+  #dlg-more {
+    position: absolute;
+    right: 14px; bottom: 6px;
+    font-family: 'M6x11', monospace;
+    font-size: 13px;
+    color: #6d5640;
+    animation: blink 1s steps(2) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ================= SEÇİM KUTUSU ================= */
+  #choice {
+    display: none;
+    position: absolute;
+    left: 50%; top: 46%;
+    transform: translate(-50%, -50%);
+    z-index: 40;
+    text-align: center;
+  }
+  .choice-btn {
+    display: block;
+    min-width: 260px;
+    margin: 10px auto;
+    padding: 10px 24px;
+    background: #3e3329;
+    border: 4px solid #231822;
+    border-radius: 10px;
+    box-shadow: 0 0 0 2px #6d5640 inset;
+    color: #d8c8b8;
+    font-family: 'M6x11', monospace;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .choice-btn.sel {
+    background: #481512;
+    color: #f0e2d0;
+    box-shadow: 0 0 0 2px #a4623d inset;
+  }
+
+  /* ================= NOT / KAĞIT ================= */
+  #note {
+    display: none;
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    background: #d8c8b8;
+    color: #231822;
+    border: 6px solid #6d5640;
+    border-radius: 4px;
+    padding: 28px 26px;
+    font-family: 'M6x11', monospace;
+    font-size: 20px;
+    line-height: 1.5;
+    text-align: center;
+    z-index: 45;
+    box-shadow: 0 10px 30px rgba(0,0,0,.9);
+  }
+  #note small { display:block; margin-top:14px; font-size:13px; color:#6d5640; }
+
+  /* ================= HEDEF / TOAST ================= */
+  #objective {
+    display: none;
+    position: absolute;
+    left: 12px; top: 10px;
+    background: rgba(35,24,34,.82);
+    border: 2px solid #6d5640;
+    border-radius: 8px;
+    color: #d8c8b8;
+    font-family: 'M6x11', monospace;
+    font-size: 15px;
+    padding: 5px 12px;
+    z-index: 25;
+    max-width: 420px;
+  }
+  #toast {
+    display: none;
+    position: absolute;
+    left: 50%; top: 72px;
+    transform: translateX(-50%);
+    background: rgba(35,24,34,.9);
+    border: 2px solid #6d5640;
+    border-radius: 8px;
+    color: #d8c8b8;
+    font-family: 'M6x11', monospace;
+    font-size: 16px;
+    padding: 6px 16px;
+    z-index: 26;
+  }
+
+  /* ================= METİN AKIŞI (prolog / epilog) ================= */
+  #scroll {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: #000;
+    z-index: 50;
+    overflow: hidden;
+  }
+  #scroll-inner {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 72%;
+    text-align: center;
+  }
+  .scroll-line {
+    font-family: 'M6x11', monospace;
+    font-size: 21px;
+    line-height: 1.6;
+    color: #d8c8b8;
+    margin: 14px 0;
+    opacity: 0;
+    transition: opacity 1.1s ease;
+  }
+  .scroll-line.on { opacity: 1; }
+  .scroll-line.ilan {
+    font-family: 'Alagard', monospace;
+    color: #a4623d;
+    border: 2px solid #6d5640;
+    padding: 10px 16px;
+    display: inline-block;
+  }
+  .scroll-line.kirmizi { color: #a03030; }
+  #scroll-hint {
+    position: absolute;
+    right: 20px; bottom: 14px;
+    font-family: 'M6x11', monospace;
+    font-size: 13px;
+    color: #4a4038;
+    animation: blink 1.2s steps(2) infinite;
+  }
+
+  /* ================= INTRO FRAGMAN EKRANI ================= */
+  #intro {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: #0a0709;               /* koyu arka plan */
+    z-index: 70;
+    opacity: 1;
+    transition: opacity 0.4s ease;     /* fade-to-black geçişi */
+  }
+  #intro.fading { opacity: 0; }
+  #intro-video {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 960px; height: 540px;
+    object-fit: contain;               /* orana dokunma, sığdır */
+    background: #000;
+  }
+  #intro-watch {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 300px;
+    padding: 16px 34px;
+    background: #3e3329;               /* ahşap gövde */
+    border: 4px solid #231822;
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px #6d5640 inset, 0 6px 18px rgba(0,0,0,.8);
+    color: #d8c8b8;
+    font-family: 'Alagard', monospace;
+    font-size: 24px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    text-align: center;
+  }
+  #intro-watch:hover {
+    background: #481512;               /* bordo hover */
+    box-shadow: 0 0 0 2px #a4623d inset, 0 6px 18px rgba(0,0,0,.8);
+    color: #f0e2d0;
+  }
+  #intro-watch small {
+    display: block;
+    margin-top: 8px;
+    font-family: 'M6x11', monospace;
+    font-size: 13px;
+    letter-spacing: 0;
+    color: #6d5640;
+  }
+  #intro-skip {
+    position: absolute;
+    right: 18px; top: 12px;
+    font-family: 'M6x11', monospace;
+    font-size: 16px;
+    color: #6d5640;
+    background: rgba(35,24,34,.75);
+    border: 2px solid #3e3329;
+    border-radius: 8px;
+    padding: 5px 14px;
+    cursor: pointer;
+    z-index: 71;
+  }
+  #intro-skip:hover { color: #d8c8b8; border-color: #6d5640; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="960" height="540"></canvas>
+
+  <!-- Diyalog paneli (canvas üstünde DOM overlay) -->
+  <div id="dlg">
+    <div id="dlg-box">
+      <div id="dlg-portrait"></div>
+      <div id="dlg-name">???</div>
+      <div id="dlg-inner"><div id="dlg-text"></div></div>
+      <div id="dlg-more">SPACE ▼</div>
+    </div>
+  </div>
+
+  <div id="choice"></div>
+  <div id="note"></div>
+  <div id="objective"></div>
+  <div id="toast"></div>
+  <div id="scroll"><div id="scroll-inner"></div><div id="scroll-hint">SPACE</div></div>
+
+  <!-- Intro fragman ekranı (ana menüden önce; video yoksa hiç görünmez) -->
+  <div id="intro">
+    <video id="intro-video" preload="metadata" playsinline></video>
+    <div id="intro-watch">FRAGMANI İZLE<small>Callisto Malikanesi: Son Hizmetçi</small></div>
+    <div id="intro-skip">Atla ▸</div>
+  </div>
+</div>
+
+<!-- Yükleme sırası önemli: main.js en sonda, boot orada -->
+<script src="js/audio.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/player.js"></script>
+<script src="js/npc.js"></script>
+<script src="js/dialogue.js"></script>
+<script src="js/jumpscare.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/scenes.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
