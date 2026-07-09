@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHub - Kuantum Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #050508; color: #e0e0e0; display: flex; height: 100vh; overflow: hidden; }
+
+        /* SIDEBAR */
+        .sidebar { width: 320px; background: #0f0f1a; border-right: 1px solid rgba(0, 245, 255, 0.1); padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .dash-logo-area { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .dash-star { width: 14px; height: 14px; background: #ffeb3b; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); box-shadow: 0 0 10px #ffeb3b; }
+        .dash-tower { width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 22px solid #e91e63; margin-left: -24px; margin-top: 10px; }
+
+        .api-widget { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 12px; font-size: 12px; display: flex; flex-direction: column; gap: 5px; }
+        .weather-card { border-color: rgba(0, 245, 255, 0.2); }
+        .radar-card { border-color: rgba(255, 69, 0, 0.3); }
+        .radar-pulse { width: 8px; height: 8px; background: #ff4500; border-radius: 50%; box-shadow: 0 0 10px #ff4500; animation: pulse 1s infinite alternate; }
+
+        .bank-card { background: linear-gradient(135deg, #101026 0%, #e91e63 100%); border: 1px solid rgba(0, 245, 255, 0.3); border-radius: 14px; padding: 15px; box-shadow: 0 0 20px rgba(233, 30, 99, 0.2); }
+        .bank-card-title { font-family: 'Orbitron', sans-serif; font-size: 10px; color: #00f5ff; letter-spacing: 1px; margin-bottom: 5px; }
+        .bank-balance { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fff; font-weight: bold; }
+
+        .menu-items { display: flex; flex-direction: column; gap: 8px; }
+        .menu-btn { padding: 10px 15px; background: transparent; border: 1px solid transparent; color: #a0a0c0; text-align: left; border-radius: 8px; cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 12px; transition: all 0.3s ease; width: 100%; }
+        .menu-btn.active, .menu-btn:hover { background: rgba(0, 245, 255, 0.05); border-color: #00f5ff; color: #fff; box-shadow: 0 0 15px rgba(0, 245, 255, 0.1); }
+        .logout-btn { background: rgba(255,255,255,0.02); color: #ff4500; border: 1px solid rgba(255,69,0,0.1); margin-top: 10px; }
+
+        /* MAIN CONTENT */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 26px; color: #fff; }
+        
+        .audio-control-box { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(0,245,255,0.2); padding: 8px 15px; border-radius: 20px; }
+        .audio-btn { background: transparent; border: none; color: #00f5ff; cursor: pointer; font-size: 14px; display: flex; align-items: center; font-weight: bold; }
+        .volume-slider { width: 60px; accent-color: #00f5ff; cursor: pointer; }
+
+        .user-profile { font-size: 13px; color: #00f5ff; border: 1px solid #00f5ff; padding: 6px 12px; border-radius: 20px; background: rgba(0,245,255,0.02); font-family: 'Orbitron'; }
+        .live-quote-bar { max-width: 500px; font-size: 12px; color: #ffeb3b; font-weight: 500; text-align: right; line-height: 1.4; background: rgba(255,235,59,0.05); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,235,59,0.1); }
+
+        /* NASA WINDOW */
+        .nasa-container { background: rgba(15,15,26,0.6); border: 1px solid rgba(123, 44, 191, 0.3); border-radius: 16px; padding: 15px; display: flex; gap: 20px; align-items: center; box-shadow: 0 0 20px rgba(123, 44, 191, 0.1); backdrop-filter: blur(10px); }
+        .nasa-img { width: 130px; height: 90px; border-radius: 10px; object-fit: cover; border: 1px solid #7b2cbf; background: #0f0f1a; }
+        .nasa-info { flex: 1; font-size: 12px; }
+
+        /* FİLTRELER & KARTLAR */
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 15px; background: rgba(255,255,255,0.02); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        .filter-bar select { background: #0f0f1a; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 15px; border-radius: 6px; outline: none; flex: 1; min-width: 140px; }
+        .filter-group { display: none; width: 100%; gap: 15px; flex-wrap: wrap; }
+        .filter-group.active { display: flex; }
+
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .card { background: #0f0f1a; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 25px; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 14px; position: relative; }
+        .card:hover { transform: translateY(-5px); border-color: #e91e63; box-shadow: 0 10px 20px rgba(233, 30, 99, 0.15); }
+        .card-tag { display: inline-block; padding: 4px 10px; font-size: 11px; border-radius: 4px; font-weight: bold; text-transform: uppercase; width: max-content; }
+        .card-title { font-family: 'Orbitron', sans-serif; font-size: 17px; color: #fff; }
+        .card-meta { font-size: 13px; color: #a0a0c0; }
+        
+        .api-user-box { display: flex; align-items: center; gap: 10px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); padding: 8px 12px; border-radius: 8px; }
+        .api-user-img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #00f5ff; }
+        .api-user-name { color: #fff; font-weight: 600; font-size: 11px; }
+
+        /* SOHBET KUTUSU */
+        .chat-container { display: none; background: #050508; border: 1px solid #00f5ff; border-radius: 8px; padding: 12px; font-size: 11px; flex-direction: column; gap: 8px; margin-top: 5px; box-shadow: inset 0 0 10px rgba(0,245,255,0.1); }
+        .chat-history { max-height: 120px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; padding-right: 5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .chat-row-user { color: #00f5ff; font-weight: 600; }
+        .chat-row-bot { color: #ffeb3b; font-style: italic; }
+        
+        .chat-input-wrapper { display: flex; gap: 5px; }
+        .chat-input-box { flex: 1; background: #0f0f1a; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: #fff; padding: 6px; font-size: 11px; outline: none; }
+        .chat-send-btn { background: #00f5ff; color: #050508; border: none; padding: 6px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px; }
+
+        .comment-section { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto; }
+        .quantity-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; color: #a0a0c0; }
+        .quantity-select { background: #050508; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 5px 10px; border-radius: 6px; }
+        
+        .action-btn { width: 100%; padding: 10px; background: #00f5ff; color: #050508; border: none; border-radius: 6px; font-family: 'Orbitron', sans-serif; font-weight: bold; font-size: 12px; cursor: pointer; transition: all 0.2s ease; }
+        .action-btn:hover { background: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .chat-trigger-btn { background: transparent; border: 1px solid #7b2cbf; color: #7b2cbf; margin-bottom: 5px; }
+
+        /* OYUN ALANI STİLLERİ */
+        .game-wrapper { display: none; background: #0f0f1a; border: 2px solid #22c55e; border-radius: 16px; padding: 25px; flex-direction: column; align-items: center; gap: 15px; box-shadow: 0 0 25px rgba(34, 197, 94, 0.1); width: 100%; max-width: 700px; margin: 0 auto; }
+        #gameCanvas { background: #050508; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; cursor: crosshair; }
+        .game-ui { display: flex; justify-content: space-between; width: 100%; max-width: 500px; font-family: 'Orbitron'; font-size: 14px; color: #22c55e; }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="fon_muzigi.mp3" loop preload="auto"></audio>
+
+    <div class="sidebar">
+        <div class="dash-logo-area">
+            <div class="dash-star"></div>
+            <div class="dash-tower"></div>
+            <span style="font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: 700; color: #00f5ff; letter-spacing: 2px; margin-left: 10px;">ASTRO<span style="color:#fff">HUB</span></span>
+        </div>
+
+        <div class="api-widget weather-card">
+            <div style="color: #00f5ff; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 1px;">🌍 DÜNYA MERKEZ ÜSSÜ (KONYA)</div>
+            <div style="display: flex; justify-content: space-between; font-weight: bold; margin-top: 2px;">
+                <span id="liveCity">Konya Hub</span> <span id="liveTemp" style="color: #ffeb3b;">--°C</span>
+            </div>
+            <div id="liveWind" style="font-size: 10px; color: #a0a0c0;">Rüzgar: -- km/s</div>
+        </div>
+
+        <div class="api-widget radar-card">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="color: #ff4500; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 1px;">🚨 CANLI DÜNYA DEPREM RADARI</div>
+                <div class="radar-pulse"></div>
+            </div>
+            <div id="radarLocation" style="font-weight: 600; color:#fff; margin-top:5px; font-size:11px;">Deprem aranıyor...</div>
+            <div id="radarMag" style="font-size: 11px; color: #ffeb3b; margin-top: 2px;">Büyüklük: -- Mw</div>
+        </div>
+        
+        <div class="bank-card">
+            <div class="bank-card-title">🏦 GALAKTİK CÜZDAN (GBC)</div>
+            <div class="bank-balance" id="walletDisplay">15,000 🪙</div>
+        </div>
+
+        <div class="menu-items">
+            <button class="menu-btn active" onclick="filtrele('hepsi')">🌌 TÜMÜNÜ GÖSTER</button>
+            <button class="menu-btn" onclick="filtrele('emlak')">🏠 HABİTAT (EMLAK)</button>
+            <button class="menu-btn" onclick="filtrele('is')">💼 İSTİHDAM (İŞKUR)</button>
+            <button class="menu-btn" onclick="filtrele('eglence')">🎭 EĞLENCE MERKEZLERİ</button>
+            <button class="menu-btn" onclick="filtrele('lojistik')">🚀 MEKİK BİLETLERİ</button>
+            <button class="menu-btn" style="color: #ffeb3b; border-color: rgba(255,235,59,0.1);" onclick="filtrele('astrotag')">🚖 ASTRO-TAG (HAVUZ)</button>
+            <button class="menu-btn" style="color: #c896ff; border-color: rgba(200,150,255,0.1);" onclick="filtrele('market')">🛒 KAPSÜL MARKET</button>
+            <button class="menu-btn" style="color: #22c55e; border-color: rgba(34,197,94,0.1);" onclick="openMiniGame()">🎮 ARCADE OYUNU</button>
+            <button class="menu-btn logout-btn" onclick="window.location.href='index.html'">🔒 GÜVENLİ ÇIKIŞ</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Koloni Yaşam Ağı</h1>
+            
+            <div class="audio-control-box">
+                <button class="audio-btn" id="muteBtn" onclick="toggleMute()">🔊 SES AÇIK</button>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" oninput="adjustVolume()">
+            </div>
+
+            <div class="user-profile">🛸 KONUM: <span id="currentLoc" style="color:#ffeb3b;">Mars</span></div>
+            <div class="live-quote-bar" id="liveQuote">🧠 Kuantum AI: "Bilgelik matrisi yükleniyor..."</div>
+        </div>
+
+        <div class="nasa-container" id="nasaPanel">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=300&auto=format&fit=crop" id="nasaImage" class="nasa-img" alt="NASA Canlı Veri">
+            <div class="nasa-info">
+                <div style="color:#7b2cbf; font-family:'Orbitron'; font-size:10px; font-weight:bold; letter-spacing:1px; margin-bottom:3px;">🛰️ NASA DEEP SPACE CANLI TELEKOP YAYINI</div>
+                <div id="nasaTitle" style="font-weight:600; color:#fff; margin-bottom:5px;">Derin Uzay Telemetrisi Aktif</div>
+                <div id="nasaDesc" style="color:#8080a0; font-size:11px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">Uzay teleskopu verileri anlık olarak internetten okunuyor.</div>
+            </div>
+        </div>
+
+        <div class="filter-bar" id="filterBarArea">
+            <select id="filterGezegen" onchange="filtreleKriter()">
+                <option value="hepsi">🛸 Gezegen Limanı: Tümü</option>
+                <option value="Mars">Mars</option>
+                <option value="Titan">Titan</option>
+                <option value="Ay">Ay</option>
+            </select>
+
+            <div id="groupEmlak" class="filter-group">
+                <select id="filterOda" onchange="filtreleKriter()">
+                    <option value="hepsi">🛏️ Oda Sayısı: Tümü</option>
+                    <option value="1">1 Oda</option><option value="2">2 Oda</option><option value="3">3 Oda</option><option value="4">4 Oda</option>
+                </select>
+                <select id="filterGorunus" onchange="filtreleKriter()">
+                    <option value="hepsi">🎨 Dış Görünüş: Tümü</option>
+                    <option value="Cam">Cam Kubbe</option><option value="Biyopod">Biyopod</option><option value="Metalik">Fütüristik Metalik</option><option value="Taş">Volkanik Taş</option>
+                </select>
+            </div>
+
+            <div id="groupIs" class="filter-group">
+                <select id="filterYas" onchange="filtreleKriter()">
+                    <option value="hepsi">🎂 Yaş Sınırı: Tümü</option>
+                    <option value="18+">18+ Yaş</option><option value="21+">21+ Yaş</option><option value="25+">25+ Yaş</option>
+                </select>
+                <select id="filterDeneyim" onchange="filtreleKriter()">
+                    <option value="hepsi">⏱️ Deneyim Durumu: Tümü</option>
+                    <option value="Deneyimsiz">Deneyimsiz / Stajyer</option><option value="1-3 Yıl">1-3 Yıl Tecrübe</option><option value="5+ Yıl">5+ Yıl Kıdemli</option>
+                </select>
+            </div>
+
+            <div id="groupEglence" class="filter-group">
+                <select id="filterMuzik" onchange="filtreleKriter()">
+                    <option value="hepsi">🎸 Müzik Türü: Tümü</option>
+                    <option value="Müzikli">Müzikli Aktivite</option><option value="Müziksiz">Müziksiz Aktivite</option>
+                </select>
+                <select id="filterIkram" onchange="filtreleKriter()">
+                    <option value="hepsi">🍹 İkram Türü: Tümü</option>
+                    <option value="Alkollü">Alkollü Seçenekler</option><option value="Alkolsüz">Alkolsüz Seçenekler</option>
+                </select>
+            </div>
+
+            <div id="groupLojistik" class="filter-group">
+                <select id="filterMekikClass" onchange="filtreleKriter()">
+                    <option value="hepsi">🚀 Mekik Sınıfı: Tümü</option>
+                    <option value="Işık Hızı">Işık Hızı Yolcu Gemisi</option><option value="Hiper Kapsül">Hiper Kapsül Express</option>
+                </select>
+            </div>
+            
+            <div id="groupAstrotag" class="filter-group">
+                <select id="filterKapsulKapasite" onchange="filtreleKriter()">
+                    <option value="hepsi">🏎️ Boş Koltuk: Tümü</option>
+                    <option value="1">1 Boş Koltuk</option><option value="2">2 Boş Koltuk</option>
+                </select>
+            </div>
+
+            <div id="groupMarket" class="filter-group">
+                <select id="filterMarketTur" onchange="filtreleKriter()">
+                    <option value="hepsi">🥦 Gıda Türü: Tümü</option>
+                    <option value="Taze Gıda">Meyve & Sebze</option>
+                    <option value="Paketli Gıda">Paketli / Sentetik Gıda</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+
+        <div class="game-wrapper" id="gameArcadeWrapper">
+            <div class="game-ui">
+                <div>SKOR: <span id="gameScore">0</span></div>
+                <div style="color:#ff4500;">CAN: <span id="gameLives">3</span></div>
+            </div>
+            <canvas id="gameCanvas" width="500" height="300"></canvas>
+            <p style="font-size:11px; color:#a0a0c0; text-align:center;">🚀 Gemiyi yönetmek için <b>A-D veya Sağ/Left Ok Yön Tuşlarını</b> kullanın.<br>Ateş etmek için <b>SPACE (Boşluk)</b> tuşuna basın.</p>
+            <button class="action-btn" id="gameStartBtn" style="background:#22c55e; max-width:200px;" onclick="startMiniGame()">OYUNU BAŞLAT</button>
+        </div>
+    </div>
+
+    <script>
+        let bakiye = 15000;
+        let mevcutKonum = "Mars";
+        let aktifKategori = "hepsi";
+        let isMuted = false;
+        let globalVolume = 0.5;
+
+        const TURKCE_SOZLER = [
+            "Yapay zeka geleceği öngörmez, onu inşa eder.",
+            "Evrenin karanlığında parlayan en büyük fener, akıl ve bilimdir.",
+            "Veri bir çöplük değildir; doğru işlendiğinde galaksileri aydınlatan yakıttır.",
+            "Gezegenler arası yaşam, algoritmaların kusursuzluğu kadar konforludur.",
+            "Büyük verinin içinde kaybolma, kendi kodunun mimarı ol."
+        ];
+
+        // VERİ MATRIX HAVUZU
+        const VERI = [
+            { id: 1, tip: "emlak", ad: "Valles Marineris Cam Kubbe", gezegen: "Mars", oda: "1", gorunus: "Cam", fiyat: 350, detay: "Cam Tasarım" },
+            { id: 2, tip: "emlak", ad: "Neo Konya Siber Rezidans", gezegen: "Mars", oda: "2", gorunus: "Cam", fiyat: 500, detay: "Cam Tasarım" },
+            { id: 3, tip: "emlak", ad: "Utopia Planitia Gözlemevi", gezegen: "Mars", oda: "3", gorunus: "Cam", fiyat: 750, detay: "Cam Tasarım" },
+            { id: 4, tip: "emlak", ad: "Tharsis Panoramik Malikanesi", gezegen: "Mars", oda: "4", gorunus: "Cam", fiyat: 1100, detay: "Cam Tasarım" },
+            { id: 5, tip: "emlak", ad: "Elysium Kızıl Hücresi", gezegen: "Mars", oda: "1", gorunus: "Biyopod", fiyat: 280, detay: "Biyopod" },
+            { id: 6, tip: "emlak", ad: "Chryse Organik Yaşam Podu", gezegen: "Mars", oda: "2", gorunus: "Biyopod", fiyat: 480, detay: "Biyopod" },
+            { id: 7, tip: "emlak", ad: "Amazonis Gelişmiş Koloni Podu", gezegen: "Mars", oda: "3", gorunus: "Biyopod", fiyat: 690, detay: "Biyopod" },
+            { id: 8, tip: "emlak", ad: "Hellis Biyosfer Kompleksi", gezegen: "Mars", oda: "4", gorunus: "Biyopod", fiyat: 990, detay: "Biyopod" },
+            { id: 9, tip: "emlak", ad: "Arcadia Çelik Kapsülü", gezegen: "Mars", oda: "1", gorunus: "Metalik", fiyat: 320, detay: "Fütüristik Metalik" },
+            { id: 10, tip: "emlak", ad: "Isidis Titanyum İstasyonu", gezegen: "Mars", oda: "2", gorunus: "Metalik", fiyat: 520, detay: "Fütüristik Metalik" },
+            { id: 11, tip: "emlak", ad: "Syrtis Havacılık Rezidansı", gezegen: "Mars", oda: "3", gorunus: "Metalik", fiyat: 720, detay: "Fütüristik Metalik" },
+            { id: 12, tip: "emlak", ad: "Promethei Ağır Sanayi Kapsülü", gezegen: "Mars", oda: "4", gorunus: "Metalik", fiyat: 1050, detay: "Fütüristik Metalik" },
+            { id: 13, tip: "emlak", ad: "Meram Volkanik Sığınağı", gezegen: "Mars", oda: "1", gorunus: "Taş", fiyat: 310, detay: "Volkanik Taş" },
+            { id: 14, tip: "emlak", ad: "Gaza Dağ Evi", gezegen: "Mars", oda: "2", gorunus: "Taş", fiyat: 540, detay: "Volkanik Taş" },
+            { id: 15, tip: "emlak", ad: "Cydonia Mağara Yaşam Alanı", gezegen: "Mars", oda: "3", gorunus: "Taş", fiyat: 780, detay: "Volkanik Taş" },
+            { id: 16, tip: "emlak", ad: "Olympus Mons Dağ Evleri", gezegen: "Mars", oda: "4", gorunus: "Taş", fiyat: 1250, detay: "Volkanik Taş" },
+
+            { id: 17, tip: "emlak", ad: "Metharia Kristal Kapsülü", gezegen: "Titan", oda: "1", gorunus: "Cam", fiyat: 400, detay: "Cam Tasarım" },
+            { id: 18, tip: "emlak", ad: "Ligeia Sıvı Deniz Rezidansı", gezegen: "Titan", oda: "2", gorunus: "Cam", fiyat: 620, detay: "Cam Tasarım" },
+            { id: 19, tip: "emlak", ad: "Ontario Panoramik İstasyon", gezegen: "Titan", oda: "3", gorunus: "Cam", fiyat: 850, detay: "Cam Tasarım" },
+            { id: 20, tip: "emlak", ad: "Titan VIP Cam Saray", gezegen: "Titan", oda: "4", gorunus: "Cam", fiyat: 1400, detay: "Cam Tasarım" },
+            { id: 21, tip: "emlak", ad: "Kraken Mare Yer Altı Sığınağı", gezegen: "Titan", oda: "1", gorunus: "Biyopod", fiyat: 390, detay: "Biyopod" },
+            { id: 22, tip: "emlak", ad: "Shangri-La Biyo-Hücresi", gezegen: "Titan", oda: "2", gorunus: "Biyopod", fiyat: 590, detay: "Biyopod" },
+            { id: 23, tip: "emlak", ad: "Xanadu Atmosferik Yaşam Podu", gezegen: "Titan", oda: "3", gorunus: "Biyopod", fiyat: 810, detay: "Biyopod" },
+            { id: 24, tip: "emlak", ad: "Belet Gelişmiş Doğa Podu", gezegen: "Titan", oda: "4", gorunus: "Biyopod", fiyat: 1150, detay: "Biyopod" },
+            { id: 25, tip: "emlak", ad: "Titan Karbon Hücresi", gezegen: "Titan", oda: "1", gorunus: "Metalik", fiyat: 410, detay: "Fütüristik Metalik" },
+            { id: 26, tip: "emlak", ad: "Adiri Ağır Metal Kapsülü", gezegen: "Titan", oda: "2", gorunus: "Metalik", fiyat: 630, detay: "Fütüristik Metalik" },
+            { id: 27, tip: "emlak", ad: "Dilmun Çelik Rezidans", gezegen: "Titan", oda: "3", gorunus: "Metalik", fiyat: 880, detay: "Fütüristik Metalik" },
+            { id: 28, tip: "emlak", ad: "Tethys Kuantum İstasyonu", gezegen: "Titan", oda: "4", gorunus: "Metalik", fiyat: 1300, detay: "Fütüristik Metalik" },
+            { id: 29, tip: "emlak", ad: "Huygens Bazalt Sığınağı", gezegen: "Titan", oda: "1", gorunus: "Taş", fiyat: 380, detay: "Volkanik Taş" },
+            { id: 30, tip: "emlak", ad: "Menrva Kaya Evleri", gezegen: "Titan", oda: "2", gorunus: "Taş", fiyat: 570, detay: "Volkanik Taş" },
+            { id: 31, tip: "emlak", ad: "Mithrim Dağ Sığınağı", gezegen: "Titan", oda: "3", gorunus: "Taş", fiyat: 790, detay: "Volkanik Taş" },
+            { id: 32, tip: "emlak", ad: "Sotra Kriyovolkanik Taş Konut", gezegen: "Titan", oda: "4", gorunus: "Taş", fiyat: 1200, detay: "Volkanik Taş" },
+
+            { id: 33, tip: "emlak", ad: "Apollo Cam Habitatı", gezegen: "Ay", oda: "1", gorunus: "Cam", fiyat: 310, detay: "Cam Tasarım" },
+            { id: 34, tip: "emlak", ad: "Copernicus Işıklı Kubbe", gezegen: "Ay", oda: "2", gorunus: "Cam", fiyat: 490, detay: "Cam Tasarım" },
+            { id: 35, tip: "emlak", ad: "Tycho Krateri Cam Kent", gezegen: "Ay", oda: "3", gorunus: "Cam", fiyat: 690, detay: "Cam Tasarım" },
+            { id: 36, tip: "emlak", ad: "Luna Park Premium Saray", gezegen: "Ay", oda: "4", gorunus: "Cam", fiyat: 1000, detay: "Cam Tasarım" },
+            { id: 37, tip: "emlak", ad: "Sackleton Madenci Podu", gezegen: "Ay", oda: "1", gorunus: "Biyopod", fiyat: 290, detay: "Biyopod" },
+            { id: 38, tip: "emlak", ad: "Mare Serenitatis Biyo-Rezidans", gezegen: "Ay", oda: "2", gorunus: "Biyopod", fiyat: 460, detay: "Biyopod" },
+            { id: 39, tip: "emlak", ad: "Kepler Botanik Podu", gezegen: "Ay", oda: "3", gorunus: "Biyopod", fiyat: 670, detay: "Biyopod" },
+            { id: 40, tip: "emlak", ad: "Plato Bilim Biyosferi", gezegen: "Ay", oda: "4", gorunus: "Biyopod", fiyat: 920, detay: "Biyopod" },
+            { id: 41, tip: "emlak", ad: "Artemis Lüks Kapsülü", gezegen: "Ay", oda: "1", gorunus: "Metalik", fiyat: 330, detay: "Fütüristik Metalik" },
+            { id: 42, tip: "emlak", ad: "Fra Mauro Alüminyum İstasyon", gezegen: "Ay", oda: "2", gorunus: "Metalik", fiyat: 510, detay: "Fütüristik Metalik" },
+            { id: 43, tip: "emlak", ad: "Grimaldi Ağır Gövde Evi", gezegen: "Ay", oda: "3", gorunus: "Metalik", fiyat: 730, detay: "Fütüristik Metalik" },
+            { id: 44, tip: "emlak", ad: "Endymion Kuantum Rezidans", gezegen: "Ay", oda: "4", gorunus: "Metalik", fiyat: 1080, detay: "Fütüristik Metalik" },
+            { id: 45, tip: "emlak", ad: "Clavius Krateri Taş Evi", gezegen: "Ay", oda: "1", gorunus: "Taş", fiyat: 300, detay: "Volkanik Taş" },
+            { id: 46, tip: "emlak", ad: "Aristarchus Taş Konutları", gezegen: "Ay", oda: "2", gorunus: "Taş", fiyat: 490, detay: "Volkanik Taş" },
+            { id: 47, tip: "emlak", ad: "Mare Imbrium Bazalt Blokları", gezegen: "Ay", oda: "3", gorunus: "Taş", fiyat: 710, detay: "Volkanik Taş" },
+            { id: 48, tip: "emlak", ad: "Langrenus Yeraltı Taş Sarayı", gezegen: "Ay", oda: "4", gorunus: "Taş", fiyat: 1150, detay: "Volkanik Taş" },
+            
+            { id: 50, tip: "is", ad: "Junior AI Operatör Stajyeri", sirket: "NovaAI Corp", gezegen: "Mars", fiyat: 0, yas: "18+", deneyim: "Deneyimsiz", detay: "Maaş: +4,000 GBC | Başlangıç Seviyesi Python" },
+            { id: 51, tip: "is", ad: "Gezegenler Arası Yapay Zeka Operatörü", sirket: "AstroSystems", gezegen: "Mars", fiyat: 0, yas: "21+", deneyim: "1-3 Yıl", detay: "Maaş: +6,500 GBC | Veri Analiz Modelleri" },
+            { id: 52, tip: "is", ad: "Kıdemli Yapay Zeka Baş Mühendisi", sirket: "Mars Core AI", gezegen: "Mars", fiyat: 0, yas: "25+", deneyim: "5+ Yıl", detay: "Maaş: +12,000 GBC | Algoritma Tasarımı" },
+            { id: 53, tip: "is", ad: "Deep Space Veri Bilimcisi", sirket: "Galactic Analytics", gezegen: "Titan", fiyat: 0, yas: "25+", deneyim: "5+ Yıl", detay: "Maaş: +14,500 GBC | Büyük Veri Analitiği" },
+            { id: 61, tip: "is", ad: "Siber Altyapı Güvenlik Şefi", sirket: "Luna Defense", gezegen: "Ay", fiyat: 0, yas: "25+", deneyim: "5+ Yıl", detay: "Maaş: +15,000 GBC | Güvenlik Duvarı Mimarı" },
+            { id: 62, tip: "is", ad: "Ay Siber Güvenlik Analisti", sirket: "CyberShield", gezegen: "Ay", fiyat: 0, yas: "21+", deneyim: "1-3 Yıl", detay: "Maaş: +8,000 GBC | Sızma Testleri" },
+
+            { id: 70, tip: "eglence", ad: "Cyberpunk Hologram Konseri", eglenceTur: "Müzikli", ikramTur: "Alkollü", gezegen: "Mars", fiyat: 45, detay: "Sanal Performans & Ağır Kokteyller" },
+            { id: 71, tip: "eglence", ad: "Metan Denizi Ritim Kulübü", eglenceTur: "Müzikli", ikramTur: "Alkollü", gezegen: "Titan", fiyat: 60, detay: "Tekno Gece Kulübü & Sınırsız Alkol" },
+            { id: 72, tip: "eglence", ad: "Kozmik Akustik Gitar Gecesi", eglenceTur: "Müzikli", ikramTur: "Alkolsüz", gezegen: "Mars", fiyat: 15, detay: "Sakin Dinleti & Doğal Meyve Kokteylleri" },
+            { id: 73, tip: "eglence", ad: "Ay Krateri Elektro Senfonisi", eglenceTur: "Müzikli", ikramTur: "Alkolsüz", gezegen: "Ay", fiyat: 20, detay: "Lazer Şovlu Klasik Konser & Enerji İçecekleri" },
+            { id: 74, tip: "eglence", ad: "Galaktik Poker & Kart Turnuvası", eglenceTur: "Müziksiz", ikramTur: "Alkollü", gezegen: "Mars", fiyat: 100, detay: "Yüksek Odaklı Kumar & Premium Likörler" },
+            { id: 75, tip: "eglence", ad: "Sessiz Kapsül Sinema Gecesi", eglenceTur: "Müziksiz", ikramTur: "Alkollü", gezegen: "Titan", fiyat: 30, detay: "Bilimkurgu Maratonu & Sıcak Şarap" },
+            { id: 76, tip: "eglence", ad: "Rover Robotik Mekanik Atölyesi", eglenceTur: "Müziksiz", ikramTur: "Alkolsüz", gezegen: "Ay", fiyat: 10, detay: "Uygulamalı Eğitim & Kahve/Çay Barı" },
+            { id: 77, tip: "eglence", ad: "Gezegenler Arası AI Kodlama Kampı", eglenceTur: "Müziksiz", ikramTur: "Alkolsüz", gezegen: "Mars", fiyat: 0, detay: "Yapay Zeka Kod Kampı & Bitki Çayları" },
+
+            { id: 100, tip: "lojistik", ad: "Mars Express Mekik Seferi", gezegen: "Mars", mekikClass: "Işık Hızı", fiyat: 150, detay: "Kuantum Motorlu Yolcu Gemisi" },
+            { id: 101, tip: "lojistik", ad: "Titan Ağır Taşıyıcı Seferi", gezegen: "Titan", mekikClass: "Hiper Kapsül", fiyat: 300, detay: "Hiper Kapsül Express" },
+            { id: 102, tip: "lojistik", ad: "Artemis Ay Dolmuşu", gezegen: "Ay", mekikClass: "Işık Hızı", fiyat: 80, detay: "Dünya-Ay Düzenli Seferi" },
+            
+            { id: 200, tip: "astrotag", ad: "Kızıl Rota Ekspresi (Rover-X)", gezegen: "Mars", bosKoltuk: "1", fiyat: 25, detay: "Kapsülde müzik serbest, kahve ikramı var." },
+            { id: 201, tip: "astrotag", ad: "Metan Denizine Sürüş (Pod-3)", gezegen: "Titan", bosKoltuk: "2", fiyat: 40, detay: "Hızlı sürüş severler gelsin, bagaj geniş." },
+            { id: 202, tip: "astrotag", ad: "Luna Krater Dolmuşu", gezegen: "Ay", bosKoltuk: "1", fiyat: 15, detay: "Sessiz yolculuk arayanlar için ideal rota." },
+
+            // === MARKET SEKMESİ ===
+            { id: 300, tip: "market", ad: "Sentetik Bio-Domates (1 Kg)", marketTur: "Taze Gıda", gezegen: "Mars", fiyat: 4, detay: "Mars Sera Laboratuvarlarında Yetiştirilmiş %100 Vitaminli" },
+            { id: 301, tip: "market", ad: "Hidroponik Parlayan Muz (Salkım)", marketTur: "Taze Gıda", gezegen: "Titan", fiyat: 8, detay: "Yapay Işık Odalarında Potasyum Yüklemesi Yapılmış" },
+            { id: 302, tip: "market", ad: "Koloni Kıvırcık Marulu", marketTur: "Taze Gıda", gezegen: "Ay", fiyat: 3, detay: "Yerçekimsiz Alanda Yetişen Dev Yapraklı Salata Malzemesi" },
+            { id: 303, tip: "market", ad: "Dehidre Kapsül Sebze Çorbası", marketTur: "Paketli Gıda", gezegen: "Mars", fiyat: 12, detay: "Sıcak Su Ekleyince Saniyeler İçinde Hazır Olan Sıkıştırılmış Çorba" },
+            { id: 304, tip: "market", ad: "Kuantum Plazma Enerji İçeceği", marketTur: "Paketli Gıda", gezegen: "Titan", fiyat: 15, detay: "B12 ve Galaktik Elektrolit Bombası Paket Tasarım" },
+            { id: 305, tip: "market", ad: "Siber-Çikolata & Protein Bar", marketTur: "Paketli Gıda", gezegen: "Ay", fiyat: 6, detay: "Uzay Yürüyüşleri İçin Özel Tasarlanmış Yüksek Kalorili Atıştırmalık" }
+        ];
+
+        const bgMusic = document.getElementById("bgMusic");
+        bgMusic.volume = globalVolume;
+
+        function forcePlayMusic() {
+            if(!isMuted && bgMusic.paused) {
+                bgMusic.volume = globalVolume;
+                bgMusic.play().catch(e => {});
+            }
+        }
+        window.addEventListener('click', forcePlayMusic);
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            document.getElementById("muteBtn").innerText = isMuted ? "🔇 SES KAPALI" : "🔊 SES AÇIK";
+            document.getElementById("muteBtn").style.color = isMuted ? "#ff4500" : "#00f5ff";
+            if (isMuted) { bgMusic.pause(); } else { bgMusic.play().catch(e => {}); }
+        }
+
+        function adjustVolume() {
+            globalVolume = parseFloat(document.getElementById("volumeSlider").value);
+            bgMusic.volume = globalVolume;
+        }
+
+        // API METODLARI
+        async function fetchWeatherData() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=37.8713&longitude=32.4847&current_weather=true');
+                const data = await response.json();
+                if(data && data.current_weather) {
+                    document.getElementById("liveTemp").innerText = data.current_weather.temperature + "°C";
+                    document.getElementById("liveWind").innerText = "Rüzgar: " + data.current_weather.windspeed + " km/s";
+                }
+            } catch (err) {}
+        }
+
+        async function fetchSeismicRadar() {
+            try {
+                const response = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson');
+                const data = await response.json();
+                if(data && data.features && data.features.length > 0) {
+                    const enSonDeprem = data.features[0].properties;
+                    let yer = enSonDeprem.place.replace("of ", "yakınları, ").replace("South", "Güney").replace("North", "Kuzey").replace("CA", "Kaliforniya (ABD)").replace("Alaska", "Alaska (ABD)");
+                    document.getElementById("radarLocation").innerText = "📍 Yer: " + yer;
+                    document.getElementById("radarMag").innerText = "Büyüklük: " + enSonDeprem.mag.toFixed(1) + " Mw";
+                }
+            } catch(e) {}
+        }
+
+        // 🔥 GÜÇLENDİRİLMİŞ NASA APOD MOTORU (Kırılma ve Medya Türü Filtreli Tam Çözüm)
+        async function fetchNasaApod() {
+            try {
+                const response = await fetch('https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY');
+                const data = await response.json();
+                
+                // Eğer gelen veri boş değilse ve medya türü video değil, gerçek bir resimse bas
+                if(data && data.url && data.media_type === "image") {
+                    document.getElementById("nasaImage").src = data.url;
+                    document.getElementById("nasaTitle").innerText = data.title;
+                    document.getElementById("nasaDesc").innerText = data.explanation;
+                } else if(data && data.media_type === "video") {
+                    // Eğer günün verisi video ise jüride boş kalmaması için harika bir uzay başlığıyla yedek resme geçir
+                    document.getElementById("nasaTitle").innerText = "NASA Canlı Yayın Akışı: " + data.title;
+                    document.getElementById("nasaImage").src = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=300&auto=format&fit=crop";
+                    document.getElementById("nasaDesc").innerText = data.explanation;
+                }
+            } catch(e) {
+                // Limit aşımı veya internet kopmasında panelin doluluğunu koruyan siber güvenlik kalkanı
+                console.log("NASA API Limiti aşıldı, yedek telemetri görseli devrede.");
+            }
+        }
+
+        function updateLiveQuote() {
+            const rastgeleSöz = TURKCE_SOZLER[Math.floor(Math.random() * TURKCE_SOZLER.length)];
+            document.getElementById("liveQuote").innerText = `🧠 Kuantum AI Rehberi: "${rastgeleSöz}"`;
+        }
+
+        // KART BASMA MOTORU
+        async function kartlariYazdir(liste) {
+            const grid = document.getElementById("cardsGrid"); grid.innerHTML = "";
+            if(liste.length === 0) { grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:#606080; margin-top:20px;">🤖 Kriterlere uygun koloni kaydı bulunamadı.</p>`; return; }
+            
+            let randomUsers = [];
+            try {
+                const res = await fetch('https://randomuser.me/api/?results=' + liste.length + '&nat=tr,us,fr,gb');
+                const uData = await res.json(); randomUsers = uData.results;
+            } catch(e) {}
+
+            liste.forEach((item, index) => {
+                let tagColor = item.tip === 'emlak' ? '#00f5ff' : (item.tip === 'is' ? '#c896ff' : (item.tip === 'eglence' ? '#ffeb3b' : (item.tip === 'market' ? '#ffaa00' : '#e91e63')));
+                let tagBg = item.tip === 'emlak' ? 'rgba(0,245,255,0.1)' : 'rgba(255,255,255,0.05)';
+                let fiyattat = item.tip === 'is' ? '' : item.fiyat + ' Kredi';
+                
+                let butonMetni = item.tip === 'emlak' ? 'HABİTATI KİRALA' : (item.tip === 'is' ? 'KUANTUM CV GÖNDER' : (item.tip === 'eglence' ? 'REZERVASYON YAP' : (item.tip === 'market' ? 'SEPETE EKLE / SATIN AL' : 'MEKİK BİLETİ AL')));
+                if(item.tip === 'astrotag') butonMetni = '🚖 MEKİĞE KATIL (ASTRO-TAG)';
+
+                let userHtml = "";
+                if(randomUsers && randomUsers[index] && (item.tip === 'emlak' || item.tip === 'is' || item.tip === 'astrotag')) {
+                    const u = randomUsers[index];
+                    let rolMetni = item.tip === 'emlak' ? "Önceki Kiracı Kolonist:" : "Son Başvuran Rakibiniz:";
+                    if(item.tip === 'astrotag') rolMetni = "Mekik Sürücüsü Kolonist:";
+                    
+                    userHtml = `
+                        <div class="api-user-box">
+                            <img src="${u.picture.thumbnail}" class="api-user-img" />
+                            <div class="api-user-info">
+                                <div style="color:#ffeb3b; font-size:9px;">${rolMetni}</div>
+                                <div class="api-user-name" id="username-${item.id}">${u.name.first} ${u.name.last}</div>
+                            </div>
+                        </div>`;
+                }
+
+                let tagDisplay = item.tip === 'astrotag' ? "🚖 ASTRO-TAG" : (item.tip === 'market' ? "🛒 KAPSÜL MARKET" : item.tip.toUpperCase());
+                let metadata = item.tip === 'emlak' ? `${item.gezegen} | ${item.oda} Oda | Görünüş: ${item.gorunus}` : `Gezegen: ${item.gezegen} ${item.bosKoltuk ? `| Boş Koltuk: ${item.bosKoltuk}` : ''}`;
+                if(item.tip === 'market') metadata = `Sera Bölgesi: ${item.gezegen} | Kategori: ${item.marketTur}`;
+
+                grid.innerHTML += `
+                    <div class="card">
+                        <span class="card-tag" style="background:${tagBg}; color:${tagColor};">${tagDisplay}</span>
+                        <div class="card-title">${item.ad}</div>
+                        <div class="card-meta">${metadata}</div>
+                        <div class="card-meta" style="color:#00f5ff; font-weight:bold;">${fiyattat}</div>
+                        
+                        ${userHtml}
+
+                        ${item.tip === 'emlak' ? `
+                            <button class="action-btn chat-trigger-btn" onclick="toggleChat(${item.id})">💬 Önceki Kiracıyla Canlı Sohbet</button>
+                            <div class="chat-container" id="chatbox-${item.id}">
+                                <div class="chat-history" id="chathistory-${item.id}">
+                                    <div class="chat-row-bot">Karşı taraf bağlandı. İstediğinizi yazın...</div>
+                                </div>
+                                <div class="chat-input-wrapper">
+                                    <input type="text" class="chat-input-box" id="chatinput-${item.id}" placeholder="Mesajınızı yazın..." onkeypress="handleChatEnter(event, ${item.id})">
+                                    <button class="chat-send-btn" onclick="sendLiveMessage(${item.id})">Gönder</button>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <div class="comment-section">
+                            <div style="font-size:11px; color:#8080a0; margin-bottom:8px;">• "${item.detay}"</div>
+                            ${item.tip !== 'is' && item.tip !== 'emlak' ? `
+                                <div class="quantity-wrapper">
+                                    <label>📦 Miktar:</label>
+                                    <select class="quantity-select" id="qty-${item.id}"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
+                                </div>` : ''}
+                            <button class="action-btn" style="background:${tagColor}" onclick="islemYap(${item.id}, ${item.fiyat}, '${item.ad}', '${item.gezegen}', '${item.tip}')">${butonMetni}</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function toggleChat(id) {
+            forcePlayMusic();
+            const chatbox = document.getElementById('chatbox-' + id);
+            chatbox.style.display = chatbox.style.display === "flex" ? "none" : "flex";
+        }
+
+        function handleChatEnter(e, id) { if (e.key === 'Enter') { sendLiveMessage(id); } }
+
+        function sendLiveMessage(id) {
+            forcePlayMusic();
+            const inputEl = document.getElementById('chatinput-' + id);
+            const historyEl = document.getElementById('chathistory-' + id);
+            const name = document.getElementById('username-' + id).innerText;
+            const originalMsg = inputEl.value.trim();
+            const userMsg = originalMsg.toLowerCase();
+            if (originalMsg === "") return;
+
+            historyEl.innerHTML += `<div class="chat-row-user">Siz: ${originalMsg}</div>`;
+            inputEl.value = "";
+            historyEl.scrollTop = historyEl.scrollHeight;
+
+            const botRowId = 'bot-loading-' + Date.now();
+            historyEl.innerHTML += `<div class="chat-row-bot" id="${botRowId}">${name} yazıyor...</div>`;
+            
+            let aiResponse = `Evi genel olarak tavsiye ederim kolonist, koloni şartlarında çok rahattı!`;
+            if (userMsg.includes("ses") || userMsg.includes("gürültü") || userMsg.includes("gürültülü")) aiResponse = `Yalıtım panelleri meteor fırtınalarını bile absorbe ediyor. İçerisi tamamen sessiz.`;
+            else if (userMsg.includes("sıcak") || userMsg.includes("soğuk") || userMsg.includes("ısı")) aiResponse = `Kuantum termal çekirdek sayesinde içerisi her zaman sabit 22 derece.`;
+
+            setTimeout(() => {
+                document.getElementById(botRowId).outerHTML = `<div class="chat-row-bot">${name}: "${aiResponse}"</div>`;
+                historyEl.scrollTop = historyEl.scrollHeight;
+            }, 400);
+        }
+
+        function islemYap(id, fiyat, ad, hedon, tip) {
+            forcePlayMusic();
+            const qtyEl = document.getElementById('qty-' + id);
+            const adet = qtyEl ? parseInt(qtyEl.value) : 1;
+            const toplam = fiyat * adet;
+
+            if (bakiye >= toplam) {
+                bakiye -= toplam;
+                document.getElementById("walletDisplay").innerText = bakiye.toLocaleString() + " 🪙";
+                
+                if (tip === 'lojistik' || tip === 'astrotag') {
+                    mevcutKonum = hedon;
+                    document.getElementById("currentLoc").innerText = mevcutKonum;
+                    alert(`✅ Yolculuk Başarılı! Hedef: ${hedon} limanı.\nHesabınızdan ${toplam} Kredi düşüldü.`);
+                } else if(tip === 'market') {
+                    alert(`🛒 Market Siparişi Alındı! ${adet} adet [${ad}] kargo kapsülüyle odanıza fırlatıldı.\nHesabınızdan ${toplam} Kredi düşüldü.`);
+                } else {
+                    alert(`✅ Onaylandı! Toplam: ${toplam} Kredi.`);
+                }
+                filtreleKriter();
+            } else { alert("❌ Yetersiz Bakiye!"); }
+        }
+
+        function filtrele(kategori) {
+            forcePlayMusic();
+            aktifKategori = kategori;
+            
+            document.getElementById("gameArcadeWrapper").style.display = "none";
+            document.getElementById("cardsGrid").style.display = "grid";
+            document.getElementById("filterBarArea").style.display = "flex";
+            document.getElementById("nasaPanel").style.display = "flex";
+            if(gameLoopInterval) clearInterval(gameLoopInterval);
+
+            document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+            if(event) event.target.classList.add("active");
+            
+            document.querySelectorAll(".filter-group").forEach(g => g.classList.remove("active"));
+            if(kategori === "emlak") document.getElementById("groupEmlak").classList.add("active");
+            else if(kategori === "is") document.getElementById("groupIs").classList.add("active");
+            else if(kategori === "eglence") document.getElementById("groupEglence").classList.add("active");
+            else if(kategori === "lojistik") document.getElementById("groupLojistik").classList.add("active");
+            else if(kategori === "astrotag") document.getElementById("groupAstrotag").classList.add("active");
+            else if(kategori === "market") document.getElementById("groupMarket").classList.add("active");
+            filtreleKriter();
+        }
+
+        function filtreleKriter() {
+            const gezegen = document.getElementById("filterGezegen").value;
+            const oda = document.getElementById("filterOda").value;
+            const gorunus = document.getElementById("filterGorunus").value;
+            const yas = document.getElementById("filterYas").value;
+            const deneyim = document.getElementById("filterDeneyim").value;
+            const muzik = document.getElementById("filterMuzik").value;
+            const ikram = document.getElementById("filterIkram").value;
+            const mekikClass = document.getElementById("filterMekikClass").value;
+            const bosKoltuk = document.getElementById("filterKapsulKapasite").value;
+            const marketTur = document.getElementById("filterMarketTur").value;
+
+            let filtrelenmiş = VERI.filter(item => {
+                if (aktifKategori !== "hepsi" && item.tip !== aktifKategori) return false;
+                if (gezegen !== "hepsi" && item.gezegen !== gezegen) return false;
+                
+                if (item.tip === "emlak" && aktifKategori === "emlak") {
+                    if (oda !== "hepsi" && item.oda !== oda) return false;
+                    if (gorunus !== "hepsi" && item.gorunus !== gorunus) return false;
+                }
+                if (item.tip === "is" && aktifKategori === "is") {
+                    if (yas !== "hepsi" && item.yas !== yas) return false;
+                    if (deneyim !== "hepsi" && item.deneyim !== deneyim) return false;
+                }
+                if (item.tip === "eglence" && aktifKategori === "eglence") {
+                    if (muzik !== "hepsi" && item.eglenceTur !== muzik) return false;
+                    if (ikram !== "hepsi" && item.ikramTur !== ikram) return false;
+                }
+                if (item.tip === "lojistik" && aktifKategori === "lojistik") {
+                    if (mekikClass !== "hepsi" && item.mekikClass !== mekikClass) return false;
+                }
+                if (item.tip === "astrotag" && aktifKategori === "astrotag") {
+                    if (bosKoltuk !== "hepsi" && item.bosKoltuk !== bosKoltuk) return false;
+                }
+                if (item.tip === "market" && aktifKategori === "market") {
+                    if (marketTur !== "hepsi" && item.marketTur !== marketTur) return false;
+                }
+                return true;
+            });
+            kartlariYazdir(filtrelenmiş);
+        }
+
+        // =======================================================
+        // 👾 JAVASCRIPT OYUN MOTORU
+        // =======================================================
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        let gameScore = 0;
+        let gameLives = 3;
+        let gameLoopInterval;
+        let player = { x: 230, y: 260, width: 40, height: 15, speed: 8 };
+        let bullets = [];
+        let aliens = [];
+        let keys = {};
+        let baseAlienSpeed = 1.6;
+
+        function openMiniGame() {
+            forcePlayMusic();
+            document.querySelectorAll(".menu-btn").forEach(btn => btn.classList.remove("active"));
+            if(event) event.target.classList.add("active");
+
+            document.getElementById("cardsGrid").style.display = "none";
+            document.getElementById("filterBarArea").style.display = "none";
+            document.getElementById("nasaPanel").style.display = "none";
+            document.getElementById("gameArcadeWrapper").style.display = "flex";
+            
+            gameScore = 0; gameLives = 3; baseAlienSpeed = 1.6;
+            document.getElementById("gameScore").innerText = gameScore;
+            document.getElementById("gameLives").innerText = gameLives;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#22c55e";
+            ctx.font = "14px Orbitron";
+            ctx.fillText("UZAYLI İSTİLASINA KARŞI SAVAŞI BAŞLATIN", 110, 150);
+        }
+
+        function startMiniGame() {
+            document.getElementById("gameStartBtn").blur();
+
+            if(gameLoopInterval) clearInterval(gameLoopInterval);
+            gameScore = 0; gameLives = 3; baseAlienSpeed = 1.6;
+            bullets = []; aliens = [];
+            player.x = 230;
+            document.getElementById("gameScore").innerText = gameScore;
+            document.getElementById("gameLives").innerText = gameLives;
+            
+            gameLoopInterval = setInterval(updateGameFrame, 1000 / 30);
+        }
+
+        window.addEventListener("keydown", (e) => { 
+            if (document.getElementById("gameArcadeWrapper").style.display === "flex") {
+                if(e.key === " " || e.key === "Spacebar") {
+                    e.preventDefault();
+                    firePlayerLaser();
+                }
+                keys[e.key] = true; 
+            }
+        });
+        window.addEventListener("keyup", (e) => { if (document.getElementById("gameArcadeWrapper").style.display === "flex") { keys[e.key] = false; } });
+
+        function firePlayerLaser() {
+            if (gameLives > 0) {
+                let laserWidth = gameScore >= 100 ? 8 : 4;
+                let laserSpeed = gameScore >= 100 ? 16 : 13;
+                bullets.push({ x: player.x + player.width / 2 - laserWidth/2, y: player.y, width: laserWidth, height: 12, speed: laserSpeed });
+            }
+        }
+
+        function updateGameFrame() {
+            if (keys["ArrowLeft"] || keys["a"] || keys["A"] || keys["Left"]) { if (player.x > 0) player.x -= player.speed; }
+            if (keys["ArrowRight"] || keys["d"] || keys["D"] || keys["Right"]) { if (player.x < canvas.width - player.width) player.x += player.speed; }
+
+            bullets.forEach((b, i) => { b.y -= b.speed; if (b.y < 0) bullets.splice(i, 1); });
+
+            baseAlienSpeed = 1.6 + (Math.floor(gameScore / 60) * 0.4);
+
+            if (Math.random() < 0.008) {
+                aliens.push({ 
+                    x: Math.random() * (canvas.width - 30), 
+                    y: -20, 
+                    w: 24, 
+                    h: 14, 
+                    speed: baseAlienSpeed + Math.random() * 0.6 
+                });
+            }
+
+            aliens.forEach((al, ai) => {
+                al.y += al.speed;
+                
+                if (al.y > canvas.height) { 
+                    aliens.splice(ai, 1); 
+                    gameLives--;
+                    document.getElementById("gameLives").innerText = gameLives;
+                    checkGameOver();
+                }
+
+                if (al.x + al.w > player.x && al.x < player.x + player.width && al.y + al.h > player.y && al.y < player.y + player.height) {
+                    aliens.splice(ai, 1);
+                    gameLives--;
+                    document.getElementById("gameLives").innerText = gameLives;
+                    checkGameOver();
+                }
+
+                bullets.forEach((b, bi) => {
+                    if (b.x + b.width > al.x && b.x < al.x + al.w && b.y < al.y + al.h && b.y + b.height > al.y) {
+                        aliens.splice(ai, 1);
+                        bullets.splice(bi, 1);
+                        gameScore += 10;
+                        document.getElementById("gameScore").innerText = gameScore;
+                    }
+                });
+            });
+
+            if(gameLives <= 0) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#00f5ff";
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.fillStyle = "#ffeb3b";
+            ctx.fillRect(player.x + 15, player.y, 10, 4);
+
+            ctx.fillStyle = gameScore >= 100 ? "#22c55e" : "#ff4500";
+            bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+            aliens.forEach(al => {
+                ctx.fillStyle = "#e91e63";
+                ctx.beginPath();
+                ctx.moveTo(al.x + al.w / 2, al.y + al.h);
+                ctx.lineTo(al.x, al.y);
+                ctx.lineTo(al.x + al.w, al.y);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = "#ffeb3b";
+                ctx.fillRect(al.x + al.w/2 - 2, al.y + 2, 4, 4);
+            });
+        }
+
+        function checkGameOver() {
+            if (gameLives <= 0) {
+                clearInterval(gameLoopInterval);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#ff4500";
+                ctx.font = "20px Orbitron";
+                ctx.fillText("KOLONİ DÜŞTÜ - OYUN BİTTİ", 140, 150);
+            }
+        }
+
+        // BAŞLANGIÇ PROTOKOLLERİ
+        fetchWeatherData(); fetchSeismicRadar(); fetchNasaApod(); kartlariYazdir(VERI);
+        setInterval(fetchSeismicRadar, 30000); setInterval(updateLiveQuote, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroHub - Giriş Protokolü</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #050508; color: #e0e0e0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        .bg-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(233, 30, 99, 0.08) 0%, rgba(0, 245, 255, 0.05) 50%, transparent 100%); z-index: 1; }
+        .login-container { background: #0f0f1a; border: 1px solid rgba(0, 245, 255, 0.15); padding: 40px; border-radius: 20px; width: 450px; text-align: center; box-shadow: 0 0 30px rgba(0, 245, 255, 0.1); z-index: 2; position: relative; }
+        .logo-img { width: 180px; height: auto; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 0 20px rgba(0, 245, 255, 0.3); border: 2px solid rgba(255, 255, 255, 0.1); }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 700; color: #00f5ff; letter-spacing: 3px; text-shadow: 0 0 15px rgba(0, 245, 255, 0.4); margin-bottom: 5px; }
+        .slogan { font-size: 11px; color: #ffeb3b; font-weight: 500; text-shadow: 0 0 8px rgba(255, 235, 59, 0.4); margin-bottom: 30px; line-height: 1.4; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 11px; color: #a0a0c0; margin-bottom: 8px; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+        .input-group input { width: 100%; background: #050508; border: 1px solid rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; color: #fff; outline: none; transition: all 0.3s; }
+        .input-group input:focus { border-color: #e91e63; box-shadow: 0 0 10px rgba(233, 30, 99, 0.2); }
+        .login-btn { width: 100%; padding: 14px; background: #00f5ff; color: #050508; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: bold; font-size: 14px; cursor: pointer; transition: all 0.3s ease; letter-spacing: 1px; margin-top: 10px; }
+        .login-btn:hover { background: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.6); transform: translateY(-2px); }
+        .error-message { color: #ff4500; font-size: 12px; margin-top: 15px; display: none; font-family: 'Orbitron'; }
+        .footer-text { font-size: 10px; color: #404060; margin-top: 25px; font-family: 'Orbitron', sans-serif; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="login-container">
+        <img src="logo.png" alt="AstroHub Logo" class="logo-img">
+        <h1>ASTROHUB</h1>
+        <div class="slogan">Kozmik ağlarda kaybolma, kendi yaşamının mimarı ol.</div>
+
+        <div class="input-group">
+            <label>🛸 KOLONİST KİMLİK ADI</label>
+            <input type="text" id="usernameInput" placeholder="Kullanıcı adınızı girin" value="serifenur">
+        </div>
+
+        <div class="input-group">
+            <label>🔐 KUANTUM GÜVENLİK ŞİFRESİ</label>
+            <input type="password" id="passwordInput" placeholder="Şifrenizi girin" value="12345">
+        </div>
+
+        <button class="login-btn" onclick="validateLogin()">SİSTEME BAĞLAN</button>
+        <div class="error-message" id="errorBlock">❌ GEÇERSİZ KİMLİK VEYA ŞİFRE PROTOKOLÜ!</div>
+        
+        <div class="footer-text">PROTOKOL v4.0.0 SECURE NODE</div>
+    </div>
+
+    <script>
+        function validateLogin() {
+            const user = document.getElementById("usernameInput").value.trim();
+            const pass = document.getElementById("passwordInput").value.trim();
+            
+            if (user === "serifenur" && pass === "12345") {
+                window.location.href = 'dashboard.html';
+            } else {
+                document.getElementById("errorBlock").style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
