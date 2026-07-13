@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Akademik Bot</title>
+  <style>
+    body { width: 320px; font-family: Arial, sans-serif; padding: 10px; background: #fafafa; }
+    h2 { font-size: 14px; margin-bottom: 10px; color: #333; text-align: center; }
+    .status-container { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
+    .status-dot.running { background: #27ae60; }
+    .status-dot.done { background: #2980b9; }
+    .stats { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 10px; background: #eee; padding: 6px; border-radius: 4px; }
+    #currentPerson { font-size: 11px; color: #666; margin-bottom: 10px; font-style: italic; min-height: 14px; }
+    .btn { width: 100%; padding: 8px; margin-bottom: 5px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; }
+    #btnStart { background: #27ae60; color: white; }
+    #btnSave { background: #2980b9; color: white; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    #logBox { background: #222; color: #a8d8a8; font-family: monospace; font-size: 10px; padding: 6px; max-height: 100px; overflow-y: auto; white-space: pre-wrap; border-radius: 4px; }
+    .log-ok { color: #a8d8a8; }
+    .log-info { color: #74b9ff; }
+  </style>
+</head>
+<body>
+  <h2>🔬 Akademik Veri Toplayıcı</h2>
+  <div class="status-container">
+    <div id="statusDot" class="status-dot"></div>
+    <span id="statusText">Hazır</span>
+  </div>
+  <div id="currentPerson">Başlatılmayı bekliyor...</div>
+  <div class="stats">
+    <div>Kişi: <span id="countOk">0</span></div>
+    <div>E-Posta: <span id="countEmail">0</span></div>
+    <div>Telefon: <span id="countPhone">—</span></div>
+  </div>
+  <button id="btnStart" class="btn">▶ Başla</button>
+  <button id="btnSave" class="btn" disabled>💾 CSV İndir</button>
+  <div id="logBox">Bot hazır...<br></div>
+  <script src="popup.js"></script>
+</body>
+</html>
