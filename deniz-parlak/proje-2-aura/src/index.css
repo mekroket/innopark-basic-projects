@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* KÜRESEL KARANLIK MOD ZORLAMASI */
+@layer base {
+  /* Tüm başlıklar otomatik olarak gündüz siyah, gece beyaz olacak */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-slate-900 dark:text-white transition-colors duration-300;
+  }
+  
+  /* Rengi özel olarak belirtilmemiş tüm standart metinler ve kalın yazılar */
+  body, span, strong, b {
+    @apply text-slate-800 dark:text-slate-100 transition-colors duration-300;
+  }
+}
+
+/* Kendi özel scrollbar (kaydırma çubuğu) tasarımımız varsa diye (opsiyonel şıklık) */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 dark:bg-white/10 rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary/50;
+}
