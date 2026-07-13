@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThinkWise AI – Intelligent Decision Agent</title>
+<style>
+  :root {
+    --primary: #6C5CE7;
+    --primary-dark: #4834b0;
+    --accent: #00d4b5;
+    --bg: #0f1117;
+    --card: #1a1d29;
+    --text: #eef0f7;
+    --muted: #9aa1b5;
+    --border: #2a2e3d;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); }
+  header { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); padding:32px 24px; text-align:center; }
+  header h1 { margin:0 0 8px; font-size:1.7rem; }
+  header p { margin:0; opacity:.9; font-size:.9rem; max-width:600px; margin:0 auto; }
+
+  .container { max-width:720px; margin:28px auto; padding:0 16px 60px; }
+
+  .card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px; box-shadow:0 8px 24px rgba(0,0,0,.25); }
+  .card h2 { margin-top:0; font-size:1.05rem; display:flex; align-items:center; gap:8px; }
+
+  #chat-window { height:480px; overflow-y:auto; background:#12141c; border:1px solid var(--border); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+  .msg { max-width:85%; padding:11px 15px; border-radius:14px; font-size:.9rem; line-height:1.55; white-space:pre-wrap; }
+  .msg.bot { align-self:flex-start; background:#232838; border-bottom-left-radius:4px; }
+  .msg.user { align-self:flex-end; background:var(--primary); color:white; border-bottom-right-radius:4px; }
+  .msg.thinking { align-self:flex-start; color:var(--muted); font-style:italic; font-size:.8rem; padding:2px 4px; }
+  .msg { animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(4px);} to { opacity:1; transform:translateY(0);} }
+  .msg.result::before { content:"🧭 "; }
+  .msg.bot::before { content:"🧭 "; }
+
+  form#chat-form { display:flex; gap:8px; margin-top:14px; }
+  #chat-input { flex:1; padding:12px 14px; border:1px solid var(--border); border-radius:10px; font-size:.9rem; background:#12141c; color:var(--text); }
+  #chat-input::placeholder { color:var(--muted); }
+  button { cursor:pointer; border:none; border-radius:10px; padding:11px 20px; font-size:.88rem; font-weight:600; }
+  .btn-primary { background:var(--accent); color:#0f1117; }
+  .btn-primary:hover { opacity:.9; }
+  .btn-secondary { background:transparent; color:var(--muted); margin-top:12px; border:1px solid var(--border); width:100%; padding:9px; }
+  .btn-secondary:hover { color:var(--text); border-color:var(--muted); }
+
+  footer { text-align:center; color:var(--muted); font-size:.72rem; padding:20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🧭 ThinkWise AI</h1>
+  <p>Karar veremediğin bir konuyu anlat, kişilik tarzına göre sana özel bir yönlendirme sunayım — tamamen local, kendi eğittiğim modelim.</p>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>💬 Benimle Konuş</h2>
+    <div id="chat-window"></div>
+    <form id="chat-form">
+      <input type="text" id="chat-input" placeholder="Karar veremediğin bir konuyu ya da kendinden bahset..." autocomplete="off">
+      <button type="submit" class="btn-primary">Gönder</button>
+    </form>
+    <button type="button" class="btn-secondary" onclick="restartChat()">Sohbeti baştan başlat</button>
+  </div>
+</div>
+
+<footer>ThinkWise AI, eğitim amaçlı bir okul projesidir; ciddi kararlar için tek başına referans alınmamalıdır.<br>Model performansı ve confusion matrix grafikleri <code>model/</code> klasöründe, sunum için oradan kullanılabilir.</footer>
+
+<script>
+const API_BASE = window.location.origin;
+
+const GREETINGS = ["merhaba", "selam", "hey", "hi", "hello", "naber", "nasılsın", "günaydın", "iyi akşamlar"];
+function greetingReply(text) {
+  const lower = text.toLowerCase().trim();
+  if (lower.startsWith("nasılsın") || lower.startsWith("naber")) {
+    return "İyiyim, teşekkürler! Sen nasılsın? 🙂";
+  }
+  return "Selam! Karar veremediğin bir konuyu ya da kendinden birkaç cümle anlatırsan seni analiz edebilirim.";
+}
+const FAREWELLS = ["görüşürüz", "hoşçakal", "hoşça kal", "bay bay", "kendine iyi bak", "iyi günler", "iyi geceler", "bye"];
+const THANKS = ["teşekkür", "sağol", "sağ ol", "eyvallah", "tşk", "thanks"];
+const OK_WORDS = ["tamam", "peki", "anladım", "ok", "okay", "süper", "harika", "iyiyim", "ben de iyiyim", "bende iyiyim", "idare eder", "fena değil"];
+const FAQ_TRIGGERS = ["mbti nedir", "ne işe yarar", "nasıl çalışıyor", "nasıl calisiyor", "ne demek", "bu proje ne", "nedir bu", "sen nesin", "sen kimsin", "ne yapıyorsun"];
+const DETAIL_TRIGGERS = ["detaylı profilimi göster", "detaylı profil", "tüm raporu göster", "detaylı rapor"];
+const MIN_LENGTH_FOR_ANALYSIS = 45;
+let conversationBuffer = "";
+let lastReport = null;
+let lastType = null;
+
+const FOLLOWUP_PROMPTS = [
+  "Biraz daha anlatır mısın? Yeterli metin toplayınca seni analiz edip yönlendirebilirim.",
+  "Devam et, birkaç cümle daha yazarsan daha güvenilir bir analiz yapabilirim.",
+  "Anlıyorum, biraz daha detay verir misin? Kısa mesajlarda tahminim güvenilir olmuyor."
+];
+
+function matchesAny(text, list) {
+  const lower = text.toLowerCase().trim();
+  return list.some(g => lower === g || lower.startsWith(g + " ") || lower.startsWith(g + "!") || lower.includes(g));
+}
+
+function isGreeting(text) {
+  const lower = text.toLowerCase().trim();
+  return GREETINGS.some(g => lower === g || lower.startsWith(g + " ") || lower.startsWith(g + "!"));
+}
+
+function isDetailRequest(text) { return matchesAny(text, DETAIL_TRIGGERS); }
+function isFAQ(text) { return matchesAny(text, FAQ_TRIGGERS); }
+
+function faqAnswer() {
+  return "Ben ThinkWise AI'yım — kendi eğittiğim bir makine öğrenmesi modeliyim (dış bir AI servisine bağlı değilim). Yazdığın metindeki kelime kalıplarına bakarak İçe/Dışa Dönük, Sezgisel/Gerçekçi, Düşünen/Hisseden, Yargılayan/Algılayan eksenlerinde bir kişilik tahmini yapıyorum, sonra bu tahmine göre karar veremediğin konuda sana özel bir yönlendirme sunuyorum.";
+}
+
+function addMsg(text, cls) {
+  const win = document.getElementById("chat-window");
+  const div = document.createElement("div");
+  div.className = `msg ${cls}`;
+  div.textContent = text;
+  win.appendChild(div);
+  win.scrollTop = win.scrollHeight;
+  return div;
+}
+
+function restartChat() {
+  document.getElementById("chat-window").innerHTML = "";
+  conversationBuffer = ""; lastReport = null; lastType = null;
+addMsg("Merhaba! Ben ThinkWise AI. Karar veremediğin bir konuyu (ne giyeceğim, hangi bölümü seçeceğim, tatile nereye gitsem gibi) ya da kendinden birkaç cümle anlat — seni analiz edip kendi tarzına uygun bir yönlendirme sunayım. İstersen sonradan 'detaylı profilimi göster' yazarak tam kişilik raporunu da görebilirsin.", "bot");
+}
+
+document.getElementById("chat-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMsg(text, "user");
+  input.value = "";
+  input.disabled = true;
+
+  if (matchesAny(text, FAREWELLS)) {
+    await new Promise(r => setTimeout(r, 300));
+    addMsg("Görüşürüz! İstediğin zaman geri gelip karar veremediğin bir konuyu anlatabilirsin. 👋", "bot");
+    input.disabled = false; input.focus(); return;
+  }
+  if (matchesAny(text, THANKS)) {
+    await new Promise(r => setTimeout(r, 300));
+    addMsg("Rica ederim! Başka bir konuda karar veremiyorsan onu da anlatabilirsin.", "bot");
+    input.disabled = false; input.focus(); return;
+  }
+  if (isFAQ(text)) {
+    await new Promise(r => setTimeout(r, 400));
+    addMsg(faqAnswer(), "bot");
+    input.disabled = false; input.focus(); return;
+  }
+  if (isDetailRequest(text)) {
+    await new Promise(r => setTimeout(r, 400));
+    if (lastReport && lastType) {
+      let reportText = `✅ Tahmini kişilik tipin: ${lastType}\n\n`;
+      for (const label in lastReport) {
+        reportText += `${label}:\n`;
+        lastReport[label].forEach(line => reportText += `  - ${line}\n`);
+        reportText += "\n";
+      }
+      addMsg(reportText, "result");
+    } else {
+      addMsg("Henüz bir analiz yapmadık — önce kendinden ya da bir karar konusundan bahset.", "bot");
+    }
+    input.disabled = false; input.focus(); return;
+  }
+  if (matchesAny(text, OK_WORDS) && text.length < MIN_LENGTH_FOR_ANALYSIS) {
+    await new Promise(r => setTimeout(r, 300));
+    addMsg("👍 Başka bir konuda karar veremiyorsan onu da anlatabilirsin, ya da 'detaylı profilimi göster' yazarak raporunu görebilirsin.", "bot");
+    input.disabled = false; input.focus(); return;
+  }
+  if (isGreeting(text) && text.length < MIN_LENGTH_FOR_ANALYSIS) {
+    await new Promise(r => setTimeout(r, 400));
+   addMsg(greetingReply(text), "bot");
+    input.disabled = false; input.focus(); return;
+  }
+
+  conversationBuffer = (conversationBuffer + " " + text).trim();
+
+  if (conversationBuffer.length < MIN_LENGTH_FOR_ANALYSIS) {
+    await new Promise(r => setTimeout(r, 400));
+    const prompt = FOLLOWUP_PROMPTS[Math.floor(Math.random() * FOLLOWUP_PROMPTS.length)];
+    addMsg(prompt, "bot");
+    input.disabled = false; input.focus(); return;
+  }
+
+  const thinkingMsg = addMsg("Düşünüyorum, yazdıklarını analiz ediyorum...", "thinking");
+  await new Promise(r => setTimeout(r, 900));
+
+  try {
+    const res = await fetch(`${API_BASE}/predict`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({text: conversationBuffer})
+    });
+    const data = await res.json();
+    thinkingMsg.remove();
+
+    if (!res.ok) {
+      addMsg(`⚠️ ${data.error}`, "bot");
+      input.disabled = false; input.focus(); return;
+    }
+
+   conversationBuffer = "";
+    lastReport = data.report;
+    lastType = data.predicted_type;
+
+    let resultMsg = data.decision_answer;
+    if (data.explainability && data.explainability.length > 0) {
+      resultMsg += "\n\n🔎 Bu tahminde etkili olan bazı kelimeler: " + data.explainability.join(", ");
+    }
+    if (data.confidence_caveat) {
+      resultMsg += "\n\n⚠️ " + data.confidence_caveat;
+    }
+    resultMsg += "\n\n(İstersen 'detaylı profilimi göster' yazarak tam kişilik raporunu görebilirsin.)";
+    addMsg(resultMsg, "result");
+
+  } catch (err) {
+    thinkingMsg.remove();
+    addMsg(`⚠️ Sunucuya bağlanılamadı: ${err.message}`, "bot");
+  } finally {
+    input.disabled = false;
+    input.focus();
+  }
+});
+
+restartChat();
+</script>
+
+</body>
+</html>
