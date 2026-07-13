@@ -1,0 +1,496 @@
+﻿Metin,Normal Metin,Niyet,Kaynak,Bölüm
+tek cümleyle karşımdaki asistan kim lütfen,tek cumleyle karsimdaki asistan kim lutfen,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz yapıt sayfa adedi nedir,inceledigimiz yapit sayfa adedi nedir,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+verdiğin yanıt için minnetlerimi sunarım sana,verdigin yanit icin minnetlerimi sunarim sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+ev dekorasyonu öner,ev dekorasyonu oner,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+Kuyruklu Yıldız Altında Bir İzdivaç,kuyruklu yildiz altinda bir izdivac,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+yeni bir örnek için tür etiketi üret,yeni bir ornek icin tur etiketi uret,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+gerçekten minnetlerimi sunarım sana,gercekten minnetlerimi sunarim sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+altı kiloluk bir hindiyi ne kadar süre pişirirsin,alti kiloluk bir hindiyi ne kadar sure pisirirsin,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+kısaca kullanıcıya ne sunuyorsun anlatır mısın,kisaca kullaniciya ne sunuyorsun anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+şu anda yaşını nasıl hesaplıyorsun lütfen,su anda yasini nasil hesapliyorsun lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+bir tane kısa ve eğlenceli bir şaka söyle olur mu,bir tane kisa ve eglenceli bir saka soyle olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+artık ben artık gidiyorum,artik ben artik gidiyorum,VEDA,KitapPusula-Final-özel,bağımsız_test
+bir değerlendirme olarak bu yapıt kimlere hitap eder,bir degerlendirme olarak bu yapit kimlere hitap eder,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+kısaca futbol maçı sonucu ver,kisaca futbol maci sonucu ver,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+tek cümleyle adını ve görevini söyle söyler misin,tek cumleyle adini ve gorevini soyle soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+şu kitap için bilgi kartını bir daha getir,su kitap icin bilgi kartini bir daha getir,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+doğrudan hangi ortamda çalışıyorsun,dogrudan hangi ortamda calisiyorsun,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+doğrudan hangi ortamda çalışıyorsun söyler misin,dogrudan hangi ortamda calisiyorsun soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz yapıt edebî biçimi nedir,inceledigimiz yapit edeb bicimi nedir,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında hangi kategorilere ayırıyorsun,siniflandirma tarafinda hangi kategorilere ayiriyorsun,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+pasifik standart zamanına göre saat kaç,pasifik standart zamanina gore saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+açıkçası seninle kitap konuşmak hoş şimdi,acikcasi seninle kitap konusmak hos simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+değerlendirme raporunda çapraz doğrulama sonucu ne lütfen,degerlendirme raporunda capraz dogrulama sonucu ne lutfen,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+ilk kez girince neler sorabileceğimi açıkla,ilk kez girince neler sorabilecegimi acikla,YARDIM,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken neler sorabileceğimi açıkla,uygulamayi kullanirken neler sorabilecegimi acikla,YARDIM,KitapPusula-V6,bağımsız_test
+son gelişmeleri söyle anlatır mısın,son gelismeleri soyle anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+bugün sohbet etmeye devam edelim şimdi,bugun sohbet etmeye devam edelim simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+bu anlatıda esas kişi hangisi anlatır mısın,bu anlatida esas kisi hangisi anlatir misin,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+bir değerlendirme olarak sonun sembolik anlamı ne olabilir,bir degerlendirme olarak sonun sembolik anlami ne olabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+Yaban,yaban,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+bugün haber gündemini özetle lütfen,bugun haber gundemini ozetle lutfen,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+katalogda toplam eser adedi kaç şu an,katalogda toplam eser adedi kac su an,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında kaç ayrı etiket bulunuyor lütfen,siniflandirma tarafinda kac ayri etiket bulunuyor lutfen,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+on beş mart haftanın hangi gününe denk gelir,on bes mart haftanin hangi gunune denk gelir,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+incelediğimiz yapıt hangi edebiyat dalına girer,inceledigimiz yapit hangi edebiyat dalina girer,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+kısa ve eğlenceli bir şaka söyle,kisa ve eglenceli bir saka soyle,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+günaydın yeniden,gunaydin yeniden,SELAMLAMA,KitapPusula-V6,bağımsız_test
+şimdi dünyada şu an neler oluyor anlatır mısın,simdi dunyada su an neler oluyor anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+konuşmak bana iyi geliyor şimdi,konusmak bana iyi geliyor simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+bir değerlendirme olarak eserin alt metni nasıl okunabilir,bir degerlendirme olarak eserin alt metni nasil okunabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+bugün günün nasıl geçiyor merak ettim,bugun gunun nasil geciyor merak ettim,NASILSIN,KitapPusula-V6,bağımsız_test
+verdiğin yanıt için yardımın faydalı oldu,verdigin yanit icin yardimin faydali oldu,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+etiket yapısında sınıf adlarını listele,etiket yapisinda sinif adlarini listele,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+önceki kayıt için aynı verileri tekrar sun,onceki kayit icin ayni verileri tekrar sun,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+eğitim sürecinde kullanılan yöntemi açıkla,egitim surecinde kullanilan yontemi acikla,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+gerçekten teşekkürümü kabul et sana,gercekten tesekkurumu kabul et sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+önceki konuşmamızda hangi başlık üzerinde duruyoruz,onceki konusmamizda hangi baslik uzerinde duruyoruz,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+kısaca hangi özelliklere sahipsin,kisaca hangi ozelliklere sahipsin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+hadi kısa ve eğlenceli bir şaka söyle,hadi kisa ve eglenceli bir saka soyle,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+bugün sohbet etmeye devam edelim,bugun sohbet etmeye devam edelim,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+bir doğum yılın bulunuyor mu lütfen,bir dogum yilin bulunuyor mu lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+bu anlatıda merkez karakterin adı nedir anlatır mısın,bu anlatida merkez karakterin adi nedir anlatir misin,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+bugün aklımdakileri paylaşacağım şimdi,bugun aklimdakileri paylasacagim simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+anlatının içinde çatışma nasıl ortaya çıkıyor,anlatinin icinde catisma nasil ortaya cikiyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+şu kitap için aynı verileri tekrar sun,su kitap icin ayni verileri tekrar sun,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+bugün halin vaktin nasıl merak ettim,bugun halin vaktin nasil merak ettim,NASILSIN,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında hangi edebî sınıflar mevcut lütfen,siniflandirma tarafinda hangi edeb siniflar mevcut lutfen,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+uygulaman evrendeki tüm kitapları kapsıyor mu,uygulaman evrendeki tum kitaplari kapsiyor mu,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi yeni kitap kaydını tahmin et lütfen,simdi yeni kitap kaydini tahmin et lutfen,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+doğrudan hangi uygulamasın söyler misin,dogrudan hangi uygulamasin soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+kaç senedir çalışıyorsun lütfen,kac senedir calisiyorsun lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+şu yapıtın eseri ortaya koyan kim öğrenebilir miyim,su yapitin eseri ortaya koyan kim ogrenebilir miyim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi hava nasıl,simdi hava nasil,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+incelediğimiz metnin yaratıcısı hangi yazar,inceledigimiz metnin yaraticisi hangi yazar,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi dünyada şu an neler oluyor lütfen,simdi dunyada su an neler oluyor lutfen,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+önceki konuşmamızda aktif eserin ismi nedir,onceki konusmamizda aktif eserin ismi nedir,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+selam sana orada mısın,selam sana orada misin,SELAMLAMA,KitapPusula-V6,bağımsız_test
+değerlendirme raporunda çapraz doğrulama sonucu ne,degerlendirme raporunda capraz dogrulama sonucu ne,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şimdi tür etiketi üret lütfen,simdi tur etiketi uret lutfen,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+bu anlatıda başroldeki karakter kim anlatır mısın,bu anlatida basroldeki karakter kim anlatir misin,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi kategori tahmini başlat lütfen,simdi kategori tahmini baslat lutfen,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+şu eser için genel olarak ne işleniyor,su eser icin genel olarak ne isleniyor,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+bir tane neşeli bir kitap esprisi söyle lütfen,bir tane neseli bir kitap esprisi soyle lutfen,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+kitap temalı mizah yap lütfen,kitap temali mizah yap lutfen,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+eğitim sürecinde hangi skor elde edildi,egitim surecinde hangi skor elde edildi,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+incelediğimiz kitapta genel olarak ne işleniyor,inceledigimiz kitapta genel olarak ne isleniyor,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+makarna pişirmenin en kolay yolu nedir,makarna pisirmenin en kolay yolu nedir,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+senin yorumunla kitabın etkisi ne olabilir,senin yorumunla kitabin etkisi ne olabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken kullanım adımlarını söyle,uygulamayi kullanirken kullanim adimlarini soyle,YARDIM,KitapPusula-V6,bağımsız_test
+eğitim sürecinde öğrenme modelinin ayrıntıları nedir,egitim surecinde ogrenme modelinin ayrintilari nedir,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+romanın ilerleyen kısmında final hangi olayla tamamlanıyor,romanin ilerleyen kisminda final hangi olayla tamamlaniyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+lütfen kitap temalı mizah yap,lutfen kitap temali mizah yap,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+şimdi açıklamayı sınıflandırıcıya ver lütfen,simdi aciklamayi siniflandiriciya ver lutfen,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+merak ettim bu projenin geliştiricisi kim,merak ettim bu projenin gelistiricisi kim,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+ayrıntılı olarak yardım edebildiğin konular hangileri anlatır mısın,ayrintili olarak yardim edebildigin konular hangileri anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+o halde oturumu kapatalım KitapPusula,o halde oturumu kapatalim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+bugün şemsiye almalı mıyım,bugun semsiye almali miyim,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bir tane beni biraz neşelendir,bir tane beni biraz neselendir,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+uygulaman hiç bilmediği kitap olur mu,uygulaman hic bilmedigi kitap olur mu,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+etiket yapısında hangi kategorilere ayırıyorsun,etiket yapisinda hangi kategorilere ayiriyorsun,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+hafızana göre hangi yapıtı açmıştık,hafizana gore hangi yapiti acmistik,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+etiket yapısında tanınan türleri say,etiket yapisinda taninan turleri say,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+şu yapıtın yaratıcısı hangi yazar,su yapitin yaraticisi hangi yazar,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+oturumu kapatalım,oturumu kapatalim,VEDA,KitapPusula-Final-özel,bağımsız_test
+yardımın faydalı oldu KitapPusula,yardimin faydali oldu kitappusula,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+ulusal zaman diliminde saat kaç,ulusal zaman diliminde saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+önceki konuşmamızda hangi yapıtı açmıştık,onceki konusmamizda hangi yapiti acmistik,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan bu projenin geliştiricisi kim söyler misin,dogrudan bu projenin gelistiricisi kim soyler misin,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+bir değerlendirme olarak kitabın etkisi ne olabilir,bir degerlendirme olarak kitabin etkisi ne olabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken bana kısa bir rehber sun,uygulamayi kullanirken bana kisa bir rehber sun,YARDIM,KitapPusula-V6,bağımsız_test
+incelediğimiz metnin kalem sahibi kim,inceledigimiz metnin kalem sahibi kim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser için ana içeriği nedir,su eser icin ana icerigi nedir,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+bu anlatıda merkez karakterin adı nedir,bu anlatida merkez karakterin adi nedir,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+ilk kez girince özellik menüsünü anlat,ilk kez girince ozellik menusunu anlat,YARDIM,KitapPusula-V6,bağımsız_test
+Taaşşuk-ı Talat ve Fitnat,taassuk i talat ve fitnat,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+bu anlatıda hikâyeyi taşıyan kişi kimmiş anlatır mısın,bu anlatida hik yeyi tasiyan kisi kimmis anlatir misin,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında sınıf adlarını listele,siniflandirma tarafinda sinif adlarini listele,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+bugün dışarısı ne kadar soğuk,bugun disarisi ne kadar soguk,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+doğrudan görev alanın nedir anlatır mısın,dogrudan gorev alanin nedir anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+yerel arşivde kayıt hacmi nedir,yerel arsivde kayit hacmi nedir,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şu eserle ilgili konuyu biraz daha aç lütfen,su eserle ilgili konuyu biraz daha ac lutfen,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+yerel sistemin veri dışında kalan eserleri tanır mı,yerel sistemin veri disinda kalan eserleri tanir mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+senin yorumunla yazarın niyeti hakkında çıkarım yap yorumlar mısın,senin yorumunla yazarin niyeti hakkinda cikarim yap yorumlar misin,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz kitapta hikâyenin özünü anlat,inceledigimiz kitapta hik yenin ozunu anlat,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser okuma uzunluğu ne kadar merak ettim,su eser okuma uzunlugu ne kadar merak ettim,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+artık ben artık gidiyorum KitapPusula,artik ben artik gidiyorum kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+fiziksel olarak hangi ortamda çalışıyorsun söyler misin,fiziksel olarak hangi ortamda calisiyorsun soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+şu eser için hikâyenin özünü anlat lütfen,su eser icin hik yenin ozunu anlat lutfen,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+merak ettim seni oluşturan kişinin adı ne lütfen,merak ettim seni olusturan kisinin adi ne lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+şu kitap için bilgi kartını bir daha getir lütfen,su kitap icin bilgi kartini bir daha getir lutfen,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+uygulaman evrendeki tüm kitapları kapsıyor mu gerçekten,uygulaman evrendeki tum kitaplari kapsiyor mu gercekten,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser tür bakımından nedir merak ettim,su eser tur bakimindan nedir merak ettim,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+yerel sistemin hiç bilmediği kitap olur mu,yerel sistemin hic bilmedigi kitap olur mu,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+şu an türkiye de saat kaç,su an turkiye de saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eser için kısa bir konu özeti çıkar lütfen,su eser icin kisa bir konu ozeti cikar lutfen,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+hafızana göre konuştuğumuz başlığı hatırlat lütfen,hafizana gore konustugumuz basligi hatirlat lutfen,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+şu anda bir doğum yılın bulunuyor mu lütfen,su anda bir dogum yilin bulunuyor mu lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+anlatının içinde final hangi olayla tamamlanıyor,anlatinin icinde final hangi olayla tamamlaniyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+önceki kayıt için bilgi kartını bir daha getir,onceki kayit icin bilgi kartini bir daha getir,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+lütfen beni biraz neşelendir olur mu,lutfen beni biraz neselendir olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+sınıflandırma tarafında hangi kategorilere ayırıyorsun lütfen,siniflandirma tarafinda hangi kategorilere ayiriyorsun lutfen,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+merak ettim bu uygulamayı hazırlayan kim lütfen,merak ettim bu uygulamayi hazirlayan kim lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+senin yorumunla sonun sembolik anlamı ne olabilir,senin yorumunla sonun sembolik anlami ne olabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+anlatının içinde yolculuğun nedeni nedir,anlatinin icinde yolculugun nedeni nedir,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+hafızana göre hangi yapıtı açmıştık lütfen,hafizana gore hangi yapiti acmistik lutfen,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+eğitim sürecinde çapraz doğrulama sonucu ne,egitim surecinde capraz dogrulama sonucu ne,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şimdi günün gündemi nedir söyler misin,simdi gunun gundemi nedir soyler misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+lütfen bir sözleşme hazırla istiyorum,lutfen bir sozlesme hazirla istiyorum,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+akşam çok fırtınalı olursa her yerimi kapatan bir ceket lazım olacak,aksam cok firtinali olursa her yerimi kapatan bir ceket lazim olacak,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu yapıtın hangi edebiyatçı yazmış öğrenebilir miyim,su yapitin hangi edebiyatci yazmis ogrenebilir miyim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şu yapıtın yaratıcısı hangi yazar öğrenebilir miyim,su yapitin yaraticisi hangi yazar ogrenebilir miyim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+ayrıntılı olarak benden gelen hangi soruları çözersin,ayrintili olarak benden gelen hangi sorulari cozersin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+lütfen kitap temalı mizah yap lütfen,lutfen kitap temali mizah yap lutfen,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+şimdi açıklamayı sınıflandırıcıya ver,simdi aciklamayi siniflandiriciya ver,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+şu kitap için bütün ayrıntıları baştan göster lütfen,su kitap icin butun ayrintilari bastan goster lutfen,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+yardımın için teşekkürümü kabul et,yardimin icin tesekkurumu kabul et,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+doğrudan ne tür bir yazılımsın lütfen,dogrudan ne tur bir yazilimsin lutfen,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+şimdi bugünlük yeter KitapPusula,simdi bugunluk yeter kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+şu anda kaç senedir çalışıyorsun lütfen,su anda kac senedir calisiyorsun lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+merhaba sistem,merhaba sistem,SELAMLAMA,KitapPusula-V6,bağımsız_test
+verdiğin yanıt için teşekkürümü kabul et,verdigin yanit icin tesekkurumu kabul et,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+Kiralık Konak,kiralik konak,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+şu eser hangi edebiyat dalına girer,su eser hangi edebiyat dalina girer,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+verdiğin yanıt için yardımın faydalı oldu KitapPusula,verdigin yanit icin yardimin faydali oldu kitappusula,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+olly yumurtaları ne kadar süre haşlamam gerekiyor,olly yumurtalari ne kadar sure haslamam gerekiyor,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu sıralar bir konu üzerine konuşalım,su siralar bir konu uzerine konusalim,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+karbonat yerine kabartma tozu kullanılabilir mi,karbonat yerine kabartma tozu kullanilabilir mi,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+Sodom ve Gomore,sodom ve gomore,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+şimdi metnin edebî sınıfını bul,simdi metnin edeb sinifini bul,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+yeni bir örnek için metnin edebî sınıfını bul,yeni bir ornek icin metnin edeb sinifini bul,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+incelediğimiz yapıt hangi sınıfta yer alıyor,inceledigimiz yapit hangi sinifta yer aliyor,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser roman kategorisinde mi merak ettim,su eser roman kategorisinde mi merak ettim,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+bugün keyfin yerinde mi,bugun keyfin yerinde mi,NASILSIN,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında tanınan türleri say lütfen,siniflandirma tarafinda taninan turleri say lutfen,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+bulgur pilavı tarifi verir misin,bulgur pilavi tarifi verir misin,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+doğrudan kullanıcıya ne sunuyorsun,dogrudan kullaniciya ne sunuyorsun,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+değerlendirme raporunda öğrenme modelinin ayrıntıları nedir lütfen,degerlendirme raporunda ogrenme modelinin ayrintilari nedir lutfen,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+bugün yirmi mart mı,bugun yirmi mart mi,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+güncel olaylar neler lütfen,guncel olaylar neler lutfen,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+şu eser sayfa adedi nedir,su eser sayfa adedi nedir,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+şu eserle ilgili yüzeysel olmayan bilgi ver,su eserle ilgili yuzeysel olmayan bilgi ver,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan hangi uygulamasın,dogrudan hangi uygulamasin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+ilk kez girince bana kısa bir rehber sun,ilk kez girince bana kisa bir rehber sun,YARDIM,KitapPusula-V6,bağımsız_test
+katalogda kaç farklı başlık tutuluyor,katalogda kac farkli baslik tutuluyor,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+kısaca ev dekorasyonu öner istiyorum,kisaca ev dekorasyonu oner istiyorum,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+hafta için hava tahmini nasıl,hafta icin hava tahmini nasil,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+uygulamayı kullanırken neler sorabileceğimi açıkla lütfen,uygulamayi kullanirken neler sorabilecegimi acikla lutfen,YARDIM,KitapPusula-V6,bağımsız_test
+uygulaman her başlığı bulma garantisi var mı,uygulaman her basligi bulma garantisi var mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+selam sana,selam sana,SELAMLAMA,KitapPusula-V6,bağımsız_test
+katalogda kayıt hacmi nedir,katalogda kayit hacmi nedir,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+bugünlük yeter,bugunluk yeter,VEDA,KitapPusula-Final-özel,bağımsız_test
+Felatun Bey ile Rakım Efendi,felatun bey ile rakim efendi,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+incelediğimiz metnin hangi edebiyatçı yazmış,inceledigimiz metnin hangi edebiyatci yazmis,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şu sıralar biraz muhabbet etmek isterim biraz,su siralar biraz muhabbet etmek isterim biraz,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+ayrıntılı olarak kullanıcıya ne sunuyorsun anlatır mısın,ayrintili olarak kullaniciya ne sunuyorsun anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+kısaca ev dekorasyonu öner olur mu,kisaca ev dekorasyonu oner olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz yapıt kısa bir kitap sayılır mı,inceledigimiz yapit kisa bir kitap sayilir mi,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+kaynatmak,kaynatmak,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu yapıtın kalem sahibi kim öğrenebilir miyim,su yapitin kalem sahibi kim ogrenebilir miyim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+bugün çarşamba mı,bugun carsamba mi,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bana gezi rotası çiz olur mu,bana gezi rotasi ciz olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+lütfen istanbul için bugünkü hava tahminini ver,lutfen istanbul icin bugunku hava tahminini ver,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+verdiğin yanıt için teşekkürümü kabul et sana,verdigin yanit icin tesekkurumu kabul et sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz kitapta temel konuyu iki cümlede açıkla,inceledigimiz kitapta temel konuyu iki cumlede acikla,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken özellik menüsünü anlat,uygulamayi kullanirken ozellik menusunu anlat,YARDIM,KitapPusula-V6,bağımsız_test
+senin yorumunla bu yapıt kimlere hitap eder yorumlar mısın,senin yorumunla bu yapit kimlere hitap eder yorumlar misin,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+tek cümleyle bir insan mısın yoksa program mı,tek cumleyle bir insan misin yoksa program mi,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+yerel sistemin her başlığı bulma garantisi var mı,yerel sistemin her basligi bulma garantisi var mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+hayırlı günler,hayirli gunler,SELAMLAMA,KitapPusula-V6,bağımsız_test
+senin yorumunla eserin alt metni nasıl okunabilir yorumlar mısın,senin yorumunla eserin alt metni nasil okunabilir yorumlar misin,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz kitap için konuyu biraz daha aç,inceledigimiz kitap icin konuyu biraz daha ac,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken özellik menüsünü anlat lütfen,uygulamayi kullanirken ozellik menusunu anlat lutfen,YARDIM,KitapPusula-V6,bağımsız_test
+incelediğimiz yapıt tür bakımından nedir,inceledigimiz yapit tur bakimindan nedir,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+safran yerine ne kullanılabilir,safran yerine ne kullanilabilir,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+değerlendirme raporunda test performansı kaç lütfen,degerlendirme raporunda test performansi kac lutfen,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+sebzeli lazanya ne kadar sürede yapılır,sebzeli lazanya ne kadar surede yapilir,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+selam sana KitapPusula,selam sana kitappusula,SELAMLAMA,KitapPusula-V6,bağımsız_test
+önceki kayıt için kitap künyesini yeniden aç,onceki kayit icin kitap kunyesini yeniden ac,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+uygulaman veri dışında kalan eserleri tanır mı,uygulaman veri disinda kalan eserleri tanir mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+bu akşam günün nasıl geçiyor,bu aksam gunun nasil geciyor,NASILSIN,KitapPusula-V6,bağımsız_test
+sonra yeniden konuşalım KitapPusula,sonra yeniden konusalim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+şu eser roman kategorisinde mi,su eser roman kategorisinde mi,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+uygulaman yayınlanmış her eseri tanır mı gerçekten,uygulaman yayinlanmis her eseri tanir mi gercekten,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi yeni kitap kaydını tahmin et,simdi yeni kitap kaydini tahmin et,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+Huzur,huzur,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+önceki kayıt için bütün ayrıntıları baştan göster,onceki kayit icin butun ayrintilari bastan goster,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+şu sıralar sohbet etmeye devam edelim,su siralar sohbet etmeye devam edelim,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+oturumu kapatalım KitapPusula,oturumu kapatalim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+şu anki hava durumu,su anki hava durumu,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eserle ilgili konuyu biraz daha aç,su eserle ilgili konuyu biraz daha ac,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+şu kitap için kitap künyesini yeniden aç,su kitap icin kitap kunyesini yeniden ac,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+artık oturumu kapatalım,artik oturumu kapatalim,VEDA,KitapPusula-Final-özel,bağımsız_test
+romanın ilerleyen kısmında yolculuğun nedeni nedir,romanin ilerleyen kisminda yolculugun nedeni nedir,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+merak ettim bu projenin geliştiricisi kim lütfen,merak ettim bu projenin gelistiricisi kim lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+kısaca hangi işleri başarabilirsin anlatır mısın,kisaca hangi isleri basarabilirsin anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+ilk kez girince kullanım adımlarını söyle,ilk kez girince kullanim adimlarini soyle,YARDIM,KitapPusula-V6,bağımsız_test
+yardım edebildiğin konular hangileri lütfen,yardim edebildigin konular hangileri lutfen,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+lütfen bana trabzon daki saati söyle,lutfen bana trabzon daki saati soyle,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+uygulaman yayınlanmış her eseri tanır mı,uygulaman yayinlanmis her eseri tanir mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+bugün durumun nasıl,bugun durumun nasil,NASILSIN,KitapPusula-V6,bağımsız_test
+ankara da şu anda saat kaç,ankara da su anda saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+senin yorumunla kitabın etkisi ne olabilir yorumlar mısın,senin yorumunla kitabin etkisi ne olabilir yorumlar misin,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz kitap için yüzeysel olmayan bilgi ver,inceledigimiz kitap icin yuzeysel olmayan bilgi ver,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+yarın yağmurlu mu olacak,yarin yagmurlu mu olacak,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bu anlatıda esas kişi hangisi,bu anlatida esas kisi hangisi,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken bana kısa bir rehber sun lütfen,uygulamayi kullanirken bana kisa bir rehber sun lutfen,YARDIM,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında hangi edebî sınıflar mevcut,siniflandirma tarafinda hangi edeb siniflar mevcut,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+anlatının içinde gelişmeler hangi sırayla yaşanıyor özetler misin,anlatinin icinde gelismeler hangi sirayla yasaniyor ozetler misin,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+kısaca adını ve görevini söyle söyler misin,kisaca adini ve gorevini soyle soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+seninle kitap konuşmak hoş biraz,seninle kitap konusmak hos biraz,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+değerlendirme raporunda hangi skor elde edildi lütfen,degerlendirme raporunda hangi skor elde edildi lutfen,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şu eserle ilgili yüzeysel olmayan bilgi ver lütfen,su eserle ilgili yuzeysel olmayan bilgi ver lutfen,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+hafızana göre konuştuğumuz başlığı hatırlat,hafizana gore konustugumuz basligi hatirlat,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser tür bakımından nedir,su eser tur bakimindan nedir,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+kısaca karşımdaki asistan kim lütfen,kisaca karsimdaki asistan kim lutfen,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+bu anlatıda başroldeki karakter kim,bu anlatida basroldeki karakter kim,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser için hikâyenin özünü anlat,su eser icin hik yenin ozunu anlat,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+nasıl pizza yapabilirim,nasil pizza yapabilirim,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eser için temel konuyu iki cümlede açıkla lütfen,su eser icin temel konuyu iki cumlede acikla lutfen,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+romanın ilerleyen kısmında kahramanın başına ne geliyor,romanin ilerleyen kisminda kahramanin basina ne geliyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+esenlikler KitapPusula,esenlikler kitappusula,SELAMLAMA,KitapPusula-V6,bağımsız_test
+önceki kayıt için tüm alanları yeniden sırala,onceki kayit icin tum alanlari yeniden sirala,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+gerçekten emeğin için sağ ol sana,gercekten emegin icin sag ol sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+bir sınıf kodla istiyorum,bir sinif kodla istiyorum,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+şu eser okuma uzunluğu ne kadar,su eser okuma uzunlugu ne kadar,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser için temel konuyu iki cümlede açıkla,su eser icin temel konuyu iki cumlede acikla,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+senin yorumunla bu yapıt kimlere hitap eder,senin yorumunla bu yapit kimlere hitap eder,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+bugün durumun nasıl merak ettim,bugun durumun nasil merak ettim,NASILSIN,KitapPusula-V6,bağımsız_test
+etiket yapısında kaç ayrı etiket bulunuyor,etiket yapisinda kac ayri etiket bulunuyor,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+bugün kendini iyi hissediyor musun merak ettim,bugun kendini iyi hissediyor musun merak ettim,NASILSIN,KitapPusula-V6,bağımsız_test
+bugün bugünkü haber başlıkları neler anlatır mısın,bugun bugunku haber basliklari neler anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz kitap için ayrıntıları çoğalt,inceledigimiz kitap icin ayrintilari cogalt,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+katalogda kaç kitaplık koleksiyon var,katalogda kac kitaplik koleksiyon var,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+kısaca karşımdaki asistan kim söyler misin,kisaca karsimdaki asistan kim soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+hafızana göre son seçimin adını söyle,hafizana gore son secimin adini soyle,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+şu sıralar bir konu üzerine konuşalım şimdi,su siralar bir konu uzerine konusalim simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+yeni bir örnek için yeni kitap kaydını tahmin et,yeni bir ornek icin yeni kitap kaydini tahmin et,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+şu eser kısa bir kitap sayılır mı merak ettim,su eser kisa bir kitap sayilir mi merak ettim,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+halen öğleden sonra mı,halen ogleden sonra mi,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+merak ettim programını kim yazdı lütfen,merak ettim programini kim yazdi lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz kitapta kısa bir konu özeti çıkar,inceledigimiz kitapta kisa bir konu ozeti cikar,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+değerlendirme raporunda test performansı kaç,degerlendirme raporunda test performansi kac,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+önceki konuşmamızda konuştuğumuz başlığı hatırlat,onceki konusmamizda konustugumuz basligi hatirlat,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+değerlendirme raporunda öğrenme modelinin ayrıntıları nedir,degerlendirme raporunda ogrenme modelinin ayrintilari nedir,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şu eser için kısa bir konu özeti çıkar,su eser icin kisa bir konu ozeti cikar,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz yapıt okuma uzunluğu ne kadar,inceledigimiz yapit okuma uzunlugu ne kadar,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+seninle kitap konuşmak hoş,seninle kitap konusmak hos,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+kısaca seni oluşturan kişinin adı ne,kisaca seni olusturan kisinin adi ne,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+merak ettim senin doğduğun bir gün var mı söyler misin,merak ettim senin dogdugun bir gun var mi soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+hey bugün hava nasıl,hey bugun hava nasil,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+katalogda toplam eser adedi kaç,katalogda toplam eser adedi kac,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şimdi güncel olaylar neler anlatır mısın,simdi guncel olaylar neler anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+esenlikler orada mısın,esenlikler orada misin,SELAMLAMA,KitapPusula-V6,bağımsız_test
+ne tür bir yazılımsın,ne tur bir yazilimsin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+haftanın hava durumu tahmini nedir,haftanin hava durumu tahmini nedir,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bu akşam keyfin yerinde mi,bu aksam keyfin yerinde mi,NASILSIN,KitapPusula-V6,bağımsız_test
+merak ettim geliştirme işini kim yaptı söyler misin,merak ettim gelistirme isini kim yapti soyler misin,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+bu haftaki hava durumunu söyle,bu haftaki hava durumunu soyle,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+uygulamayı kullanırken hangi işlemler yapılabilir lütfen,uygulamayi kullanirken hangi islemler yapilabilir lutfen,YARDIM,KitapPusula-V6,bağımsız_test
+bu akşam kendini iyi hissediyor musun,bu aksam kendini iyi hissediyor musun,NASILSIN,KitapPusula-V6,bağımsız_test
+bir yaşa sahip misin söyler misin,bir yasa sahip misin soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz metnin eseri ortaya koyan kim,inceledigimiz metnin eseri ortaya koyan kim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser toplam kaç yapraklık,su eser toplam kac yapraklik,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+bu anlatıda hikâyeyi taşıyan kişi kimmiş,bu anlatida hik yeyi tasiyan kisi kimmis,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+elmalı turta tarifi ara,elmali turta tarifi ara,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bu yıl yeni yıl hangi güne denk geliyor,bu yil yeni yil hangi gune denk geliyor,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bugün güncel olaylar neler,bugun guncel olaylar neler,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+şu yapıtın yazar adı nedir,su yapitin yazar adi nedir,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+değerlendirme raporunda kullanılan yöntemi açıkla,degerlendirme raporunda kullanilan yontemi acikla,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+güncel olaylar neler anlatır mısın,guncel olaylar neler anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+merak ettim kaç senedir çalışıyorsun,merak ettim kac senedir calisiyorsun,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+şu kitap için tüm alanları yeniden sırala,su kitap icin tum alanlari yeniden sirala,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+bugün keyfin yerinde mi merak ettim,bugun keyfin yerinde mi merak ettim,NASILSIN,KitapPusula-V6,bağımsız_test
+incelediğimiz kitapta ana içeriği nedir,inceledigimiz kitapta ana icerigi nedir,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+romanın ilerleyen kısmında gelişmeler hangi sırayla yaşanıyor,romanin ilerleyen kisminda gelismeler hangi sirayla yasaniyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+şu eserle ilgili daha kapsamlı açıklama yap lütfen,su eserle ilgili daha kapsamli aciklama yap lutfen,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+anlatının içinde final hangi olayla tamamlanıyor özetler misin,anlatinin icinde final hangi olayla tamamlaniyor ozetler misin,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+bugün günlerden ne,bugun gunlerden ne,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eser için genel olarak ne işleniyor lütfen,su eser icin genel olarak ne isleniyor lutfen,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında tanınan türleri say,siniflandirma tarafinda taninan turleri say,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+açıkçası konuşmak bana iyi geliyor,acikcasi konusmak bana iyi geliyor,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz yapıt kaç sayfadan oluşuyor,inceledigimiz yapit kac sayfadan olusuyor,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+öykünün içinde hikâyeyi taşıyan kişi kimmiş,oykunun icinde hik yeyi tasiyan kisi kimmis,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+kendi kimliğini açıkla,kendi kimligini acikla,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+doğrudan hangi işleri başarabilirsin lütfen,dogrudan hangi isleri basarabilirsin lutfen,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+saati söyle,saati soyle,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eserle ilgili ek bilgilerle genişlet,su eserle ilgili ek bilgilerle genislet,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz yapıt toplam kaç yapraklık,inceledigimiz yapit toplam kac yapraklik,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+hafızana göre hangi başlık üzerinde duruyoruz lütfen,hafizana gore hangi baslik uzerinde duruyoruz lutfen,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+lütfen kod yazıp gönder olur mu,lutfen kod yazip gonder olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+şimdi metnin edebî sınıfını bul lütfen,simdi metnin edeb sinifini bul lutfen,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+şu eserle ilgili ek bilgilerle genişlet lütfen,su eserle ilgili ek bilgilerle genislet lutfen,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+şu yapıtın yazar adı nedir öğrenebilir miyim,su yapitin yazar adi nedir ogrenebilir miyim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+anlatının içinde kahramanın başına ne geliyor özetler misin,anlatinin icinde kahramanin basina ne geliyor ozetler misin,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+gerçekten minnetlerimi sunarım KitapPusula,gercekten minnetlerimi sunarim kitappusula,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+şu eserle ilgili ayrıntıları çoğalt,su eserle ilgili ayrintilari cogalt,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan bir yaşa sahip misin lütfen,dogrudan bir yasa sahip misin lutfen,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+hayırlı günler orada mısın,hayirli gunler orada misin,SELAMLAMA,KitapPusula-V6,bağımsız_test
+kısaca yazılım kodu üret istiyorum,kisaca yazilim kodu uret istiyorum,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+bir tane kitap temalı mizah yap,bir tane kitap temali mizah yap,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+bu gece sıcaklık düşüşleri olacak mı,bu gece sicaklik dususleri olacak mi,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bir değerlendirme olarak yazarın niyeti hakkında çıkarım yap,bir degerlendirme olarak yazarin niyeti hakkinda cikarim yap,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+hangi ortamda çalışıyorsun söyler misin,hangi ortamda calisiyorsun soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+şu an izmir'de saat kaç,su an izmir de saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu anda yaşadığın bir yer var mı,su anda yasadigin bir yer var mi,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+bu akşam durumun nasıl,bu aksam durumun nasil,NASILSIN,KitapPusula-V6,bağımsız_test
+fiziksel olarak yaşadığın bir yer var mı söyler misin,fiziksel olarak yasadigin bir yer var mi soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+katalogda kaç farklı başlık tutuluyor şu an,katalogda kac farkli baslik tutuluyor su an,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şu anda hangi ortamda çalışıyorsun söyler misin,su anda hangi ortamda calisiyorsun soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+kısaca bugünkü haber başlıkları neler anlatır mısın,kisaca bugunku haber basliklari neler anlatir misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+yerel arşivde veri miktarı kaç kitap,yerel arsivde veri miktari kac kitap,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+sınıflandırma tarafında kaç ayrı etiket bulunuyor,siniflandirma tarafinda kac ayri etiket bulunuyor,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+öykünün içinde esas kişi hangisi,oykunun icinde esas kisi hangisi,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+değerlendirme raporunda kullanılan yöntemi açıkla lütfen,degerlendirme raporunda kullanilan yontemi acikla lutfen,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şimdi sohbeti sonlandıralım hoşça kal,simdi sohbeti sonlandiralim hosca kal,VEDA,KitapPusula-Final-özel,bağımsız_test
+senin yorumunla eserin alt metni nasıl okunabilir,senin yorumunla eserin alt metni nasil okunabilir,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+bu anlatıda kahraman olarak kimi görüyoruz,bu anlatida kahraman olarak kimi goruyoruz,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+artık sonra yeniden konuşalım hoşça kal,artik sonra yeniden konusalim hosca kal,VEDA,KitapPusula-Final-özel,bağımsız_test
+kısaca bugünkü haber başlıkları neler lütfen,kisaca bugunku haber basliklari neler lutfen,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+kış sabah ında sıcak çoraplar lazım olacak bana,kis sabah inda sicak coraplar lazim olacak bana,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bu projenin geliştiricisi kim lütfen,bu projenin gelistiricisi kim lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+fiziksel olarak bir şehirde mi bulunuyorsun,fiziksel olarak bir sehirde mi bulunuyorsun,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+bu akşam halin vaktin nasıl,bu aksam halin vaktin nasil,NASILSIN,KitapPusula-V6,bağımsız_test
+katalogda kaç kitaplık koleksiyon var şu an,katalogda kac kitaplik koleksiyon var su an,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+Devlet Ana,devlet ana,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+bana vergi hesabı yap olur mu,bana vergi hesabi yap olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz yapıt roman kategorisinde mi,inceledigimiz yapit roman kategorisinde mi,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+katalogda veri miktarı kaç kitap şu an,katalogda veri miktari kac kitap su an,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şu anda senin adresin var mı,su anda senin adresin var mi,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+lütfen komik bir cümle kur olur mu,lutfen komik bir cumle kur olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+senin yorumunla yazarın niyeti hakkında çıkarım yap,senin yorumunla yazarin niyeti hakkinda cikarim yap,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+tek cümleyle kendi kimliğini açıkla lütfen,tek cumleyle kendi kimligini acikla lutfen,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+tarif lütfen,tarif lutfen,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu yapıtın hangi edebiyatçı yazmış,su yapitin hangi edebiyatci yazmis,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+merak ettim yaşını nasıl hesaplıyorsun,merak ettim yasini nasil hesapliyorsun,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+incelediğimiz kitap için ek bilgilerle genişlet,inceledigimiz kitap icin ek bilgilerle genislet,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+romanın ilerleyen kısmında çatışma nasıl ortaya çıkıyor,romanin ilerleyen kisminda catisma nasil ortaya cikiyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+hafızana göre aktif eserin ismi nedir lütfen,hafizana gore aktif eserin ismi nedir lutfen,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+yeni bir örnek için açıklamayı sınıflandırıcıya ver,yeni bir ornek icin aciklamayi siniflandiriciya ver,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+şu kitap için bütün ayrıntıları baştan göster,su kitap icin butun ayrintilari bastan goster,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+patates kızartmak için en iyi fırın sıcaklığı ne,patates kizartmak icin en iyi firin sicakligi ne,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şimdi kategori tahmini başlat,simdi kategori tahmini baslat,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+kitap temalı mizah yap olur mu,kitap temali mizah yap olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+eğitim sürecinde test performansı kaç,egitim surecinde test performansi kac,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şu eserle ilgili daha kapsamlı açıklama yap,su eserle ilgili daha kapsamli aciklama yap,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+bugün biraz muhabbet etmek isterim şimdi,bugun biraz muhabbet etmek isterim simdi,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+sınıflandırma tarafında sınıf adlarını listele lütfen,siniflandirma tarafinda sinif adlarini listele lutfen,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+yaşadığın bir yer var mı söyler misin,yasadigin bir yer var mi soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+şu sıralar aklımdakileri paylaşacağım,su siralar aklimdakileri paylasacagim,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+senin yorumunla sonun sembolik anlamı ne olabilir yorumlar mısın,senin yorumunla sonun sembolik anlami ne olabilir yorumlar misin,SERBEST_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+kaç senedir çalışıyorsun söyler misin,kac senedir calisiyorsun soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+İntibah,intibah,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+hafızana göre son seçimin adını söyle lütfen,hafizana gore son secimin adini soyle lutfen,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+şu yapıtın eseri ortaya koyan kim,su yapitin eseri ortaya koyan kim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+merak ettim seni oluşturan kişinin adı ne,merak ettim seni olusturan kisinin adi ne,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+bugün halin vaktin nasıl,bugun halin vaktin nasil,NASILSIN,KitapPusula-V6,bağımsız_test
+doğrudan karşımdaki asistan kim lütfen,dogrudan karsimdaki asistan kim lutfen,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+uygulaman hiç bilmediği kitap olur mu gerçekten,uygulaman hic bilmedigi kitap olur mu gercekten,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+fiziksel olarak senin adresin var mı,fiziksel olarak senin adresin var mi,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+gezi rotası çiz olur mu,gezi rotasi ciz olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+hafızana göre hangi başlık üzerinde duruyoruz,hafizana gore hangi baslik uzerinde duruyoruz,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+anlatının içinde yolculuğun nedeni nedir özetler misin,anlatinin icinde yolculugun nedeni nedir ozetler misin,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+şu eser hangi sınıfta yer alıyor merak ettim,su eser hangi sinifta yer aliyor merak ettim,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+yerel arşivde kaç farklı başlık tutuluyor,yerel arsivde kac farkli baslik tutuluyor,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+komik bir cümle kur olur mu,komik bir cumle kur olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+şu kitap için aynı verileri tekrar sun lütfen,su kitap icin ayni verileri tekrar sun lutfen,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+artık sonra yeniden konuşalım KitapPusula,artik sonra yeniden konusalim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+yerel sistemin evrendeki tüm kitapları kapsıyor mu,yerel sistemin evrendeki tum kitaplari kapsiyor mu,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+lütfen gezi rotası çiz,lutfen gezi rotasi ciz,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+o halde burada ayrılalım,o halde burada ayrilalim,VEDA,KitapPusula-Final-özel,bağımsız_test
+değerlendirme raporunda hangi skor elde edildi,degerlendirme raporunda hangi skor elde edildi,MODEL_BILGISI,KitapPusula-V6,bağımsız_test
+şimdi tür etiketi üret,simdi tur etiketi uret,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+katalogda kayıt hacmi nedir şu an,katalogda kayit hacmi nedir su an,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şu eser için ana içeriği nedir lütfen,su eser icin ana icerigi nedir lutfen,OZET_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan senin doğduğun bir gün var mı söyler misin,dogrudan senin dogdugun bir gun var mi soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+merak ettim bir doğum yılın bulunuyor mu söyler misin,merak ettim bir dogum yilin bulunuyor mu soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+bana kod yazıp gönder olur mu,bana kod yazip gonder olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+öykünün içinde merkez karakterin adı nedir,oykunun icinde merkez karakterin adi nedir,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+yerel sistemin yayınlanmış her eseri tanır mı,yerel sistemin yayinlanmis her eseri tanir mi,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+incelediğimiz kitap için daha kapsamlı açıklama yap,inceledigimiz kitap icin daha kapsamli aciklama yap,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+Anayurt Oteli,anayurt oteli,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+şu eser edebî biçimi nedir merak ettim,su eser edeb bicimi nedir merak ettim,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+bugün biraz muhabbet etmek isterim biraz,bugun biraz muhabbet etmek isterim biraz,GENEL_SOHBET,KitapPusula-Final-özel,bağımsız_test
+bana bir kızarmış tavuk hazırlama videosu göster,bana bir kizarmis tavuk hazirlama videosu goster,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+anlatının içinde çatışma nasıl ortaya çıkıyor özetler misin,anlatinin icinde catisma nasil ortaya cikiyor ozetler misin,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+yerel arşivde toplam eser adedi kaç,yerel arsivde toplam eser adedi kac,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+hafızana göre aktif eserin ismi nedir,hafizana gore aktif eserin ismi nedir,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+bana en iyi spagetti tarifini göster,bana en iyi spagetti tarifini goster,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+uygulamayı kullanırken kullanım adımlarını söyle lütfen,uygulamayi kullanirken kullanim adimlarini soyle lutfen,YARDIM,KitapPusula-V6,bağımsız_test
+kısaca geliştirme işini kim yaptı söyler misin,kisaca gelistirme isini kim yapti soyler misin,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+bugün kendini iyi hissediyor musun,bugun kendini iyi hissediyor musun,NASILSIN,KitapPusula-V6,bağımsız_test
+yardımın için minnetlerimi sunarım,yardimin icin minnetlerimi sunarim,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+fiziksel olarak hangi ortamda çalışıyorsun,fiziksel olarak hangi ortamda calisiyorsun,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+bu anlatıda kahraman olarak kimi görüyoruz anlatır mısın,bu anlatida kahraman olarak kimi goruyoruz anlatir misin,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+günün gündemi nedir lütfen,gunun gundemi nedir lutfen,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+yumuşak peynir sert peynirden daha mı iyi,yumusak peynir sert peynirden daha mi iyi,YEMEK_TARIFI_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu kitap için tüm alanları yeniden sırala lütfen,su kitap icin tum alanlari yeniden sirala lutfen,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+bu uygulamayı hazırlayan kim lütfen,bu uygulamayi hazirlayan kim lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+artık oturumu kapatalım KitapPusula,artik oturumu kapatalim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+yeni bir örnek için kategori tahmini başlat,yeni bir ornek icin kategori tahmini baslat,YENI_KITAP_SINIFLANDIR,KitapPusula-V6,bağımsız_test
+Araba Sevdası,araba sevdasi,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+kullanıcıya ne sunuyorsun,kullaniciya ne sunuyorsun,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+şu eser hangi edebiyat dalına girer merak ettim,su eser hangi edebiyat dalina girer merak ettim,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+şimdi sohbeti sonlandıralım KitapPusula,simdi sohbeti sonlandiralim kitappusula,VEDA,KitapPusula-Final-özel,bağımsız_test
+Kuyucaklı Yusuf,kuyucakli yusuf,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+yardımın için emeğin için sağ ol,yardimin icin emegin icin sag ol,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+yardımın için minnetlerimi sunarım sana,yardimin icin minnetlerimi sunarim sana,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+şu eser kaç sayfadan oluşuyor merak ettim,su eser kac sayfadan olusuyor merak ettim,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+lütfen vergi hesabı yap olur mu,lutfen vergi hesabi yap olur mu,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+şu eser kaç sayfadan oluşuyor,su eser kac sayfadan olusuyor,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+öykünün içinde kahraman olarak kimi görüyoruz,oykunun icinde kahraman olarak kimi goruyoruz,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+öykünün içinde başroldeki karakter kim,oykunun icinde basroldeki karakter kim,KARAKTER_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan hangi özelliklere sahipsin anlatır mısın,dogrudan hangi ozelliklere sahipsin anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+önceki konuşmamızda son seçimin adını söyle,onceki konusmamizda son secimin adini soyle,KITAP_ADI_SORUSU,KitapPusula-V6,bağımsız_test
+bir tane neşeli bir kitap esprisi söyle olur mu,bir tane neseli bir kitap esprisi soyle olur mu,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+esenlikler,esenlikler,SELAMLAMA,KitapPusula-V6,bağımsız_test
+ne tür bir yazılımsın söyler misin,ne tur bir yazilimsin soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+günaydın yeniden orada mısın,gunaydin yeniden orada misin,SELAMLAMA,KitapPusula-V6,bağımsız_test
+anlatının içinde gelişmeler hangi sırayla yaşanıyor,anlatinin icinde gelismeler hangi sirayla yasaniyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+Aylak Adam,aylak adam,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+merhaba sistem orada mısın,merhaba sistem orada misin,SELAMLAMA,KitapPusula-V6,bağımsız_test
+kısaca hangi özelliklere sahipsin lütfen,kisaca hangi ozelliklere sahipsin lutfen,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+hangi uygulamasın söyler misin,hangi uygulamasin soyler misin,BOT_KIMLIK,KitapPusula-Final-özel,bağımsız_test
+şu anda yaşını nasıl hesaplıyorsun,su anda yasini nasil hesapliyorsun,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+ayrıntılı olarak görev alanın nedir anlatır mısın,ayrintili olarak gorev alanin nedir anlatir misin,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+etiket yapısında hangi edebî sınıflar mevcut,etiket yapisinda hangi edeb siniflar mevcut,KATEGORI_LISTESI,KitapPusula-V6,bağımsız_test
+doğrudan bu projenin geliştiricisi kim,dogrudan bu projenin gelistiricisi kim,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+hayırlı günler KitapPusula,hayirli gunler kitappusula,SELAMLAMA,KitapPusula-V6,bağımsız_test
+uygulaman her başlığı bulma garantisi var mı gerçekten,uygulaman her basligi bulma garantisi var mi gercekten,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+doğrudan bu uygulamayı hazırlayan kim lütfen,dogrudan bu uygulamayi hazirlayan kim lutfen,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+anlatının içinde kahramanın başına ne geliyor,anlatinin icinde kahramanin basina ne geliyor,OLAY_SORUSU,KitapPusula-V6,bağımsız_test
+katalogda veri miktarı kaç kitap,katalogda veri miktari kac kitap,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+kısaca haber gündemini özetle söyler misin,kisaca haber gundemini ozetle soyler misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+merak ettim ne kadar zamandır aktifsin söyler misin,merak ettim ne kadar zamandir aktifsin soyler misin,BOT_YAS,KitapPusula-Final-özel,bağımsız_test
+Forsa,forsa,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+fiziksel olarak nerede barınıyorsun,fiziksel olarak nerede bariniyorsun,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+ilk kez girince hangi işlemler yapılabilir,ilk kez girince hangi islemler yapilabilir,YARDIM,KitapPusula-V6,bağımsız_test
+doğrudan senin adresin var mı,dogrudan senin adresin var mi,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+şu eser hangi sınıfta yer alıyor,su eser hangi sinifta yer aliyor,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+şu eserle ilgili ayrıntıları çoğalt lütfen,su eserle ilgili ayrintilari cogalt lutfen,DETAY_SORUSU,KitapPusula-V6,bağımsız_test
+merhaba sistem KitapPusula,merhaba sistem kitappusula,SELAMLAMA,KitapPusula-V6,bağımsız_test
+yerel arşivde kaç kitaplık koleksiyon var,yerel arsivde kac kitaplik koleksiyon var,KITAP_SAYISI,KitapPusula-V6,bağımsız_test
+şu yapıtın kalem sahibi kim,su yapitin kalem sahibi kim,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+uygulamayı kullanırken hangi işlemler yapılabilir,uygulamayi kullanirken hangi islemler yapilabilir,YARDIM,KitapPusula-V6,bağımsız_test
+olly bu şehirde saat kaç,olly bu sehirde saat kac,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu eser edebî biçimi nedir,su eser edeb bicimi nedir,TUR_SORUSU,KitapPusula-V6,bağımsız_test
+cumartesi günü için hava tahmini nasıl,cumartesi gunu icin hava tahmini nasil,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bugün günün nasıl geçiyor,bugun gunun nasil geciyor,NASILSIN,KitapPusula-V6,bağımsız_test
+incelediğimiz metnin yazar adı nedir,inceledigimiz metnin yazar adi nedir,YAZAR_SORUSU,KitapPusula-V6,bağımsız_test
+Eylül,eylul,KITAP_ARAMA,KitapPusula-V6,bağımsız_test
+şu eser sayfa adedi nedir merak ettim,su eser sayfa adedi nedir merak ettim,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+şu kitap için kitap künyesini yeniden aç lütfen,su kitap icin kitap kunyesini yeniden ac lutfen,TEKRAR_GOSTER,KitapPusula-V6,bağımsız_test
+şu an saatin kaç olduğunu bilmek istiyorum,su an saatin kac oldugunu bilmek istiyorum,TARIH_SAAT_SORUSU,MASSIVE-tr-TR,bağımsız_test
+şu anda hangi cihazın içindesin söyler misin,su anda hangi cihazin icindesin soyler misin,BOT_KONUM,KitapPusula-Final-özel,bağımsız_test
+şu eser kısa bir kitap sayılır mı,su eser kisa bir kitap sayilir mi,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test
+teşekkürümü kabul et KitapPusula,tesekkurumu kabul et kitappusula,TESEKKUR,KitapPusula-Final-özel,bağımsız_test
+neşeli bir kitap esprisi söyle lütfen,neseli bir kitap esprisi soyle lutfen,SAKA_ISTEGI,KitapPusula-Final-özel,bağımsız_test
+benden gelen hangi soruları çözersin lütfen,benden gelen hangi sorulari cozersin lutfen,BOT_YETENEK,KitapPusula-Final-özel,bağımsız_test
+uygulaman veri dışında kalan eserleri tanır mı gerçekten,uygulaman veri disinda kalan eserleri tanir mi gercekten,HER_KITAP_SORUSU,KitapPusula-V6,bağımsız_test
+merak ettim seni oluşturan kişinin adı ne söyler misin,merak ettim seni olusturan kisinin adi ne soyler misin,BOT_YARATICI,KitapPusula-Final-özel,bağımsız_test
+kısaca haberlerde hangi konular var söyler misin,kisaca haberlerde hangi konular var soyler misin,HABER_SORUSU,KitapPusula-Final-özel,bağımsız_test
+günaydın yeniden KitapPusula,gunaydin yeniden kitappusula,SELAMLAMA,KitapPusula-V6,bağımsız_test
+pazartesi günü yağmur yağacak mı,pazartesi gunu yagmur yagacak mi,HAVA_SORUSU,MASSIVE-tr-TR,bağımsız_test
+bana futbol maçı sonucu ver istiyorum,bana futbol maci sonucu ver istiyorum,ALAN_DISI,KitapPusula-Final-özel,bağımsız_test
+şu eser toplam kaç yapraklık merak ettim,su eser toplam kac yapraklik merak ettim,SAYFA_SORUSU,KitapPusula-V6,bağımsız_test

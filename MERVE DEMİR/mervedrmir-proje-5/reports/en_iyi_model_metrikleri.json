@@ -1,0 +1,11 @@
+{
+    "Model": "Logistic Regression",
+    "CV Macro F1 Ortalama": 0.5866577609764121,
+    "CV Macro F1 Standart Sapma": 0.010430794136203415,
+    "Test Accuracy": 0.591875,
+    "Test Macro Precision": 0.5864824797816858,
+    "Test Macro Recall": 0.5918749999999999,
+    "Test Macro F1": 0.5878401951710843,
+    "Test Weighted F1": 0.5878401951710842,
+    "Yaklaşık Parametre Sayısı": 224008.0
+}
