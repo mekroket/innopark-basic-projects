@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Akademik Veri Toplayıcı",
+  "version": "4.0",
+  "description": "YÖK Akademik Kadro Toplama Botu",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "downloads"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "http://localhost/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
