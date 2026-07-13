@@ -1,0 +1,42 @@
+Model sürümü: 7.2
+En iyi model: Logistic Regression
+
+                        precision    recall  f1-score   support
+
+             ALAN_DISI     0.8000    0.8000    0.8000        15
+            BOT_KIMLIK     0.7778    0.4667    0.5833        15
+             BOT_KONUM     0.7000    0.9333    0.8000        15
+          BOT_YARATICI     0.6087    0.9333    0.7368        15
+               BOT_YAS     0.8333    0.6667    0.7407        15
+           BOT_YETENEK     0.8333    0.6667    0.7407        15
+          DETAY_SORUSU     0.8824    1.0000    0.9375        15
+          GENEL_SOHBET     0.7778    0.9333    0.8485        15
+          HABER_SORUSU     0.6250    1.0000    0.7692        15
+           HAVA_SORUSU     0.5556    1.0000    0.7143        15
+      HER_KITAP_SORUSU     1.0000    0.8667    0.9286        15
+       KARAKTER_SORUSU     1.0000    0.8000    0.8889        15
+      KATEGORI_LISTESI     1.0000    0.8667    0.9286        15
+      KITAP_ADI_SORUSU     0.3333    0.2000    0.2500        15
+           KITAP_ARAMA     0.6087    0.9333    0.7368        15
+          KITAP_SAYISI     0.6842    0.8667    0.7647        15
+         MODEL_BILGISI     1.0000    0.6000    0.7500        15
+              NASILSIN     0.8462    0.7333    0.7857        15
+           OLAY_SORUSU     0.6667    0.5333    0.5926        15
+           OZET_SORUSU     0.8750    0.4667    0.6087        15
+           SAKA_ISTEGI     0.6000    1.0000    0.7500        15
+          SAYFA_SORUSU     0.9091    0.6667    0.7692        15
+             SELAMLAMA     0.9333    0.9333    0.9333        15
+  SERBEST_KITAP_SORUSU     0.8235    0.9333    0.8750        15
+     TARIH_SAAT_SORUSU     0.8000    0.8000    0.8000        15
+         TEKRAR_GOSTER     0.9375    1.0000    0.9677        15
+              TESEKKUR     1.0000    1.0000    1.0000        15
+            TUR_SORUSU     0.8333    0.6667    0.7407        15
+                  VEDA     0.9091    0.6667    0.7692        15
+                YARDIM     0.5385    0.4667    0.5000        15
+          YAZAR_SORUSU     0.8000    0.2667    0.4000        15
+   YEMEK_TARIFI_SORUSU     0.6500    0.8667    0.7429        15
+YENI_KITAP_SINIFLANDIR     0.9167    0.7333    0.8148        15
+
+              accuracy                         0.7657       495
+             macro avg     0.7897    0.7657    0.7566       495
+          weighted avg     0.7897    0.7657    0.7566       495

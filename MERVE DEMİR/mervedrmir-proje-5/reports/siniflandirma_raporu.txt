@@ -1,0 +1,16 @@
+En iyi model: Logistic Regression
+
+                        precision    recall  f1-score   support
+
+                   Anı     0.5249    0.4750    0.4987       200
+   Bilimkurgu-Fantazya     0.6933    0.7800    0.7341       200
+Biyografi-Otobiyografi     0.5735    0.5850    0.5792       200
+                Deneme     0.4444    0.4600    0.4521       200
+                Hikâye     0.5413    0.5900    0.5646       200
+              Polisiye     0.8226    0.7650    0.7927       200
+                 Roman     0.3742    0.3050    0.3361       200
+                  Şiir     0.7176    0.7750    0.7452       200
+
+              accuracy                         0.5919      1600
+             macro avg     0.5865    0.5919    0.5878      1600
+          weighted avg     0.5865    0.5919    0.5878      1600

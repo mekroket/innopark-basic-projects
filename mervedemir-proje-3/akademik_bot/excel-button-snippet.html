@@ -1,0 +1,18 @@
+<!--
+  Bu butonu display.php içinde, mevcut "Yenile" butonunun (loadData() çağıran buton)
+  HEMEN YANINA yapıştır. Header bölümündeki şu div'in içine eklemen yeterli:
+
+  <div class="flex items-center gap-3">
+    ... Yenile butonu burada ...
+    ... ⬇ Excel İndir butonunu buraya ekle ⬇ ...
+    <span id="topCount" ...>
+  </div>
+-->
+<a href="export.php"
+   class="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition shadow-sm">
+  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 4v12m0 0l-4-4m4 4l4-4M5 20h14"/>
+  </svg>
+  Excel İndir
+</a>
