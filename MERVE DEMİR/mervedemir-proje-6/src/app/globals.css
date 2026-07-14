@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ━━ Design Tokens ━━━━━━━━━━━━━━━━━━━ */
+:root {
+  /* Backgrounds */
+  --bg-darkest: #040a05;
+  --bg-dark: #081208;
+  --bg-forest: #0c1f10;
+
+  /* Emerald palette */
+  --emerald-deep: #14532d;
+  --emerald: #1a6b3c;
+  --emerald-light: #22894d;
+  --emerald-muted: #1a5c35;
+
+  /* Gold palette */
+  --gold-warm: #c9a84c;
+  --gold-light: #e8cc6e;
+  --gold-pale: #f5e4a3;
+  --gold-glow: rgba(201, 168, 76, 0.5);
+
+  /* Cream palette */
+  --cream: #f0ead6;
+  --cream-soft: rgba(240, 234, 214, 0.8);
+  --cream-muted: rgba(240, 234, 214, 0.45);
+
+  /* Glass effects */
+  --glass-bg: rgba(8, 18, 8, 0.55);
+  --glass-bg-hover: rgba(8, 18, 8, 0.75);
+  --glass-border: rgba(201, 168, 76, 0.12);
+  --glass-border-hover: rgba(201, 168, 76, 0.3);
+
+  /* Shadows */
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 30px rgba(201, 168, 76, 0.15);
+
+  /* Typography */
+  --font-serif: 'Playfair Display', 'Georgia', serif;
+  --font-display: 'Cormorant Garamond', 'Playfair Display', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-index scale */
+  --z-bg: 1;
+  --z-overlay: 5;
+  --z-content: 10;
+  --z-social: 20;
+  --z-nav: 100;
+  --z-modal: 200;
+}
+
+/* ━━ CSS Reset ━━━━━━━━━━━━━━━━━━━━━━━ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-darkest);
+  color: var(--cream);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ━━ Typography ━━━━━━━━━━━━━━━━━━━━━━ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--cream);
+  font-weight: 600;
+}
+
+/* ━━ Selection ━━━━━━━━━━━━━━━━━━━━━━━ */
+::selection {
+  background: rgba(201, 168, 76, 0.3);
+  color: var(--cream);
+}
+
+::-moz-selection {
+  background: rgba(201, 168, 76, 0.3);
+  color: var(--cream);
+}
+
+/* ━━ Scrollbar ━━━━━━━━━━━━━━━━━━━━━━━ */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-darkest);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--emerald-deep);
+  border-radius: 10px;
+  border: 2px solid var(--bg-darkest);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--emerald);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--emerald-deep) var(--bg-darkest);
+}
+
+/* ━━ Base Links ━━━━━━━━━━━━━━━━━━━━━━ */
+a {
+  color: var(--gold-warm);
+  text-decoration: none;
+}
+
+/* ━━ Images ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+img {
+  max-width: 100%;
+  display: block;
+}

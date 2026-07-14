@@ -1,0 +1,83 @@
+/* ━━ Scroll Indicator ━━━━━━━━━━━━━━━━ */
+.scroll-indicator {
+  position: absolute;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--z-content);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  animation: scrollIndicatorFadeIn 0.8s ease 2s forwards;
+}
+
+@keyframes scrollIndicatorFadeIn {
+  to { opacity: 1; }
+}
+
+.scroll-indicator-text {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--cream-muted);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.scroll-indicator-arrow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scroll-indicator-arrow svg {
+  width: 18px;
+  height: 18px;
+  color: var(--cream-muted);
+  opacity: 0.6;
+}
+
+.scroll-indicator-arrow svg:last-child {
+  opacity: 0.3;
+  margin-top: -8px;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+.scroll-indicator-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--cream-muted), transparent);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-indicator-line::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, transparent, var(--gold-warm), transparent);
+  animation: scrollLinePulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollLinePulse {
+  0% { top: -50%; }
+  100% { top: 150%; }
+}
+
+/* ━━ Responsive ━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 768px) {
+  .scroll-indicator {
+    bottom: 20px;
+  }
+}
