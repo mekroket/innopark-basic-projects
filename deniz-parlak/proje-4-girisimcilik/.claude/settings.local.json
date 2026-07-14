@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($r = Invoke-RestMethod -Uri \"https://girisimcilik-platformu.onrender.com/get-data/?limit=3\" -TimeoutSec 90; $r | ConvertTo-Json -Depth 4 | Out-String | ForEach-Object { $_.Substring\\(0, [Math]::Min\\(2500, $_.Length\\)\\) })",
+      "PowerShell(gh auth status)",
+      "PowerShell(gh repo list --limit 30)",
+      "Bash(cd \"/c/Users/Lenovo/AppData/Local/Temp/claude/C--Users-Lenovo-OneDrive-Desktop-Girisimcilik/7897464d-c7af-4750-b076-88af8fc3588e/scratchpad/repo\" && cat .github/workflows/daily-scrape.yml && echo \"=== KISI1 REQUIREMENTS ===\" && cat kisi1_scraper/requirements.txt && echo \"=== CONFIG ===\" && cat kisi1_scraper/kaynaklar/config.py | grep -v '^#' | grep -v '^\"\"\"' | head -20)",
+      "Bash(git credential *)",
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "Bash(python -c ' *)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://www.konyateknokent.com.tr/js/components/haberler.js\" -o haberler.js)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://www.konyateknokent.com.tr/data/featuredNews.asp\" -o featuredNews.json)",
+      "Bash(\"C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe\" -c \"import bs4, requests, lxml; print\\('venv ok'\\)\")",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://api.lu.ma/user/profile/events-hosting?user_api_id=usr-5ZPE1hUNWX9LUJ7\")",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://api.lu.ma/user/profile/events?user_api_id=usr-5ZPE1hUNWX9LUJ7\")",
+      "Bash(PYTHONIOENCODING=utf-8 \"C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe\" konya_sanayi_odasi.py)",
+      "Bash(PYTHONIOENCODING=utf-8 \"C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe\" konya_teknokent.py)",
+      "Bash(PYTHONIOENCODING=utf-8 \"C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe\" divizyon.py)",
+      "Bash(curl -s \"https://girisimcilik-platformu.onrender.com/get-data/\" -o getdata.json -w \"%{http_code}\")",
+      "Bash(\"C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe\" -)",
+      "Bash('C:\\\\Users\\\\Lenovo\\\\OneDrive\\\\Desktop\\\\Girisimcilik\\\\girisimcilik-platformu\\\\venv\\\\Scripts\\\\python.exe' -c ' *)"
+    ]
+  }
+}
