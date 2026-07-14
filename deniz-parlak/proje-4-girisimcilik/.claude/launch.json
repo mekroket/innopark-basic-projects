@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "startupradar-frontend",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "C:/Users/Lenovo/AppData/Local/Temp/claude/C--Users-Lenovo-OneDrive-Desktop-Girisimcilik/7897464d-c7af-4750-b076-88af8fc3588e/scratchpad/repo"],
+      "port": 8123
+    }
+  ]
+}
