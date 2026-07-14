@@ -1,0 +1,109 @@
+.form {
+  width: min(780px, 100%);
+  margin: 42px auto 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.form label > span {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #d7c57d;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  border: 1px solid rgba(232, 217, 151, 0.18);
+  border-radius: 22px;
+  background: rgba(5, 10, 6, 0.6);
+  color: #efe6c3;
+  padding: 17px 18px;
+  font: inherit;
+  outline: none;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.form textarea {
+  margin-top: 18px;
+  resize: vertical;
+  min-height: 160px;
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(239, 231, 200, 0.42);
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: rgba(232, 217, 151, 0.5);
+  background: rgba(5, 10, 6, 0.74);
+  box-shadow: 0 0 34px rgba(214, 193, 107, 0.14);
+}
+
+.form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  margin-top: 26px;
+  padding: 0 38px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  color: #081008;
+  background: linear-gradient(135deg, #e8d997, #b99b46);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  box-shadow: 0 0 38px rgba(214, 193, 107, 0.28);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+.form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 52px rgba(214, 193, 107, 0.42);
+}
+
+.form button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.success,
+.error {
+  margin: 20px auto 0 !important;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.success {
+  color: #d7c57d !important;
+}
+
+.error {
+  color: #ff9f9f !important;
+}
+
+@media (max-width: 700px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
